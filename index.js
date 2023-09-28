@@ -1,6 +1,8 @@
 const { sequelize } = require('./models');
-const UsuarioDAO = require('./dataAccess/usuarioDAO');
-const { Usuario } = require('./entitys/usuario')
+const { Usuario } = require('./entitys/usuario');
+const {UsuarioDAO} = require('./dataAccess/usuarioDAO');
+ const {EventoDAO} = require('./dataAccess/eventoDAO');
+const { Evento } = require('./entitys/evento');
 
 async function realizarTransacciones() {
 
@@ -39,6 +41,16 @@ async function realizarTransacciones() {
                 "555-987-6543",
                 "bob.johnson@example.com",
                 "contraseña456"
+            );
+
+            const evento1 = new Evento(
+                "Peso",
+                "Obregon",
+                "Corridos",
+                'Jul 12 2011',
+                1000,
+                555,
+                
             );
             await UsuarioDAO.crearUsuario(
                 nuevoUsuario.nombre,
@@ -95,12 +107,30 @@ async function realizarTransacciones() {
             //console.log('--------ELIMINAMOS EL USUARIO CON ID 1--------') // Solo sirve una vez, ya que elimina el usuario
             //const usuarioEliminado = await UsuarioDAO.eliminarUsuario(1);
             //console.log('Usuario Eliminado: ', usuarioEliminado)
+
+            //Evento
+            // Crear un evento
+            await EventoDAO.crearEvento(
+                evento1.nombre,
+                evento1.lugar,
+                evento1.tipo,
+                evento1.fecha,
+                evento1.numBoletosVendidos,
+                evento1.numBoletosDisponibles
+            );
+            console.log("evento agregado");
+            
+
+
+
+
         } catch (error) {
             throw error;
         }
 
     } catch (error) {
         console.error('Error en las transacciones: ' + error)
+        console.log(error)
     } finally {
         // Cerramos la conexión a la base de datos cuando todo haya terminado.
         await sequelize.close();

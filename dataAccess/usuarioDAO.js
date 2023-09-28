@@ -1,20 +1,21 @@
 const initModels = require('../migrations/init-models'); // Ajusta la ruta al archivo init-models.js
-const { sequelize } = require('../models');
+const {sequelize} = require('../models');
 const models = initModels(sequelize);
 const Usuario = models.usuarios;
 
 class UsuarioDAO {
-    constructor() {}
+    constructor() {
+    }
 
-    async crearUsuario(nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña) {
+    static async crearUsuario(nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña) {
         try {
-            return await Usuario.create({ nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña });
+            return await Usuario.create({nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña});
         } catch (error) {
             throw error
         }
     }
 
-    async obtenerUsuarios() {
+   static async obtenerUsuarios() {
         try {
             return await Usuario.findAll();
         } catch (error) {
@@ -22,7 +23,7 @@ class UsuarioDAO {
         }
     }
 
-    async obtenerUsuarioPorId(id) {
+    static  async obtenerUsuarioPorId(id) {
         try {
             return await Usuario.findByPk(id);
         } catch (error) {
@@ -30,9 +31,17 @@ class UsuarioDAO {
         }
     }
 
-    async actualizarUsuario(idUsuario, nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña) {
+    static async actualizarUsuario(idUsuario, nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña) {
         try {
-            await Usuario.update({ nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña }, { where: { idUsuario } })
+            await Usuario.update({
+                nombre,
+                apellido,
+                tipoUsuario,
+                edad,
+                telefono,
+                correo,
+                contraseña
+            }, {where: {idUsuario}})
             return await Usuario.findByPk(idUsuario)
         } catch (error) {
             throw error
@@ -53,4 +62,4 @@ class UsuarioDAO {
     }
 }
 
-module.exports = new UsuarioDAO();
+module.exports = {UsuarioDAO};
