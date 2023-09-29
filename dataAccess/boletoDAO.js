@@ -6,7 +6,7 @@ const Boleto = models.boletos;
 class BoletoDAO {
     constructor() {}
 
-    async crearBoleto(idEvento, idAsiento, precio, estado) {
+    static async crearBoleto(idEvento, idAsiento, precio, estado) {
         try {
             return await Boleto.create({ idEvento, idAsiento, precio, estado });
         } catch (error) {
@@ -14,7 +14,7 @@ class BoletoDAO {
         }
     }
 
-    async obtenerBoleto() {
+    static  async obtenerBoleto() {
         try {
             return await Boleto.findAll();
         } catch (error) {
@@ -22,7 +22,7 @@ class BoletoDAO {
         }
     }
 
-    async obtenerBoletoPorId(id) {
+    static async obtenerBoletoPorId(id) {
         try {
             return await Boleto.findByPk(id);
         } catch (error) {
@@ -30,7 +30,7 @@ class BoletoDAO {
         }
     }
 
-    async actualizarBoleto(idBoleto, precio, estado) {
+    static async actualizarBoleto(idBoleto, precio, estado) {
         try {
             await Boleto.update({ precio, estado }, { where: { idBoleto } })
             return await Boleto.findByPk(idUsuario)
@@ -39,7 +39,7 @@ class BoletoDAO {
         }
     }
 
-    async eliminarBoleto(id) {
+    static async eliminarBoleto(id) {
         try {
             const boleto = await Boleto.findByPk(id);
             if (!boleto) {
@@ -53,4 +53,4 @@ class BoletoDAO {
     }
 }
 
-module.exports = new BoletoDAO();
+module.exports = {BoletoDAO};

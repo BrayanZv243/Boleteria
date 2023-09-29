@@ -24,34 +24,37 @@ class EventoDAO {
 
     static async obtenerEventoPorId(id) {
         try {
-            const evento = await Evento.findByPk(id);
-            return evento;
+
+            return await Evento.findByPk(id);
         } catch (error) {
             throw error;
         }
     }
 
-    static async actualizarEvento(id, {nombre, lugar, tipo, fecha, boletos_vendidos, boletos_disponibles}) {
+    static async actualizarEvento(idEvento, nombre, lugar, tipo, fecha, boletos_vendidos, boletos_disponibles ) {
         try {
-            const evento = await Evento.findByPk(id);
-            if (!evento) {
-                throw new Error('Evento no encontrado');
-            }
-
-            await evento.update({
+             await Evento.update({
                 nombre,
                 lugar,
                 tipo,
                 fecha,
                 boletos_vendidos,
                 boletos_disponibles
+            }, {
+                where: { idEvento },
+                 // Para obtener el objeto actualizado
             });
 
-            return evento;
+
+
+
+
+            return await Evento.findByPk(idEvento)
         } catch (error) {
             throw error;
         }
     }
+
 
     static async eliminarEvento(id) {
         try {

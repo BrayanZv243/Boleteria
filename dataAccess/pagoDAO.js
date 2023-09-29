@@ -6,7 +6,7 @@ const Pago = models.pagos;
 class PagoDAO {
     constructor() {}
 
-    async crearPago(idUsuario, monto, metodo, fecha) {
+   static async crearPago(idUsuario, monto, metodo, fecha) {
         try {
             return await Pago.create({ idUsuario, monto, metodo, fecha });
         } catch (error) {
@@ -14,7 +14,7 @@ class PagoDAO {
         }
     }
 
-    async obtenerPagos() {
+    static async obtenerPagos() {
         try {
             return await Pago.findAll();
         } catch (error) {
@@ -22,7 +22,19 @@ class PagoDAO {
         }
     }
 
-    async obtenerPagoPorId(id) {
+    static async obtenerPagosPorUsuario(idUsuario) {
+        try {
+            return await Pago.findOne({
+                where:{
+                    idUsuario:idUsuario
+                }
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async obtenerPagoPorId(id) {
         try {
             return await Pago.findByPk(id);
         } catch (error) {
@@ -30,7 +42,7 @@ class PagoDAO {
         }
     }
 
-    async actualizarPago(idPago, monto, metodo, fecha) {
+    static async actualizarPago(idPago, monto, metodo, fecha) {
         try {
             await Pago.update({ monto, metodo, fecha }, { where: { idPago } })
             return await Pago.findByPk(idPago)
@@ -39,7 +51,7 @@ class PagoDAO {
         }
     }
 
-    async eliminarPago(id) {
+    static  async eliminarPago(id) {
         try {
             const pago = await Pago.findByPk(id);
             if (!pago) {
@@ -53,4 +65,4 @@ class PagoDAO {
     }
 }
 
-module.exports = new PagoDAO();
+module.exports = {PagoDAO};

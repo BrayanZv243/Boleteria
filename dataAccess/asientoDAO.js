@@ -6,7 +6,7 @@ const Asiento = models.asientos;
 class AsientoDAO {
     constructor() {}
 
-    async crearAsiento(tipo, filaYNumero) {
+   static async crearAsiento(tipo, filaYNumero) {
         try {
             return await Asiento.create({ tipo, filaYNumero});
         } catch (error) {
@@ -14,7 +14,7 @@ class AsientoDAO {
         }
     }
 
-    async obtenerAsiento() {
+    static async obtenerAsiento() {
         try {
             return await Asiento.findAll();
         } catch (error) {
@@ -22,7 +22,7 @@ class AsientoDAO {
         }
     }
 
-    async obtenerAsientoPorId(id) {
+    static async obtenerAsientoPorId(id) {
         try {
             return await Asiento.findByPk(id);
         } catch (error) {
@@ -30,7 +30,7 @@ class AsientoDAO {
         }
     }
 
-    async actualizarAsiento(idAsiento, tipo, filaYNumero) {
+    static async actualizarAsiento(idAsiento, tipo, filaYNumero) {
         try {
             await Asiento.update({ tipo, filaYNumero }, { where: { idAsiento } })
             return await Asiento.findByPk(idAsiento)
@@ -39,7 +39,7 @@ class AsientoDAO {
         }
     }
 
-    async eliminarAsiento(id) {
+    static  async eliminarAsiento(id) {
         try {
             const asiento = await Asiento.findByPk(id);
             if (!asiento) {
@@ -53,4 +53,4 @@ class AsientoDAO {
     }
 }
 
-module.exports = new AsientoDAO();
+module.exports = {AsientoDAO};

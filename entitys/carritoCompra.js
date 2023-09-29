@@ -1,10 +1,10 @@
-const { Usuario } = require('./entitys/usuario')
-const { Boleto } = require('./entitys/Boleto')
+
+
 class CarritoCompra{
-    constructor(usuario, boleto, total){
-        Usuario = usuario;
-        Boleto = boleto;
+    constructor(idUsuario, total){
+        this.idUsuario = idUsuario;
         this.total = total;
+
     }
 }
 
