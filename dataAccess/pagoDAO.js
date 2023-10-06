@@ -24,7 +24,7 @@ class PagoDAO {
 
     static async obtenerPagosPorUsuario(idUsuario) {
         try {
-            return await Pago.findOne({
+            return await Pago.findAll({
                 where:{
                     idUsuario:idUsuario
                 }
