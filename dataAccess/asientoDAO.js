@@ -4,17 +4,18 @@ const models = initModels(sequelize);
 const Asiento = models.asientos;
 
 class AsientoDAO {
-    constructor() {}
+    constructor() { }
 
-   static async crearAsiento(tipo, filaYNumero) {
+    static async crearAsiento(asiento) {
         try {
-            return await Asiento.create({ tipo, filaYNumero});
+            const { tipo, filaYNumero } = asiento
+            return await Asiento.create({ tipo, filaYNumero });
         } catch (error) {
             throw error
         }
     }
 
-    static async obtenerAsiento() {
+    static async obtenerAsientos() {
         try {
             return await Asiento.findAll();
         } catch (error) {
@@ -30,20 +31,21 @@ class AsientoDAO {
         }
     }
 
-    static async actualizarAsiento(idAsiento, tipo, filaYNumero) {
+    static async actualizarAsiento(idAsiento, asiento) {
         try {
+            const { tipo, filaYNumero } = asiento;
             await Asiento.update({ tipo, filaYNumero }, { where: { idAsiento } })
-            return await Asiento.findByPk(idAsiento)
+            return await Asiento.findByPk(idAsiento);
         } catch (error) {
             throw error
         }
     }
 
-    static  async eliminarAsiento(id) {
+    static async eliminarAsiento(id) {
         try {
             const asiento = await Asiento.findByPk(id);
             if (!asiento) {
-                throw new Error('Asiento no encontrado')
+                return null;
             }
             await asiento.destroy();
             return asiento;
@@ -53,4 +55,4 @@ class AsientoDAO {
     }
 }
 
-module.exports = {AsientoDAO};
+module.exports = { AsientoDAO };

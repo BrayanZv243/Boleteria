@@ -11,14 +11,14 @@ app.use(morgan('combined'));
 
 // rutas
 const UsuarioRouter = require('./routes/UsuarioRouter');
+const AsientoRouter = require('./routes/AsientoRouter');
 
 app.use('/api/usuarios', UsuarioRouter);
+app.use('/api/asientos', AsientoRouter);
 
 app.all('*', (req, res, next) => {
     next(new AppError('No se pudo acceder a la ruta especificada', 404));
 });
-
-
 
 const port = process.env.PORT || 3000;
 
