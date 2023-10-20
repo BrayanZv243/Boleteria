@@ -8,7 +8,7 @@ class AsientoDAO {
 
     static async crearAsiento(asiento) {
         try {
-            const { tipo, filaYNumero } = asiento
+            const { tipo, filaYNumero } = asiento;
             return await Asiento.create({ tipo, filaYNumero });
         } catch (error) {
             throw error
@@ -44,9 +44,7 @@ class AsientoDAO {
     static async eliminarAsiento(id) {
         try {
             const asiento = await Asiento.findByPk(id);
-            if (!asiento) {
-                return null;
-            }
+            if (!asiento) return null;
             await asiento.destroy();
             return asiento;
         } catch (error) {

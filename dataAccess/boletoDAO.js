@@ -6,8 +6,9 @@ const Boleto = models.boletos;
 class BoletoDAO {
     constructor() {}
 
-    static async crearBoleto(idEvento, idAsiento, precio, estado) {
+    static async crearBoleto(boleto) {
         try {
+            const { idEvento, idAsiento, precio, estado } = boleto
             return await Boleto.create({ idEvento, idAsiento, precio, estado });
         } catch (error) {
             throw error
@@ -42,9 +43,7 @@ class BoletoDAO {
     static async eliminarBoleto(id) {
         try {
             const boleto = await Boleto.findByPk(id);
-            if (!boleto) {
-                throw new Error('Boleto no encontrado')
-            }
+            if (!boleto) return null;
             await boleto.destroy();
             return boleto;
         } catch (error) {

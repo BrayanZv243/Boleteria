@@ -1,5 +1,5 @@
 const initModels = require('../migrations/init-models'); // Ajusta la ruta al archivo init-models.js
-const {sequelize} = require('../models');
+const { sequelize } = require('../models');
 const models = initModels(sequelize);
 const Evento = models.eventos;
 
@@ -7,8 +7,9 @@ class EventoDAO {
     constructor() {
     }
 
-    static async crearEvento(nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles) {
+    static async crearEvento(evento) {
         try {
+            const { nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles } = evento;
             return await Evento.create({
                 nombre,
                 lugar,
@@ -18,37 +19,33 @@ class EventoDAO {
                 numBoletosDisponibles
             });
         } catch (error) {
+            console.log(error);
             throw error;
         }
     }
 
     static async obtenerEventoPorId(id) {
         try {
-
             return await Evento.findByPk(id);
         } catch (error) {
             throw error;
         }
     }
 
-    static async actualizarEvento(idEvento, nombre, lugar, tipo, fecha, boletos_vendidos, boletos_disponibles ) {
+    static async actualizarEvento(idEvento, evento) {
         try {
-             await Evento.update({
+            const { nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles } = evento;
+            await Evento.update({
                 nombre,
                 lugar,
                 tipo,
                 fecha,
-                boletos_vendidos,
-                boletos_disponibles
+                numBoletosVendidos,
+                numBoletosDisponibles
             }, {
                 where: { idEvento },
-                 // Para obtener el objeto actualizado
+                // Para obtener el objeto actualizado
             });
-
-
-
-
-
             return await Evento.findByPk(idEvento)
         } catch (error) {
             throw error;
@@ -59,18 +56,15 @@ class EventoDAO {
     static async eliminarEvento(id) {
         try {
             const evento = await Evento.findByPk(id);
-            if (!evento) {
-                throw new Error('Evento no encontrado');
-            }
-
+            if (!evento) return null;
             await evento.destroy();
-            return "Evento Eliminado con éxito";
+            return evento;
         } catch (error) {
             throw error;
         }
     }
 
-    static async obtenerTodosEventos() {
+    static async obtenerEventos() {
         try {
             const eventos = await Evento.findAll();
             return eventos;
@@ -81,4 +75,4 @@ class EventoDAO {
 
 }
 
-module.exports = {EventoDAO};
+module.exports = { EventoDAO };
