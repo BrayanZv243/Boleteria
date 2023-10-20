@@ -1,5 +1,5 @@
 const initModels = require('../migrations/init-models'); // Ajusta la ruta al archivo init-models.js
-const {sequelize} = require('../models');
+const { sequelize } = require('../models');
 const models = initModels(sequelize);
 const Usuario = models.usuarios;
 
@@ -7,15 +7,16 @@ class UsuarioDAO {
     constructor() {
     }
 
-    static async crearUsuario(nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña) {
+    static async crearUsuario(usuario) {
         try {
-            return await Usuario.create({nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña});
+            const { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña } = usuario;
+            return await Usuario.create({ nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña });
         } catch (error) {
             throw error
         }
     }
 
-   static async obtenerUsuarios() {
+    static async obtenerUsuarios() {
         try {
             return await Usuario.findAll();
         } catch (error) {
@@ -23,7 +24,7 @@ class UsuarioDAO {
         }
     }
 
-    static  async obtenerUsuarioPorId(id) {
+    static async obtenerUsuarioPorId(id) {
         try {
             return await Usuario.findByPk(id);
         } catch (error) {
@@ -31,7 +32,9 @@ class UsuarioDAO {
         }
     }
 
-    static async actualizarUsuario(idUsuario, nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña) {
+    static async actualizarUsuario(idUsuario, usuario) {
+        const { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña } = usuario;
+
         try {
             await Usuario.update({
                 nombre,
@@ -41,19 +44,17 @@ class UsuarioDAO {
                 telefono,
                 correo,
                 contraseña
-            }, {where: {idUsuario}})
+            }, { where: { idUsuario } })
             return await Usuario.findByPk(idUsuario)
         } catch (error) {
             throw error
         }
     }
 
-    async eliminarUsuario(id) {
+    static async eliminarUsuario(id) {
         try {
             const usuario = await Usuario.findByPk(id);
-            if (!usuario) {
-                throw new Error('Usuario no encontrado')
-            }
+            if (!usuario) return null;
             await usuario.destroy();
             return usuario;
         } catch (error) {
@@ -62,4 +63,4 @@ class UsuarioDAO {
     }
 }
 
-module.exports = {UsuarioDAO};
+module.exports = { UsuarioDAO };
