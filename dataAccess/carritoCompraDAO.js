@@ -1,10 +1,10 @@
 const initModels = require('../migrations/init-models'); // Ajusta la ruta al archivo init-models.js
 const { sequelize } = require('../models');
-const carrito_compra_has_boletos = require('../models/carrito_compra_has_boletos');
 const models = initModels(sequelize);
 const CarritoCompra = models.carrito_compra;
 const Usuario = models.usuarios;
 const Carrito_compra_has_boletos = models.carrito_compra_has_boletos;
+const Boleto = models.boletos;
 
 class CarritoCompraDAO {
     constructor() { }
@@ -87,14 +87,19 @@ class CarritoCompraDAO {
     static async obtenerBoletosDeUnCarritoCompra(idCarritoCompra) {
         try {
             const boletosDeCarritoCompra = [];
-            const respuesta = await Carrito_compra_has_boletos.findAll();
+            const respuesta = await Carrito_compra_has_boletos.findAll({
+                include:{
+                    model: Boleto,
+                    as: "idBoleto_boleto"
+                }
+            });
             const boletos = respuesta.map((registro) => registro.toJSON());
-
             boletos.forEach((boleto) => {
-                if (boleto.idCarrito_Compra === idCarritoCompra) {
+                if (boleto.idCarrito_Compra == idCarritoCompra) {
                     boletosDeCarritoCompra.push(boleto);
                 }
             });
+
             return boletosDeCarritoCompra;
         } catch (error) {
             console.log(error);

@@ -108,6 +108,7 @@ class CarritoCompraController {
         const boletosRequest = req.body;
         const nestedArray = Object.values(boletosRequest);
         const boletosArray = [].concat(...nestedArray);
+        
         const boletos = [];
 
         // Validamos que los boletos existan y los obtenemos.
@@ -117,6 +118,9 @@ class CarritoCompraController {
                     const boletoEncontrado = await BoletoDAO.obtenerBoletoPorId(boletoObj.idBoleto);
                     if (boletoEncontrado) {
                         boletos.push(boletoEncontrado);
+                    } else {
+                        res.status(404).json({ "message": "Un boleto no existe", "boletos": boletoObj });
+                        return;
                     }
                 } catch (error) {
                     console.error('Error al obtener boleto:', error);
@@ -125,13 +129,12 @@ class CarritoCompraController {
         }
         // Resto de la lógica para agregar los boletos al carrito
         try {
-
-
             await CarritoCompraDAO.agregarBoletoACarritoCompra(idCarritoCompra, boletos);
-
-            const total = boletos.reduce((acumulador, boleto) => acumulador + parseFloat(boleto.precio), 0);
+            // Obtenemos nuevamente los boletos para sumarselo el total
+            const nuevosBoletos = await CarritoCompraDAO.obtenerBoletosDeUnCarritoCompra(idCarritoCompra);
+            const total = nuevosBoletos.reduce((acumulador, boleto) => acumulador + parseFloat(boleto.idBoleto_boleto.precio), 0);
             await CarritoCompraController.actualizarTotalCarritoCompra(idCarritoCompra, total)
-            res.status(200).json({ "message": "Boletos Agregados con éxito", "boletos": boletos });
+            res.status(200).json({ "message": "Boletos Agregados con éxito", "boletos": nuevosBoletos });
         } catch (error) {
             res.status(404).json({ statusCode: 404, message: 'Error al agregar los boletos' });
             console.log(error);
@@ -153,6 +156,9 @@ class CarritoCompraController {
                     const boletoEncontrado = await BoletoDAO.obtenerBoletoPorId(boletoObj.idBoleto);
                     if (boletoEncontrado) {
                         boletos.push(boletoEncontrado);
+                    } else {
+                        res.status(404).json({ "message": "Un boleto no existe", "boletos": boletoObj });
+                        return;
                     }
                 } catch (error) {
                     console.error('Error al obtener boleto:', error);
@@ -165,7 +171,7 @@ class CarritoCompraController {
 
             // Obtenemos nuevamente los boletos para calcular el total
             const nuevosBoletos = await CarritoCompraDAO.obtenerBoletosDeUnCarritoCompra(idCarritoCompra);
-            const total = nuevosBoletos.reduce((acumulador, boleto) => acumulador + parseFloat(boleto.precio), 0);
+            const total = nuevosBoletos.reduce((acumulador, boleto) => acumulador + parseFloat(boleto.idBoleto_boleto.precio), 0);
             await CarritoCompraController.actualizarTotalCarritoCompra(idCarritoCompra, total)
             res.status(200).json({ "message": "Boletos Eliminados con éxito", "boletos": boletos });
         } catch (error) {
