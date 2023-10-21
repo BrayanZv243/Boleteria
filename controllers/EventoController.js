@@ -93,7 +93,6 @@ class EventoController {
             const evento = await EventoDAO.eliminarEvento(id);
             if (evento === null || evento === undefined) {
                 next(new AppError('No se encontró el evento', 404));
-                res.status(404).json({ statusCode: 404, message: 'No se encontró el evento con el id especificado' });
             } else {
                 res.status(200).json(evento);
             }
@@ -135,7 +134,7 @@ class EventoController {
                 errores.push('La fecha no puede ser anterior a la fecha actual.');
             }
         }
-        
+
         if (!regexFechaMySQL.test(fecha)){
             errores.push('Formato de fecha inválida, pruebe con yyyy-mm-dd');
         }

@@ -1,7 +1,9 @@
 const { UsuarioDAO } = require('../dataAccess/usuarioDAO');
+const { CarritoCompraDAO } = require('../dataAccess/carritoCompraDAO');
 const { AppError } = require('../utils/appError');
 
 const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+const total = 0;
 
 class UsuarioController {
     static async crearUsuario(req, res, next) {
@@ -16,6 +18,9 @@ class UsuarioController {
             } else {
                 const usuarioData = { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña };
                 const usuario = await UsuarioDAO.crearUsuario(usuarioData);
+                const idUsuario = usuario.dataValues.idUsuario;
+                const carritoCompraData = { idUsuario, total };
+                await CarritoCompraDAO.crearCarritoCompra(carritoCompraData);
                 res.status(201).json(usuario);
             }
 
@@ -69,7 +74,6 @@ class UsuarioController {
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
-                res.status(400).json({ statusCode: 400, message: errores.join(', ') });
             } else {
                 const usuario = await UsuarioDAO.actualizarUsuario(id, usuarioData);
                 if (usuario === null || usuario === undefined) {
@@ -90,6 +94,10 @@ class UsuarioController {
         try {
             const id = req.params.id;
 
+            // Eliminamos primero su carrito de compras.
+            const idCarritoCompra = await CarritoCompraDAO.obtenerCarritoCompraPorIdUsuario(id);
+            await CarritoCompraDAO.eliminarCarritoCompra(idCarritoCompra.dataValues.idCarrito_Compra);
+
             const usuario = await UsuarioDAO.eliminarUsuario(id);
             if (usuario === null || usuario === undefined) {
                 next(new AppError('No se encontró el usuario', 404));
@@ -100,6 +108,7 @@ class UsuarioController {
 
         } catch (error) {
             next(new AppError('No se pudo eliminar el usuario ', 404));
+            console.log(error);
         }
     }
 

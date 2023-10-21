@@ -68,7 +68,6 @@ class AsientoController {
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
-                res.status(400).json({ statusCode: 400, message: errores.join(', ') });
             } else {
                 const asiento = await AsientoDAO.actualizarAsiento(id, asientoData);
                 if (asiento === null || asiento === undefined) {

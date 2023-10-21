@@ -12,7 +12,7 @@ class UsuarioDAO {
             const { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña } = usuario;
             return await Usuario.create({ nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña });
         } catch (error) {
-            throw error
+            return null;
         }
     }
 

@@ -27,7 +27,8 @@ class AsientoDAO {
         try {
             return await Asiento.findByPk(id);
         } catch (error) {
-            throw error
+            console.log(error);
+            throw error;
         }
     }
 
