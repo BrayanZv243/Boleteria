@@ -1,6 +1,8 @@
 const { CarritoCompraDAO } = require('../dataAccess/carritoCompraDAO');
 const UsuarioController = require('../controllers/UsuarioController');
+const BoletoController = require('../controllers/BoletoController');
 const { AppError } = require('../utils/appError');
+const { BoletoDAO } = require('../dataAccess/boletoDAO');
 
 
 class CarritoCompraController {
@@ -87,71 +89,90 @@ class CarritoCompraController {
             }
 
             if (errores.length > 0) {
-                next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
+                console.log(errores.join(', '));
             } else {
                 const carritoCompra = await CarritoCompraDAO.actualizarCarritoCompra(idCarrito_Compra, total);
                 if (carritoCompra === null || carritoCompra === undefined) {
-                    next(new AppError('No se encontró el carrito compra', 404));
-                    res.status(404).json({ statusCode: 404, message: 'No se encontró el carrito compra con el id especificado' });
-                } else {
-                    res.status(200).json(carritoCompra);
+                    console.log('No se encontró el carrito');
                 }
             }
 
         } catch (error) {
-            next(new AppError('No se pudo actualizar el asiento ', 404));
-            res.status(400).json({ statusCode: 400, message: 'No se logró actualizar el asiento' });
             console.log(error);
         }
     }
 
 
     static async agregarBoletosACarritoCompra(req, res, next) {
-        const { boletos } = req.body;
+        const idCarritoCompra = req.params.id;
+        const boletosRequest = req.body;
+        const nestedArray = Object.values(boletosRequest);
+        const boletosArray = [].concat(...nestedArray);
+        const boletos = [];
 
-        // Falta hacer boletos controller cuando se haga se validan los boletos y se agregan al carrito
-
-        if (errores.length > 0) {
-            next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
-            res.status(400).json({ statusCode: 400, message: errores.join(', ') });
-        } else {
-            const idCarritoCompra = await CarritoCompraDAO.obtenerCarritoCompraPorIdUsuario(idUsuario);
-
-            if (idCarritoCompra === null || idCarritoCompra === undefined) {
-                next(new AppError('No se encontró el carrito compra', 404));
-                res.status(404).json({ statusCode: 404, message: 'No se encontró el carrito compra con el id especificado' });
-            } else {
-                await CarritoCompraDAO.agregarBoletoACarritoCompra(idCarritoCompra, boletos);
-                const total = boletos.reduce((acumulador, boleto) => acumulador + boleto.precio, 0);
-
-                this.actualizarTotalCarritoCompra(idCarritoCompra, total)
-                res.status(200).json({ "message": "Boletos Agregados con éxito", "boletos": boletos });
+        // Validamos que los boletos existan y los obtenemos.
+        for (const boletoObj of boletosArray) {
+            if (boletoObj && boletoObj.idBoleto && typeof boletoObj.idBoleto === 'number' && Number.isInteger(boletoObj.idBoleto)) {
+                try {
+                    const boletoEncontrado = await BoletoDAO.obtenerBoletoPorId(boletoObj.idBoleto);
+                    if (boletoEncontrado) {
+                        boletos.push(boletoEncontrado);
+                    }
+                } catch (error) {
+                    console.error('Error al obtener boleto:', error);
+                }
             }
         }
+        // Resto de la lógica para agregar los boletos al carrito
+        try {
+
+
+            await CarritoCompraDAO.agregarBoletoACarritoCompra(idCarritoCompra, boletos);
+
+            const total = boletos.reduce((acumulador, boleto) => acumulador + parseFloat(boleto.precio), 0);
+            await CarritoCompraController.actualizarTotalCarritoCompra(idCarritoCompra, total)
+            res.status(200).json({ "message": "Boletos Agregados con éxito", "boletos": boletos });
+        } catch (error) {
+            res.status(404).json({ statusCode: 404, message: 'Error al agregar los boletos' });
+            console.log(error);
+        }
+
     }
 
     static async eliminarBoletosACarritoCompra(req, res, next) {
-        const { idUsuario, boletos } = req.body;
+        const idCarritoCompra = req.params.id;
+        const boletosRequest = req.body;
+        const nestedArray = Object.values(boletosRequest);
+        const boletosArray = [].concat(...nestedArray);
+        const boletos = [];
 
-        const errores = await CarritoCompraController.validarCampos(idUsuario, boletos);
-
-        if (errores.length > 0) {
-            next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
-            res.status(400).json({ statusCode: 400, message: errores.join(', ') });
-        } else {
-            const idCarritoCompra = await CarritoCompraDAO.obtenerCarritoCompraPorIdUsuario(idUsuario);
-
-            if (idCarritoCompra === null || idCarritoCompra === undefined) {
-                next(new AppError('No se encontró el carrito compra', 404));
-                res.status(404).json({ statusCode: 404, message: 'No se encontró el carrito compra con el id especificado' });
-            } else {
-                await CarritoCompraDAO.eliminarBoletoACarritoCompra(idCarritoCompra, boletos);
-                const total = boletos.reduce((acumulador, boleto) => acumulador + boleto.precio, 0);
-
-                this.actualizarTotalCarritoCompra(idCarritoCompra, total)
-                res.status(200).json({ "message": "Boletos Eliminado/s con éxito", "boletos": boletos });
+        // Validamos que los boletos existan y los obtenemos.
+        for (const boletoObj of boletosArray) {
+            if (boletoObj && boletoObj.idBoleto && typeof boletoObj.idBoleto === 'number' && Number.isInteger(boletoObj.idBoleto)) {
+                try {
+                    const boletoEncontrado = await BoletoDAO.obtenerBoletoPorId(boletoObj.idBoleto);
+                    if (boletoEncontrado) {
+                        boletos.push(boletoEncontrado);
+                    }
+                } catch (error) {
+                    console.error('Error al obtener boleto:', error);
+                }
             }
         }
+        // Resto de la lógica para agregar los boletos al carrito
+        try {
+            await CarritoCompraDAO.eliminarBoletosDeCarritoCompra(idCarritoCompra, boletos);
+
+            // Obtenemos nuevamente los boletos para calcular el total
+            const nuevosBoletos = await CarritoCompraDAO.obtenerBoletosDeUnCarritoCompra(idCarritoCompra);
+            const total = nuevosBoletos.reduce((acumulador, boleto) => acumulador + parseFloat(boleto.precio), 0);
+            await CarritoCompraController.actualizarTotalCarritoCompra(idCarritoCompra, total)
+            res.status(200).json({ "message": "Boletos Eliminados con éxito", "boletos": boletos });
+        } catch (error) {
+            res.status(404).json({ statusCode: 404, message: 'Error al eliminar los boletos' });
+            console.log(error);
+        }
+
     }
 
     static async validarCampos(idUsuario, total) {
@@ -169,7 +190,6 @@ class CarritoCompraController {
 
         return errores;
     }
-
 }
 
 module.exports = CarritoCompraController;

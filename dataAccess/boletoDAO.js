@@ -2,6 +2,8 @@ const initModels = require('../migrations/init-models'); // Ajusta la ruta al ar
 const { sequelize } = require('../models');
 const models = initModels(sequelize);
 const Boleto = models.boletos;
+const Evento = models.eventos;
+const Asiento = models.asientos;
 
 class BoletoDAO {
     constructor() { }
@@ -11,27 +13,52 @@ class BoletoDAO {
             const { idEvento, idAsiento, precio, estado } = boleto;
             return await Boleto.create({ idEvento, idAsiento, precio, estado });
         } catch (error) {
-            throw error
+            console.log(error);
+            throw error;
         }
     }
 
     static async obtenerBoletos() {
         try {
-            return await Boleto.findAll();
+            return await Boleto.findAll({
+                include: [
+                    {
+                        model: Evento,
+                        as: "idEvento_evento"
+                    },
+                    {
+                        model: Asiento,
+                        as: "idAsiento_asiento"
+                    }
+                ]
+            });
         } catch (error) {
             console.log(error);
             throw error;
         }
     }
 
+
     static async obtenerBoletoPorId(id) {
         try {
-            return await Boleto.findByPk(id);
+            return await Boleto.findByPk(id, {
+                include: [
+                    {
+                        model: Evento, 
+                        as: "idEvento_evento" 
+                    },
+                    {
+                        model: Asiento, 
+                        as: "idAsiento_asiento" 
+                    }
+                ]
+            });
         } catch (error) {
             console.log(error);
-            throw error
+            throw error;
         }
     }
+
 
     static async obtenerBoletosPorIdEvento(idEvento) {
         try {

@@ -2,6 +2,7 @@ const initModels = require('../migrations/init-models'); // Ajusta la ruta al ar
 const { sequelize } = require('../models');
 const models = initModels(sequelize);
 const Pago = models.pagos;
+const Usuario = models.usuarios;
 
 class PagoDAO {
     constructor() {}
@@ -16,17 +17,27 @@ class PagoDAO {
 
     static async obtenerPagos() {
         try {
-            return await Pago.findAll();
+            return await Pago.findAll({
+                include: {
+                    model: Usuario,
+                    as: 'idUsuario_usuario'
+                }
+            });
         } catch (error) {
             throw error;
         }
     }
+
 
     static async obtenerPagosPorUsuario(idUsuario) {
         try {
             return await Pago.findAll({
                 where:{
                     idUsuario:idUsuario
+                },
+                include: {
+                    model: Usuario,
+                    as: 'idUsuario_usuario'
                 }
             });
         } catch (error) {

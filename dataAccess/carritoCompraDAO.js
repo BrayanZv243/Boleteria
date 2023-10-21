@@ -1,7 +1,9 @@
 const initModels = require('../migrations/init-models'); // Ajusta la ruta al archivo init-models.js
 const { sequelize } = require('../models');
+const carrito_compra_has_boletos = require('../models/carrito_compra_has_boletos');
 const models = initModels(sequelize);
 const CarritoCompra = models.carrito_compra;
+const Usuario = models.usuarios;
 const Carrito_compra_has_boletos = models.carrito_compra_has_boletos;
 
 class CarritoCompraDAO {
@@ -40,18 +42,22 @@ class CarritoCompraDAO {
         }
     }
 
-    static async eliminarBoletoACarritoCompra(boletos) {
+    static async eliminarBoletosDeCarritoCompra(idCarrito_Compra, boletos) {
         try {
             for (let i = 0; i < boletos.length; i++) {
                 const boleto = boletos[i];
-                await boleto.destroy();
+                const idBoleto = boleto.idBoleto;
+
+                // Busca el registro en la tabla Carrito_compra_has_boletos y elimínalo
+                await Carrito_compra_has_boletos.destroy({ where: { idCarrito_Compra, idBoleto } });
             }
             return true;
         } catch (error) {
             console.log(error);
+            throw error;
         }
-        return false;
     }
+
 
 
     static async actualizarCarritoCompra(idCarrito_Compra, total) {
@@ -66,7 +72,12 @@ class CarritoCompraDAO {
 
     static async obtenerCarritosCompra() {
         try {
-            return await CarritoCompra.findAll();
+            return await CarritoCompra.findAll({
+                include: [{
+                    model: Usuario,
+                    as: "idUsuario_usuario"
+                }]
+            });
         } catch (error) {
             console.log(error);
             throw error;

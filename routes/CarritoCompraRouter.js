@@ -6,8 +6,8 @@ router.get('/', CarritoCompraController.obtenerCarritosCompra);
 router.get('/usuario/:id', CarritoCompraController.obtenerCarritoCompraPorIdUsuario);
 router.get('/:id', CarritoCompraController.obtenerCarritoCompraPorId);
 
-router.put('/boleto/:id', CarritoCompraController.agregarBoletosACarritoCompra);
+router.put('/:id/boletos', CarritoCompraController.agregarBoletosACarritoCompra);
 
-router.delete('/boleto/:id', CarritoCompraController.eliminarBoletosACarritoCompra);
+router.delete('/:id/boletos', CarritoCompraController.eliminarBoletosACarritoCompra);
 
 module.exports = router;
