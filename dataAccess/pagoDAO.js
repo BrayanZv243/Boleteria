@@ -7,8 +7,9 @@ const Usuario = models.usuarios;
 class PagoDAO {
     constructor() {}
 
-   static async crearPago(idUsuario, monto, metodo, fecha) {
+   static async crearPago(pago) {
         try {
+            const { idUsuario, monto, metodo, fecha} = pago;
             return await Pago.create({ idUsuario, monto, metodo, fecha });
         } catch (error) {
             throw error
@@ -29,7 +30,7 @@ class PagoDAO {
     }
 
 
-    static async obtenerPagosPorUsuario(idUsuario) {
+    static async obtenerPagosPorIdUsuario(idUsuario) {
         try {
             return await Pago.findAll({
                 where:{
@@ -48,15 +49,6 @@ class PagoDAO {
     static async obtenerPagoPorId(id) {
         try {
             return await Pago.findByPk(id);
-        } catch (error) {
-            throw error
-        }
-    }
-
-    static async actualizarPago(idPago, monto, metodo, fecha) {
-        try {
-            await Pago.update({ monto, metodo, fecha }, { where: { idPago } })
-            return await Pago.findByPk(idPago)
         } catch (error) {
             throw error
         }

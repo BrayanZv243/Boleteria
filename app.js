@@ -15,12 +15,14 @@ const AsientoRouter = require('./routes/AsientoRouter');
 const EventoRouter = require('./routes/EventoRouter');
 const CarritoCompraRouter = require('./routes/CarritoCompraRouter');
 const BoletoRouter = require('./routes/BoletoRouter');
+const PagoRouter = require('./routes/PagoRouter');
 
 app.use('/api/usuarios', UsuarioRouter);
 app.use('/api/asientos', AsientoRouter);
 app.use('/api/eventos', EventoRouter);
 app.use('/api/carrito-compras', CarritoCompraRouter);
 app.use('/api/boletos', BoletoRouter);
+app.use('/api/pagos', PagoRouter);
 
 app.all('*', (req, res, next) => {
     next(new AppError('No se pudo acceder a la ruta especificada', 404));
