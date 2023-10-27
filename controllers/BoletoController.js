@@ -35,6 +35,9 @@ class BoletoController {
             } else {
                 const boletoData = { idEvento, idAsiento, precio, estado };
                 const boleto = await BoletoDAO.crearBoleto(boletoData);
+                const evento = await EventoDAO.obtenerEventoPorId(idEvento);
+                evento.dataValues.numBoletosDisponibles++;
+                await EventoDAO.actualizarEvento(idEvento, evento);
                 res.status(201).json(boleto);
             }
 

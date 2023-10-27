@@ -15,14 +15,6 @@ module.exports = function(sequelize, DataTypes) {
         key: 'idPago'
       }
     },
-    idEvento: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'eventos',
-        key: 'idEvento'
-      }
-    },
     total: {
       type: DataTypes.DECIMAL(10,2),
       allowNull: false
@@ -45,13 +37,6 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "idPago" },
-        ]
-      },
-      {
-        name: "fk_compras_eventos1_idx",
-        using: "BTREE",
-        fields: [
-          { name: "idEvento" },
         ]
       },
     ]

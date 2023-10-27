@@ -2,12 +2,15 @@ const { EventoDAO } = require('../dataAccess/eventoDAO');
 const { AppError } = require('../utils/appError');
 const regexFechaMySQL = /^\d{4}-\d{2}-\d{2}$/;
 
+const numBoletosDisponibles = 0;
+const numBoletosVendidos = 0;
+
 class EventoController {
     static async crearEvento(req, res, next) {
         try {
-            const { nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles } = req.body;
+            const { nombre, lugar, tipo, fecha } = req.body;
 
-            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles);
+            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha);
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
@@ -102,7 +105,7 @@ class EventoController {
         }
     }
 
-    static async validarCampos(nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles) {
+    static async validarCampos(nombre, lugar, tipo, fecha) {
         const errores = [];
 
         if (!nombre || typeof nombre !== 'string') {
@@ -137,20 +140,6 @@ class EventoController {
 
         if (!regexFechaMySQL.test(fecha)){
             errores.push('Formato de fecha inválida, pruebe con yyyy-mm-dd');
-        }
-
-        if (
-            typeof numBoletosVendidos !== 'undefined' &&
-            !Number.isInteger(numBoletosVendidos)
-        ) {
-            errores.push('El campo "numBoletosVendidos" debe ser un número entero.');
-        }
-
-        if (
-            typeof numBoletosDisponibles !== 'undefined' &&
-            !Number.isInteger(numBoletosDisponibles)
-        ) {
-            errores.push('El campo "numBoletosDisponibles" debe ser un número entero.');
         }
 
         return errores;

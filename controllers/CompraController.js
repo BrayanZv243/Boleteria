@@ -1,4 +1,3 @@
-
 const { CompraDAO } = require('../dataAccess/compraDAO');
 const { AppError } = require('../utils/appError');
 
@@ -6,16 +5,17 @@ class ComprasController {
     static async crearCompra(req, res, next) {
         try {
             // Suponiendo que los datos necesarios para crear una compra se encuentren en req.body
-            const { usuarioId, productoId, total, grupoBoletos } = req.body;
+            const { idUsuario, monto, boletos } = req.body;
 
-            // Validar los campos (puedes crear una función de validación similar a la que usas para los asientos)
-            const errores = await ComprasController.validarCampos(usuarioId, productoId, total, grupoBoletos);
+            // Validar los campos 
+            const errores = await ComprasController.validarCampos(idUsuario, monto, boletos);
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
+                res.status(400).json({ statusCode: 400, message: errores.join(', ') });
             } else {
                 // Crear un objeto de datos de compra
-                const compraData = { usuarioId, productoId, total, grupoBoletos };
+                const compraData = { idUsuario, monto, boletos };
 
                 // Llamar a la función para crear una compra en la capa de acceso a datos (DAO)
                 const compra = await CompraDAO.crearCompra(compraData);
@@ -35,7 +35,7 @@ class ComprasController {
 
     static async obtenerCompras(req, res, next) {
         try {
-            const compras = await CompraDAO.obtenerCompras(); // Suponiendo que tengas una función obtenerCompras en tu DAO
+            const compras = await CompraDAO.obtenerCompras();
             res.status(200).json(compras);
         } catch (error) {
             next(new AppError('No se logró obtener las compras', 404));
@@ -43,37 +43,22 @@ class ComprasController {
         }
     }
 
-    // Puedes definir una función de validación similar a la de AsientoController aquí
-    static async validarCampos(usuarioId, productoId, total, grupoBoletos) {
-        // Implementa tu lógica de validación de campos aquí
-        // Puedes usar condiciones y reglas específicas para validar los campos
+    static async validarCampos(idUsuario, monto, boletos) {
         const errores = [];
 
-        // Ejemplo de validación: si usuarioId no es un número
-        if (typeof usuarioId !== 'number') {
+        if (typeof idUsuario !== 'number') {
             errores.push('El usuarioId debe ser un número.');
         }
 
-        // Agrega más validaciones según tus necesidades
-
-        return errores;
-    }
-    static async validarCampos(usuarioId, productoId, total, grupoBoletos) {
-        const errores = [];
-
-        if (typeof usuarioId !== 'number') {
-            errores.push('El usuarioId debe ser un número.');
+        if (typeof idUsuario !== 'number') {
+            errores.push('El idUsuario debe ser un número.');
         }
 
-        if (typeof productoId !== 'number') {
-            errores.push('El productoId debe ser un número.');
+        if (typeof monto !== 'number' || monto <= 0) {
+            errores.push('El monto debe ser un número mayor que cero.');
         }
 
-        if (typeof total !== 'number' || total <= 0) {
-            errores.push('El total debe ser un número mayor que cero.');
-        }
-
-        if (!Array.isArray(grupoBoletos) || grupoBoletos.length === 0) {
+        if (!Array.isArray(boletos) || boletos.length === 0) {
             errores.push('El grupo de boletos debe ser un arreglo no vacío.');
         } else {
             // Puedes agregar más validaciones específicas para el grupo de boletos si es necesario

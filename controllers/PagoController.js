@@ -1,21 +1,48 @@
 const { PagoDAO } = require('../dataAccess/pagoDAO');
 const { UsuarioDAO } = require('../dataAccess/usuarioDAO');
+const { EventoDAO } = require('../dataAccess/eventoDAO');
+const { BoletoDAO } = require('../dataAccess/boletoDAO');
 const { AppError } = require('../utils/appError');
+const { CompraDAO } = require('../dataAccess/compraDAO')
 const regexFechaMySQL = /^(?:\d{4}-\d{1,2}-\d{1,2})$/;
+const IVA = .16;
 
 class PagoController {
     static async crearPago(req, res, next) {
         try {
-            const { idUsuario, monto, metodo, fecha } = req.body;
-
-            const errores = await PagoController.validarCampos(idUsuario, monto, metodo, fecha);
+            const { idUsuario, metodo, fecha, boletos } = req.body;
+            const errores = await PagoController.validarCampos(idUsuario, metodo, fecha, boletos);
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
                 res.status(400).json({ statusCode: 400, message: errores.join(', ') });
             } else {
-                const PagoData = { idUsuario, monto, metodo, fecha };
-                const pago = await PagoDAO.crearPago(PagoData);
+                const monto = boletos.reduce((total, boleto) => total + boleto.precio, 0);
+                
+                const pagoData = { idUsuario, monto, metodo, fecha };
+                const pago = await PagoDAO.crearPago(pagoData);
+
+                const idPago = pago.dataValues.idPago;
+                const total = parseFloat(monto) + (parseFloat(monto) * IVA);
+                const compraData = { idPago, total, boletos }
+                
+                await CompraDAO.crearCompra(compraData)
+                
+                for (let i = 0; i < boletos.length; i++) {
+                    // Actualizamos el número de boletos disponibles y vendidos.
+                    const boleto = boletos[i];
+                    const idEvento = boleto.idEvento;
+                    const evento = await EventoDAO.obtenerEventoPorId(idEvento);
+                    evento.numBoletosDisponibles--;
+                    evento.numBoletosVendidos++;
+                    await EventoDAO.actualizarEvento(idEvento, evento);
+
+                    // Actualizamos de DISPONIBLE A VENDIDO.
+                    boleto.estado = "VENDIDO";
+                    await BoletoDAO.actualizarBoleto(boleto.idBoleto, boleto);
+                }
+
+
                 res.status(201).json(pago);
             }
 
@@ -24,7 +51,7 @@ class PagoController {
                 const errores = error.errors.map(err => err.message);
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
             } else {
-                next(new AppError('Error al crear el usuario ' + error, 500));
+                next(new AppError('Error al crear el pago ' + error, 500));
             }
         }
     }
@@ -110,15 +137,18 @@ class PagoController {
         }
     }
 
-    static async validarCampos(idUsuario, monto, metodo, fecha) {
+    static async validarCampos(idUsuario, metodo, fecha, boletos) {
         const errores = [];
+
+        // Validamos que el usuario exista
+        const usuario = await UsuarioDAO.obtenerUsuarioPorId(idUsuario);
+
+        if(!usuario){
+            errores.push('El usuario especificado no existe');
+        }
 
         if (!idUsuario || idUsuario.length === 0) {
             errores.push('El idUsuario es obligatorio');
-        }
-
-        if (!monto || monto.length === 0) {
-            errores.push('El monto es obligatorio');
         }
 
         if (!metodo || metodo.length === 0) {
@@ -129,13 +159,11 @@ class PagoController {
             errores.push('La fecha es obligatoria');
         }
 
-
         const fechaActual = new Date();
         const fechaIngresada = new Date(fecha);
         fechaActual.setDate(fechaActual.getDate() - 1);
         fechaIngresada.setHours(0, 0, 0, 0);
         fechaActual.setHours(0, 0, 0, 0);
-
 
         // Comprobamos si el año y el mes son iguales o posteriores
         if (fechaIngresada < fechaActual) {
@@ -143,11 +171,28 @@ class PagoController {
         } else if (fechaIngresada > fechaActual) {
             errores.push('La fecha no puede ser posterior a la fecha actual.');
         }
-        console.log(fechaActual)
-        console.log(fechaIngresada)
 
         if (!regexFechaMySQL.test(fecha)) {
             errores.push('Formato de fecha inválida, pruebe con yyyy-mm-dd');
+        }
+
+        if(!Array.isArray(boletos)){
+            errores.push('Formato de boletos inválido');
+        }
+        boletos.forEach(boleto => {
+            if(boleto.estado === "VENDIDO"){
+                errores.push(`El boleto con id ${boleto.idBoleto} ya ha sido vendido, remuevalo y continúe con el pago.`);
+            }
+        });
+
+        for (let i = 0; i < boletos.length; i++) {
+            const boleto = boletos[i];
+            const evento = await EventoDAO.obtenerEventoPorId(boleto.idEvento);
+            const numBoletosDisponibles = evento.dataValues.numBoletosDisponibles;
+            console.log(numBoletosDisponibles)
+            if(numBoletosDisponibles == 0){
+                errores.push("Se han terminado los boletos del evento "+ evento.nombre);
+            }
         }
 
         return errores;

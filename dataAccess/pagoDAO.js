@@ -5,11 +5,11 @@ const Pago = models.pagos;
 const Usuario = models.usuarios;
 
 class PagoDAO {
-    constructor() {}
+    constructor() { }
 
-   static async crearPago(pago) {
+    static async crearPago(pago) {
         try {
-            const { idUsuario, monto, metodo, fecha} = pago;
+            const { idUsuario, monto, metodo, fecha } = pago;
             return await Pago.create({ idUsuario, monto, metodo, fecha });
         } catch (error) {
             throw error
@@ -33,8 +33,8 @@ class PagoDAO {
     static async obtenerPagosPorIdUsuario(idUsuario) {
         try {
             return await Pago.findAll({
-                where:{
-                    idUsuario:idUsuario
+                where: {
+                    idUsuario: idUsuario
                 },
                 include: {
                     model: Usuario,
@@ -54,11 +54,11 @@ class PagoDAO {
         }
     }
 
-    static  async eliminarPago(id) {
+    static async eliminarPago(id) {
         try {
             const pago = await Pago.findByPk(id);
             if (!pago) {
-                throw new Error('Usuario no encontrado')
+                throw new Error('Pago no encontrado')
             }
             await pago.destroy();
             return pago;
@@ -68,4 +68,4 @@ class PagoDAO {
     }
 }
 
-module.exports = {PagoDAO};
+module.exports = { PagoDAO };

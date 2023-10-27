@@ -9,10 +9,10 @@ const Evento = models.eventos;
 class CompraDAO {
     constructor() { }
 
-    static async crearCompra(idPago, idEvento, total, boletos) {
+    static async crearCompra(compraData) {
         try {
-
-            let compra = await Compras.create({ idPago, idEvento, total });
+            const { idPago, total, boletos } = compraData;
+            let compra = await Compras.create({ idPago, total });
             const idCompra = compra.idCompra;
 
             for (let i = 0; i < boletos.length; i++) {
