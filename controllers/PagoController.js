@@ -2,6 +2,7 @@ const { PagoDAO } = require('../dataAccess/pagoDAO');
 const { UsuarioDAO } = require('../dataAccess/usuarioDAO');
 const { EventoDAO } = require('../dataAccess/eventoDAO');
 const { BoletoDAO } = require('../dataAccess/boletoDAO');
+const { CarritoCompraDAO } = require('../dataAccess/carritoCompraDAO');
 const { AppError } = require('../utils/appError');
 const { CompraDAO } = require('../dataAccess/compraDAO')
 const regexFechaMySQL = /^(?:\d{4}-\d{1,2}-\d{1,2})$/;
@@ -41,7 +42,10 @@ class PagoController {
                     boleto.estado = "VENDIDO";
                     await BoletoDAO.actualizarBoleto(boleto.idBoleto, boleto);
                 }
-
+                // Sirve para eliminar los boletos del carrito compra una vez hecho el pago.
+                // Descomentarear una vez hecho el front.
+                //const carritoCompra = CarritoCompraDAO.obtenerCarritoCompraPorIdUsuario(idUsuario);
+                //await CarritoCompraDAO.eliminarBoletosDeCarritoCompra(carritoCompra.dataValues.idCarrito_Compra, boletos)
 
                 res.status(201).json(pago);
             }
