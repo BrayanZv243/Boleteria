@@ -58,8 +58,7 @@ class BoletoDAO {
             throw error;
         }
     }
-
-
+    
     static async obtenerBoletosPorIdEvento(idEvento) {
         try {
             const boletosDeIdEvento = [];

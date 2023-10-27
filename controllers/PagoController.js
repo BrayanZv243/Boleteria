@@ -2,7 +2,6 @@ const { PagoDAO } = require('../dataAccess/pagoDAO');
 const { UsuarioDAO } = require('../dataAccess/usuarioDAO');
 const { EventoDAO } = require('../dataAccess/eventoDAO');
 const { BoletoDAO } = require('../dataAccess/boletoDAO');
-const { CarritoCompraDAO } = require('../dataAccess/carritoCompraDAO');
 const { AppError } = require('../utils/appError');
 const { CompraDAO } = require('../dataAccess/compraDAO')
 const regexFechaMySQL = /^(?:\d{4}-\d{1,2}-\d{1,2})$/;

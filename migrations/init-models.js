@@ -36,7 +36,6 @@ function initModels(sequelize) {
   compras.hasMany(compras_has_boletos, { as: "compras_has_boletos", foreignKey: "idCompra"});
   boletos.belongsTo(eventos, { as: "idEvento_evento", foreignKey: "idEvento"});
   eventos.hasMany(boletos, { as: "boletos", foreignKey: "idEvento"});
-  eventos.hasMany(compras, { as: "compras", foreignKey: "idEvento"});
   compras.belongsTo(pagos, { as: "idPago_pago", foreignKey: "idPago"});
   pagos.hasMany(compras, { as: "compras", foreignKey: "idPago"});
   carrito_compra.belongsTo(usuarios, { as: "idUsuario_usuario", foreignKey: "idUsuario"});

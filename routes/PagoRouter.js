@@ -8,6 +8,5 @@ router.get('/', PagoController.obtenerPagos);
 router.get('/:id', PagoController.obtenerPagoPorId);
 router.get('/usuario/:id', PagoController.obtenerPagosPorIdUsuario);
 
-router.delete('/:id', PagoController.eliminarPago);
 
 module.exports = router;

@@ -99,7 +99,6 @@ class CarritoCompraDAO {
                     boletosDeCarritoCompra.push(boleto);
                 }
             });
-
             return boletosDeCarritoCompra;
         } catch (error) {
             console.log(error);
@@ -122,10 +121,8 @@ class CarritoCompraDAO {
 
     static async eliminarCarritoCompra(id) {
         try {
-
-            const boletosDelCarritoAEliminar = this.obtenerBoletosDeUnCarritoCompra(id);
-            this.eliminarBoletoACarritoCompra(boletosDelCarritoAEliminar);
-
+            const boletosDelCarritoAEliminar = await CarritoCompraDAO.obtenerBoletosDeUnCarritoCompra(id);
+            await CarritoCompraDAO.eliminarBoletosDeCarritoCompra(id, boletosDelCarritoAEliminar);
             const carritoCompra = await CarritoCompra.findByPk(id);
             if (!carritoCompra) return null;
             await carritoCompra.destroy();

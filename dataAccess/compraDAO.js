@@ -4,7 +4,6 @@ const models = initModels(sequelize);
 const Compras = models.compras;
 const Compras_has_boletos = models.compras_has_boletos;
 const Pago = models.pagos;
-const Evento = models.eventos;
 
 class CompraDAO {
     constructor() { }
@@ -23,6 +22,7 @@ class CompraDAO {
             }
 
         } catch (error) {
+            console.log(error);
             throw error
         }
     }
@@ -34,14 +34,11 @@ class CompraDAO {
                     {
                         model: Pago,
                         as: 'idPago_pago'
-                    },
-                    {
-                        model: Evento,
-                        as: 'idEvento_evento'
                     }
                 ]
             });
         } catch (error) {
+            console.log(error);
             throw error;
         }
     }

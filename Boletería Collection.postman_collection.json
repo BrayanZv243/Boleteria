@@ -1,0 +1,479 @@
+{
+	"info": {
+		"_postman_id": "a94a1985-1d11-4b25-b089-1f10913b47c1",
+		"name": "Boletería Collection",
+		"description": "Colección en postman para realizar las peticiones.\n\nRecuerden dar en Save al momento de modificar una petición para que se guarde para todos.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25798213",
+		"_collection_link": "https://crimson-meadow-557144.postman.co/workspace/Proyecto-Boleter%C3%ADa~7a254376-1bcc-40a9-ac45-ed192e68c54c/collection/25798213-a94a1985-1d11-4b25-b089-1f10913b47c1?action=share&source=collection_link&creator=25798213"
+	},
+	"item": [
+		{
+			"name": "Boleteria - Requests",
+			"item": [
+				{
+					"name": "Usuarios",
+					"item": [
+						{
+							"name": "GET Usuarios",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/usuarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Usuarios",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\":\"Brayan\",\r\n    \"apellido\":\"Zavala\",\r\n    \"tipoUsuario\":\"NORMAL\",\r\n    \"edad\":20,\r\n    \"telefono\":\"6441596164\",\r\n    \"correo\":\"zavala_243@hotmail.com\",\r\n    \"contraseña\":\"123456789\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/usuarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Usuarios",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\":\"Brayan\",\r\n    \"apellido\":\"Zavala\",\r\n    \"tipoUsuario\":\"NORMAL\",\r\n    \"edad\":20,\r\n    \"telefono\":\"6441596164\",\r\n    \"correo\":\"zavala_243@hotmail.com\",\r\n    \"contraseña\":\"NUEVACONTRASEÑA\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/usuarios/70",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"usuarios",
+										"70"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Usuarios",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/usuarios/74",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"usuarios",
+										"74"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Boletos",
+					"item": [
+						{
+							"name": "GET Boletos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/boletos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"boletos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Boletos",
+							"request": {
+								"method": "POST",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Boletos",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idEvento\":7,\r\n    \"idAsiento\":5,\r\n    \"precio\":150,\r\n    \"estado\":\"DISPONIBLE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/boletos/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"boletos",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Boletos",
+							"request": {
+								"method": "DELETE",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Evento",
+					"item": [
+						{
+							"name": "GET Eventos",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "POST Eventos",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/eventos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"eventos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Eventos",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/eventos/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"eventos",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Eventos",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/eventos/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"eventos",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Carrito-Compra",
+					"item": [
+						{
+							"name": "GET Carritos-Compra",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/carrito-compras",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"carrito-compras"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Carrito-Compras By UserID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/carrito-compras/usuario/75",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"carrito-compras",
+										"usuario",
+										"75"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Carrito-Compra",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/carrito-compras/7/boletos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"carrito-compras",
+										"7",
+										"boletos"
+									]
+								},
+								"description": "El número representa el id del carrito compra y boletos representa que se van a agregar boletos al carrito compra, para eso sirve el PUT en este caso"
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Carrito-Compra",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"description": "El número representa el id del carrito compra y boletos representa que se van a eliminar boletos al carrito compra, para eso sirve el DELETE en este caso"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Compras",
+					"item": [
+						{
+							"name": "GET Compras",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/compra",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"compra"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Pagos",
+					"item": [
+						{
+							"name": "GET Pagos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/pagos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"pagos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Pagos By UserID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/pagos/usuario/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"pagos",
+										"usuario",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Pagos",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idUsuario\":70,\r\n    \"metodo\":\"BBVA\",\r\n    \"fecha\":\"2023-10-26\",\r\n    \"boletos\":[\r\n        {\r\n            \"idBoleto\":6,\r\n            \"idEvento\":7,\r\n            \"idAsiento\":5,\r\n            \"precio\":25000,\r\n            \"estado\":\"DISPONIBLE\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/pagos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"pagos"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Carpeta que contiene las carpetas de las request a la boletería."
+		}
+	]
+}

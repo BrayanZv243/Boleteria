@@ -1,6 +1,5 @@
 const { CarritoCompraDAO } = require('../dataAccess/carritoCompraDAO');
 const UsuarioController = require('../controllers/UsuarioController');
-const BoletoController = require('../controllers/BoletoController');
 const { AppError } = require('../utils/appError');
 const { BoletoDAO } = require('../dataAccess/boletoDAO');
 
@@ -108,7 +107,7 @@ class CarritoCompraController {
         const boletosRequest = req.body;
         const nestedArray = Object.values(boletosRequest);
         const boletosArray = [].concat(...nestedArray);
-        
+
         const boletos = [];
 
         // Validamos que los boletos existan y los obtenemos.
@@ -136,8 +135,7 @@ class CarritoCompraController {
             await CarritoCompraController.actualizarTotalCarritoCompra(idCarritoCompra, total)
             res.status(200).json({ "message": "Boletos Agregados con éxito", "boletos": nuevosBoletos });
         } catch (error) {
-            res.status(404).json({ statusCode: 404, message: 'Error al agregar los boletos' });
-            console.log(error);
+            res.status(404).json({ statusCode: 404, message: 'Has intentado agregar un boleto que ya existe en el carrito' });
         }
 
     }
