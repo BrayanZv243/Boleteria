@@ -98,7 +98,7 @@ class AsientoController {
             }
 
         } catch (error) {
-            next(new AppError('No se pudo eliminar el asiento ', 404));
+            next(new AppError('No puedes eliminar un asiento que le pertenece a un boleto, elimina primero el boleto.', 404));
         }
     }
 

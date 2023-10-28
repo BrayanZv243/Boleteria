@@ -3,11 +3,11 @@ require('dotenv').config({ path: './variables.env' });
 const secretKey = process.env.LLAVESECRETA;
 
 async function verificarToken(req, res, next) {
-    const token = req.headers['authorization'].split(' ')[1];
+    let token = req.headers['authorization'];
     if (!token) {
         return res.status(403).json({ mensaje: 'Token no proporcionado' });
     }
-
+    token = token.split(' ')[1];
     jwt.verify(token, secretKey, (error, usuario) => {
         if (error) {
             return res.status(403).json({ mensaje: 'Token inválido' });
@@ -18,8 +18,19 @@ async function verificarToken(req, res, next) {
     });
 }
 
+function verificarRolAdmin(rolRequerido) {
+    return (req, res, next) => {
+        const usuario = req.usuario;
+        if (usuario && usuario.rol === rolRequerido) {
+            next(); // El usuario tiene el rol requerido, continúa
+        } else {
+            res.status(403).json({ mensaje: 'Acceso no autorizado a usuarios de tipo ' + usuario.rol });
+        }
+    };
+}
+
 // Método para generar un token JWT
-async function generarTokenNormal(usuario) {
+async function generarToken(usuario) {
     const payload = {
         idUsuario: usuario.idUsuario,
         rol: usuario.tipoUsuario
@@ -31,32 +42,8 @@ async function generarTokenNormal(usuario) {
     return token;
 }
 
-async function generarTokenAdmin(usuario) {
-    const payload = {
-        idUsuario: usuario.idUsuario, 
-        rol: usuario.tipoUsuario
-    };
-
-    // Generar el token con el payload y la clave secreta
-    const token = jwt.sign(payload, secretKey, { expiresIn: '1h' }); // Cambia el tiempo de expiración según tus necesidades
-
-    return token;
-}
-
-function verificarRolAdmin(rolRequerido) {
-    return (req, res, next) => {
-        const usuario = req.usuario;
-        if (usuario && usuario.rol === rolRequerido) {
-            next(); // El usuario tiene el rol requerido, continúa
-        } else {
-            res.status(403).json({ mensaje: 'Acceso no autorizado a usuarios de tipo '+usuario.rol });
-        }
-    };
-}
-
 module.exports = {
     verificarToken,
-    generarTokenNormal,
-    generarTokenAdmin,
+    generarToken,
     verificarRolAdmin
 };

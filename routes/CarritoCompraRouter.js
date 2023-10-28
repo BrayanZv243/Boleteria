@@ -2,12 +2,17 @@ const express = require('express');
 const router = express.Router();
 const CarritoCompraController = require('../controllers/CarritoCompraController');
 
-router.get('/', CarritoCompraController.obtenerCarritosCompra);
-router.get('/usuario/:id', CarritoCompraController.obtenerCarritoCompraPorIdUsuario);
-router.get('/:id', CarritoCompraController.obtenerCarritoCompraPorId);
+// Importa el middleware de verificación de token
+const { verificarToken, verificarRolAdmin } = require('../auth/auth');
 
-router.put('/:id/boletos', CarritoCompraController.agregarBoletosACarritoCompra);
+const admin = "ADMIN"
 
-router.delete('/:id/boletos', CarritoCompraController.eliminarBoletosACarritoCompra);
+router.get('/', verificarToken, verificarRolAdmin(admin), CarritoCompraController.obtenerCarritosCompra);
+router.get('/usuario/:id', verificarToken, CarritoCompraController.obtenerCarritoCompraPorIdUsuario);
+router.get('/:id', verificarToken, CarritoCompraController.obtenerCarritoCompraPorId);
+
+router.put('/:id/boletos', verificarToken, CarritoCompraController.agregarBoletosACarritoCompra);
+
+router.delete('/:id/boletos', verificarToken, CarritoCompraController.eliminarBoletosACarritoCompra);
 
 module.exports = router;

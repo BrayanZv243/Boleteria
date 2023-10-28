@@ -2,13 +2,18 @@ const express = require('express');
 const router = express.Router();
 const BoletoController = require('../controllers/BoletoController');
 
-router.post('/', BoletoController.crearBoleto);
+// Importa el middleware de verificación de token
+const { verificarToken, verificarRolAdmin } = require('../auth/auth');
 
-router.get('/', BoletoController.obtenerBoletos);
-router.get('/:id', BoletoController.obtenerBoletoPorId);
-router.get('/evento/:id', BoletoController.obtenerBoletosPorIdEvento);
+const admin = "ADMIN"
 
-router.put('/:id', BoletoController.actualizarBoleto);
-router.delete('/:id', BoletoController.eliminarBoleto);
+router.post('/', verificarToken, verificarRolAdmin(admin), BoletoController.crearBoleto);
+
+router.get('/', verificarToken, BoletoController.obtenerBoletos);
+router.get('/:id', verificarToken, BoletoController.obtenerBoletoPorId);
+router.get('/evento/:id', verificarToken, BoletoController.obtenerBoletosPorIdEvento);
+
+router.put('/:id', verificarToken, verificarRolAdmin(admin), BoletoController.actualizarBoleto);
+router.delete('/:id', verificarToken, verificarRolAdmin(admin), BoletoController.eliminarBoleto);
 
 module.exports = router;

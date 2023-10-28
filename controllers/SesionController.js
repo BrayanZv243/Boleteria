@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const saltRounds = 10;
-const { generarTokenNormal } = require('../auth/auth');
+const { generarToken } = require('../auth/auth');
 const { AppError } = require('../utils/appError');
 
 
@@ -33,7 +33,7 @@ class SessionController {
                 const contraseñaEncontrada = usuarioEncontrado.dataValues.contraseña;
 
                 if (correo === correoEncontrado && contraseña === contraseñaEncontrada) {
-                    const token = await generarTokenNormal(usuarioEncontrado);
+                    const token = await generarToken(usuarioEncontrado);
                     res.status(200).json({
                         "message": "Token generado con éxito para usuario "+usuarioEncontrado.tipoUsuario,
                         "token": token

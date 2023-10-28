@@ -26,7 +26,7 @@ app.use('/api/carrito-compras', CarritoCompraRouter);
 app.use('/api/boletos', BoletoRouter);
 app.use('/api/pagos', PagoRouter);
 app.use('/api/compras', CompraRouter);
-app.use('/api', SessionRouter);
+app.use('/api/login', SessionRouter);
 
 
 app.all('*', (req, res, next) => {
