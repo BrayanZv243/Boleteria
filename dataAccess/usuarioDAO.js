@@ -28,9 +28,24 @@ class UsuarioDAO {
         try {
             return await Usuario.findByPk(id);
         } catch (error) {
+            console.log(error);
             throw error
         }
     }
+
+    static async obtenerUsuarioPorCorreo(correo) {
+        try {
+            return await Usuario.findOne({
+                where: {
+                    correo: correo
+                }
+            });
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
 
     static async actualizarUsuario(idUsuario, usuario) {
         const { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña } = usuario;

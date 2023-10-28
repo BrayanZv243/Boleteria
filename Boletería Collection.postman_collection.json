@@ -20,6 +20,16 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc1LCJyb2wiOiJOT1JNQUwiLCJpYXQiOjE2OTg0NTI3ODgsImV4cCI6MTY5ODQ1NjM4OH0.R0rMsGeegoQrSAek4Pw8MhkUGXzNI_pKQx6gAkbJHTg",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
@@ -47,6 +57,14 @@
 							"response": []
 						},
 						{
+							"name": "GET Usuario By ID",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
 							"name": "POST Usuarios",
 							"request": {
 								"method": "POST",
@@ -60,6 +78,26 @@
 										}
 									}
 								},
+								"url": {
+									"raw": "http://localhost:3000/api/usuarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Admin Usuarios",
+							"request": {
+								"method": "POST",
+								"header": [],
 								"url": {
 									"raw": "http://localhost:3000/api/usuarios",
 									"protocol": "http",
@@ -121,6 +159,26 @@
 										"api",
 										"usuarios",
 										"74"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Generate TOKEN",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"login"
 									]
 								}
 							},
@@ -200,7 +258,7 @@
 					]
 				},
 				{
-					"name": "Evento",
+					"name": "Eventos",
 					"item": [
 						{
 							"name": "GET Eventos",
@@ -293,7 +351,7 @@
 					]
 				},
 				{
-					"name": "Carrito-Compra",
+					"name": "Carrito-Compras",
 					"item": [
 						{
 							"name": "GET Carritos-Compra",
