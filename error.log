@@ -173,3 +173,55 @@
 {"isOperational":true,"level":"error","status":"fail","statusCode":404}
 {"isOperational":true,"level":"error","status":"fail","statusCode":404}
 {"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"code":"ENOENT","errno":-4058,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\Boleteria\\uploads\\1128080.jpg","status":"error","statusCode":500,"storageErrors":[],"syscall":"open"}
+{"code":"ENOENT","errno":-4058,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\Boleteria\\AppWeb\\images\\1128080.jpg","status":"error","statusCode":500,"storageErrors":[],"syscall":"open"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"file","level":"error","message":"Unexpected field","name":"MulterError","status":"error","statusCode":500,"storageErrors":[]}
