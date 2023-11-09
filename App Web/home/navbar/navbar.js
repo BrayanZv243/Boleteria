@@ -1,5 +1,5 @@
 
-export class HomeComponent extends HTMLElement {
+export class NavBarComponent extends HTMLElement {
     constructor() {
         super()
     }
@@ -14,42 +14,33 @@ export class HomeComponent extends HTMLElement {
     #render(shadow) {
         // Aquí se va a insertar todo el HTML
         shadow.innerHTML += `
-            
 <body id="page1">
-<!-- START PAGE SOURCE -->
-<div class="tail-top">
-  <div class="tail-bottom">
-    <div id="main">
-      <div id="content">
-        <div id="slogan">
-          <div class="image png"></div>
-          <div class="inside">
-            <h2>We are breaking<span>All Limitations</span></h2>
-            <p>Lorem ipsum dolor consectetur adipisicing elit, sed do eiusmod tempor incididunt labore etolore magna aliqua enim minim veniam quis nostrud exercitation ullamco laboris.</p>
-            <div class="wrapper"><a href="#" class="link1"><span><span>Learn More</span></span></a></div>
-          </div>
-        </div>
-        <div class="box">
-          <div class="border-right">
-            <div class="border-left">
-              <div class="inner">
-                <h3>Welcome to <b>Cinema</b> <span>World</span></h3>
-                <p class="blanco">Felitsed vel inte vivamus ant sed sapientesque ero id auctor tincidunt. Enimin ulla mi et nibh turien augue habitudin platea sed orci. Intedonec quis sed condis donec urna lacilis leo quismodo wisi quis.</p>
-                <div class="img-box1"><img src="home/images/1page-img1.jpg" alt="" /><p class="blanco">Fauctororci cursuspendrerisque ipsum elit congue nibh proin nulla eu urna et. Tordolorem metus fringilla sem facinia sapien in in malesuada vitae quismodo. Ipsumut tellentegest nunc pede id sem gravida natis justo maecenas eu. </p></div>
-                <p class="blanco">Doneccursus et amet a mattitor condisse laoreet accum wisis sapibulum orci. Cursuscondimentum dolorem pulvinare lacus amet commod tincidunt tellus quisque donec natibus.</p>
-              </div>
+    <div class="tail-top">
+        <div class="tail-bottom">
+            <div id="main">
+                <div id="header">
+                    <div class="row-1">
+                        <div class="fleft"><a href="#">Cinema <span>World</span></a></div>
+                        <ul>
+                            <li><a href="#"><img src="home/images/icon1-act.gif" alt="" /></a></li>
+                            <li><a href="#"><img src="home/images/icon2.gif" alt="" /></a></li>
+                            <li><a href="#"><img src="home/images/icon3.gif" alt="" /></a></li>
+                        </ul>
+                    </div>
+                    <div class="row-2">
+                        <ul>
+                            <li><a href="index.html" class="active">Home</a></li>
+                            <li><a href="about-us.html">About</a></li>
+                            <li><a href="articles.html">Articles</a></li>
+                            <li><a href="contact-us.html">Contacts</a></li>
+                            <li class="last"><a href="sitemap.html">Sitemap</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        
-      </div>
-      
     </div>
-  </div>
-</div>
-<!-- END PAGE SOURCE -->
 </body>
-</html>
         `
     }
 
