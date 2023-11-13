@@ -483,3 +483,33 @@ h4 {
 a {
 	outline:none;
 }
+
+.formulario {
+	margin-top: 100px; 
+	width: 60%;
+	margin: auto;
+	display: flex;
+	flex-direction: column; 
+	gap: 20px; 
+	color: white;
+	text-indent:inherit;
+	text-decoration:underline;
+	
+   
+  }
+
+  label {
+	font-weight: bold;
+	
+  }
+
+button {
+	margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+	font-weight: bold;
+	
+  }
+
+
