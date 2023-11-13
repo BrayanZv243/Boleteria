@@ -3,14 +3,33 @@ export class SeleccionComponent extends HTMLElement {
     super()
   }
 
+  // Este método se encargará de obtener el evento seleccionado.
+  #obtenerEvento(){
+    let urlActual = new URL(window.location.href);
+
+    // Obtener parámetros de la URL
+    let idEvento = urlActual.searchParams.get("idEvento");
+
+    let nombreEvento = urlActual.searchParams.get("nombre");
+
+    // Con el idEvento lo buscamos y obtenemos todas sus especs, pero para
+    // eso se necesitaría hacer la petción y eso se hará después.
+
+    // const evento = await...
+
+    //return idEvento;
+    return nombreEvento;
+  }
+
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
-    this.#render(shadow);
+    const nombreEvento = this.#obtenerEvento();
+    this.#render(shadow, nombreEvento);
     this.#agregarEstilos(shadow);
     this.#agregarJS(shadow);
   }
 
-  #render(shadow) {
+  #render(shadow, nombreEvento) {
     // Aquí se va a insertar todo el HTML
     shadow.innerHTML += `
             
@@ -34,7 +53,7 @@ export class SeleccionComponent extends HTMLElement {
                                 <img src="/App Web/images/asientos.png" alt="" class="img-asientos" />
                                 <div class="caja">
 
-                                    <h3>Nombre <span>Evento</span></h3>
+                                    <h3><span>${nombreEvento ? nombreEvento : "Nombre Evento"}</span></h3>
 
                                     <div class="contenido">
                                         <!-- Todos los elementos del formulario y el botón -->

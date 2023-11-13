@@ -28,19 +28,19 @@ export class BoleteriaComponent extends HTMLElement {
               <h4>Chivas vs América</h4>
               <img src="./images/1page-img2.jpg" alt="" width="286" height="190"/>
               <p class="blanco">¡Vive la emoción del clásico en vivo!</p>
-              <div class="wrapper"><a href="#" class="link2"><span><span>Añadir al carrito</span></span></a></div>
+              <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=1&nombre="Chivas Vs América"' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
             </li>
             <li>
               <h4>Luis Miguel En VIVO</h4>
               <img src="./images/1page-img3.jpg" alt="" width="286" height="190"/>
               <p class="blanco">¡Disfruta del nuevo album de Luis Miguel totalmente en vivo, totalmente en directo!</p>
-              <div class="wrapper"><a href="#" class="link2"><span><span>Añadir al carrito</span></span></a></div>
+              <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=1&nombre="Luis Miguel En VIVO"' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
             </li>
             <li class="last">
               <h4>El gallo de oro</h4>
               <img src="./images/1page-img4.jpg" alt="" width="286" height="190"/>
               <p class="blanco">Ven a vivir la resurrección del gallo de oro con sus nuevas canciones 2023.</p>
-              <div class="wrapper"><a href="#" class="link2"><span><span>Añadir al carrito</span></span></a></div>
+              <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=1&nombre="El gallo de oro"' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
             </li>
             <li class="clear">&nbsp;</li>
           </ul>
