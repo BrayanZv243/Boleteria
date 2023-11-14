@@ -6,7 +6,7 @@ export class SeleccionComponent extends HTMLElement {
   // Este método se encargará de obtener el evento seleccionado.
   #obtenerEvento(){
     let urlActual = new URL(window.location.href);
-
+    
     // Obtener parámetros de la URL
     let idEvento = urlActual.searchParams.get("idEvento");
 
