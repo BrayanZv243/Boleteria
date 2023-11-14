@@ -1,5 +1,4 @@
 const { UsuarioDAO } = require('../dataAccess/usuarioDAO');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const saltRounds = 10;

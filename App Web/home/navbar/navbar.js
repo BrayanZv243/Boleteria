@@ -34,6 +34,7 @@ export class NavBarComponent extends HTMLElement {
                             <li><a href="seleccion.html">Seleccion</a></li>
                             <li><a href="contact-us.html">Contacts</a></li>
                             <li class="last"><a href="sitemap.html">Sitemap</a></li>
+                            <li class=""><a href="carrito.html">Carrito</a></li>
                         </ul>
                     </div>
                 </div>
