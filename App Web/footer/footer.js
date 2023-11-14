@@ -1,5 +1,5 @@
 
-export class NavBarComponent extends HTMLElement {
+export class FooterComponent extends HTMLElement {
     constructor() {
         super()
     }
@@ -15,32 +15,23 @@ export class NavBarComponent extends HTMLElement {
         // Aquí se va a insertar todo el HTML
         shadow.innerHTML += `
 <body id="page1">
-    <div class="tail-top">
-        <div class="tail-bottom">
-            <div id="main">
-                <div id="header">
-                    <div class="row-1">
-                        <div class="fleft"><a href="#">Cinema <span>World</span></a></div>
-                        <ul>
-                            <li><a href="#"><img src="home/images/icon1-act.gif" alt="" /></a></li>
-                            <li><a href="#"><img src="home/images/icon2.gif" alt="" /></a></li>
-                            <li><a href="#"><img src="home/images/icon3.gif" alt="" /></a></li>
-                        </ul>
+<div class="tail-top">
+    <div class="tail-bottom">
+        <div id="main">
+            <div id="footer">
+                <div class="left">
+                <div class="right">
+                    <div class="footerlink">
+                    <p class="lf">Copyright &copy; 2023 <a href="#">Boletería.com</a> - All Rights Reserved</p>
+                    <p class="rf">Design by <a href="#">Equipaso 7</a></p>
+                    <div style="clear:both;"></div>
                     </div>
-                    <div class="row-2">
-                        <ul>
-                            <li><a href="index.html" class="active">Home</a></li>
-                            <li><a href="about-us.html">About</a></li>
-                            <li><a href="seleccion.html">Seleccion</a></li>
-                            <li><a href="contact-us.html">Contacts</a></li>
-                            <li class="last"><a href="sitemap.html">Sitemap</a></li>
-                            <li class=""><a href="carrito.html">Carrito</a></li>
-                        </ul>
-                    </div>
+                </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </body>
         `
     }
@@ -49,15 +40,15 @@ export class NavBarComponent extends HTMLElement {
     #agregarEstilos(shadow) {
         let link = document.createElement("link");
         link.setAttribute("rel", "stylesheet");
-        link.setAttribute("href", "./home/home.css");
+        link.setAttribute("href", "/App Web/home/home.css");
 
         let link2 = document.createElement("link");
         link2.setAttribute("rel", "stylesheet");
-        link2.setAttribute("href", "./home/css/style.css");
+        link2.setAttribute("href", "/App Web/css/style.css");
 
         let link3 = document.createElement("link");
         link3.setAttribute("rel", "stylesheet");
-        link3.setAttribute("href", "./home/css/ie6.css");
+        link3.setAttribute("href", "/App Web/css/ie6.css");
 
 
         shadow.appendChild(link);
@@ -68,27 +59,27 @@ export class NavBarComponent extends HTMLElement {
     #agregarJS(shadow) {
         let link = document.createElement("link");
         link.setAttribute("type", "text/javascript");
-        link.setAttribute("href", "./home/js/jquery-1.4.2.min.js");
+        link.setAttribute("href", "/App Web/js/jquery-1.4.2.min.js");
 
         let link2 = document.createElement("link");
         link2.setAttribute("type", "text/javascript");
-        link2.setAttribute("href", "./home/js/cufon-yui.js");
+        link2.setAttribute("href", "/App Web/js/cufon-yui.js");
 
         let link3 = document.createElement("link");
         link3.setAttribute("type", "text/javascript");
-        link3.setAttribute("href", "./home/js/cufon-replace.js");
+        link3.setAttribute("href", "/App Web/js/cufon-replace.js");
 
         let link4 = document.createElement("link");
         link4.setAttribute("type", "text/javascript");
-        link4.setAttribute("href", "./home/js/Gill_Sans_400.font.js");
+        link4.setAttribute("href", "/App Web/js/Gill_Sans_400.font.js");
 
         let link5 = document.createElement("link");
         link5.setAttribute("type", "text/javascript");
-        link5.setAttribute("href", "./home/js/script.js");
+        link5.setAttribute("href", "/App Web/js/script.js");
 
         let link6 = document.createElement("link");
         link6.setAttribute("type", "text/javascript");
-        link6.setAttribute("href", "./home/js/ie_png.js");
+        link6.setAttribute("href", "/App Web/js/ie_png.js");
 
         shadow.appendChild(link);
         shadow.appendChild(link2);

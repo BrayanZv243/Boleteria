@@ -1,15 +1,26 @@
 // Aquí van todos los imports de los micro-frontends...
 
 import { HomeComponent } from "./home/home.js";
-import { MovieComponent } from "./home/movies/movies.js";
-import { SeleccionComponent } from "./home/seleccion/seleccion.js";
-import { NavBarComponent } from "./home/navbar/navbar.js";
-import { FooterComponent } from "./home/footer/footer.js";
-import {CarritoComponent} from "home/carrito/carrito";
+import { BoleteriaComponent } from "./home/boleteria/boleteria.js";
+import { SeleccionComponent } from "./seleccion/seleccion.js";
+import { AcercaDeComponent } from "./acerca-de/acerca-de.js";
+import { ContactoComponent } from "./contacto/contacto.js";
+import { NavBarComponent } from "./navbar/navbar.js";
+import { FooterComponent } from "./footer/footer.js";
 
-window.customElements.define('home-info', HomeComponent);
-window.customElements.define('movie-info', MovieComponent);
-window.customElements.define('seleccion-info', SeleccionComponent);
+// Se definen los micro-frontends genéricos.
 window.customElements.define('navbar-info', NavBarComponent);
 window.customElements.define('footer-info', FooterComponent);
-window.customElements.define('carrito', CarritoComponent);
+
+// Home
+window.customElements.define('home-info', HomeComponent);
+window.customElements.define('boleteria-info', BoleteriaComponent);
+
+// Selección
+window.customElements.define('seleccion-info', SeleccionComponent);
+
+// Contacto
+window.customElements.define('contacto-info', ContactoComponent);
+
+// Acerca de
+window.customElements.define('acerca-info', AcercaDeComponent);

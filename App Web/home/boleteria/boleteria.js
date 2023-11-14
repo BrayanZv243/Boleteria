@@ -1,5 +1,5 @@
 
-export class HomeComponent extends HTMLElement {
+export class BoleteriaComponent extends HTMLElement {
   constructor() {
     super()
   }
@@ -21,29 +21,31 @@ export class HomeComponent extends HTMLElement {
   <div class="tail-bottom">
     <div id="main">
       <div id="content">
-        <div id="slogan">
-          <div class="image png"></div>
-          <div class="inside">
-            <h2>Estamos rompiendo<span>Todos los limites</span></h2>
-            <p>Compra tus boletos de tu evento favorito, aquí y ahora a un muy buen precio.</p>
-            <div class="wrapper"><a href="#" class="link1"><span><span>Leer más</span></span></a></div>
-          </div>
+        <div class="content">
+          <h3>Explora los <span>Eventos</span></h3>
+          <ul class="movies">
+            <li>
+              <h4>Chivas vs América</h4>
+              <img src="./images/1page-img2.jpg" alt="" width="286" height="190"/>
+              <p class="blanco">¡Vive la emoción del clásico en vivo!</p>
+              <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=1&nombre="Chivas Vs América"' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
+            </li>
+            <li>
+              <h4>Luis Miguel En VIVO</h4>
+              <img src="./images/1page-img3.jpg" alt="" width="286" height="190"/>
+              <p class="blanco">¡Disfruta del nuevo album de Luis Miguel totalmente en vivo, totalmente en directo!</p>
+              <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=1&nombre="Luis Miguel En VIVO"' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
+            </li>
+            <li class="last">
+              <h4>El gallo de oro</h4>
+              <img src="./images/1page-img4.jpg" alt="" width="286" height="190"/>
+              <p class="blanco">Ven a vivir la resurrección del gallo de oro con sus nuevas canciones 2023.</p>
+              <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=1&nombre="El gallo de oro"' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
+            </li>
+            <li class="clear">&nbsp;</li>
+          </ul>
         </div>
-        <div class="box">
-          <div class="border-right">
-            <div class="border-left">
-              <div class="inner">
-                <h3>Bienvenido <b>a tu</b> <span>Boletería</span></h3>
-                <p class="blanco">¡Bienvenido a nuestro mundo de emociones y entretenimiento! Estamos encantados de darte la bienvenida a Boletería, el destino perfecto para los amantes de la música, los apasionados del deporte y todos aquellos que buscan vivir experiencias inolvidables.</p>
-                <div class="img-box1"><img src="./images/1page-img1.jpg" alt="" /><p class="blanco">En Boletería, no solo vendemos boletos; creamos la puerta de entrada a momentos que perdurarán en tu memoria. Imagina disfrutar de los mejores conciertos con tus artistas favoritos, vivir la intensidad de los partidos más emocionantes o sumergirte en eventos culturales que despiertan todos tus sentidos.</p></div>
-                <p class="blanco">Descubre una amplia gama de eventos para todos los gustos y edades. Desde conciertos de tus artistas preferidos hasta partidos apasionantes de los deportes más emocionantes, tenemos boletos para satisfacer todos los intereses.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
       </div>
-      
     </div>
   </div>
 </div>
