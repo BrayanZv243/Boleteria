@@ -24,40 +24,41 @@ export class ContactoComponent extends HTMLElement {
           <div class="border-right">
             <div class="border-left">
               <div class="inner">
-                <h3>Our <span>Contacts</span></h3>
+                <h3>Nuestro <span>Contacto</span></h3>
                 <div class="address">
-                  <div class="fleft"><span>Zip Code:</span>50122<br />
-                    <span>Country:</span>USA<br />
-                    <span>Telephone:</span>+354 5635600<br />
-                    <span>Fax:</span>+354 5635610</div>
-                  <div class="extra-wrap"><span>Miscellaneous info:</span><br />
-                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur.</div>
+                  <div class="fleft"><span>CP:</span><p class="blanco">85154</p>
+                    <span>País:</span><p class="blanco">México</p>
+                    <span>Teléfono:</span><p class="blanco">644 159 6164</p>
+                    <span></span></div>
+                  <div class="extra-wrap"><span>Información general:</span><br />
+                    <p class="blanco">¡Bienvenido a nuestra página de contacto! Estamos encantados de que estés aquí. En Boletería, valoramos tu retroalimentación, preguntas y comentarios. Ya sea que estés interesado en nuestros boletos, tengas alguna consulta o simplemente quieras saludarnos, estamos aquí para ayudarte.
+
+Nuestra misión es brindar un servicio excepcional, y tu opinión es fundamental para lograrlo. Utiliza nuestro formulario de contacto para enviarnos un mensaje directo, o encuentra nuestra información de contacto detallada a continuación. Nos esforzamos por responder a todas las consultas de manera oportuna.
+
+¡Gracias por elegir Boletería! Estamos emocionados de conectarnos contigo.</p></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div class="content">
-          <h3>Contact <span>Form</span></h3>
+          <h3>Formulario de <span>Contacto</span></h3>
           <form id="contacts-form" action="#">
             <fieldset>
               <div class="field">
-                <label>Your Name:</label>
+                <label>Tu hermoso nombre:</label>
                 <input type="text" value=""/>
               </div>
               <div class="field">
-                <label>Your E-mail:</label>
+                <label>Tu hermoso E-mail:</label>
                 <input type="text" value=""/>
               </div>
+              
               <div class="field">
-                <label>Your Website:</label>
-                <input type="text" value=""/>
-              </div>
-              <div class="field">
-                <label>Your Message:</label>
+                <label>Tu hermoso mensajito:</label>
                 <textarea cols="1" rows="1"></textarea>
               </div>
-              <div class="wrapper"> <a href="#" class="link2"> <span> <span>Send Your Message</span> </span> </a> </div>
+              <div class="wrapper"> <a href="#" class="link2"> <span> <span>¡Enviar mi mensajito!</span> </span> </a> </div>
             </fieldset>
           </form>
         </div>
