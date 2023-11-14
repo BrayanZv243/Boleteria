@@ -47,11 +47,11 @@ Nuestra misión es brindar un servicio excepcional, y tu opinión es fundamental
             <fieldset>
               <div class="field">
                 <label>Tu hermoso nombre:</label>
-                <input type="text" value=""/>
+                <input type="text" value="" style="color: black;"/>
               </div>
               <div class="field">
                 <label>Tu hermoso E-mail:</label>
-                <input type="text" value=""/>
+                <input type="text" value="" style="color: black;"/>
               </div>
               
               <div class="field">
