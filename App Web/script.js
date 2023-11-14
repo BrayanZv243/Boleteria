@@ -3,6 +3,7 @@
 import { HomeComponent } from "./home/home.js";
 import { BoleteriaComponent } from "./home/boleteria/boleteria.js";
 import { SeleccionComponent } from "./seleccion/seleccion.js";
+import { AcercaDeComponent } from "./acerca-de/acerca-de.js";
 import { ContactoComponent } from "./contacto/contacto.js";
 import { NavBarComponent } from "./navbar/navbar.js";
 import { FooterComponent } from "./footer/footer.js";
@@ -20,3 +21,6 @@ window.customElements.define('seleccion-info', SeleccionComponent);
 
 // Contacto
 window.customElements.define('contacto-info', ContactoComponent);
+
+// Acerca de
+window.customElements.define('acerca-info', AcercaDeComponent);

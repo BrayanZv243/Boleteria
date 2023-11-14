@@ -57,8 +57,8 @@ export class NavBarComponent extends HTMLElement {
                     <div class="row-2">
                         <ul>
                             <li><a href="index.html" class="${paginaActual === 'index' ? 'active' : ''}">Inicio</a></li>
-                            <li><a href="about-us.html" class="${paginaActual === 'acerca-de' ? 'active' : ''}">Acerca de</a></li>
-                            <li><a href="seleccion.html"class="${paginaActual === 'seleccion' ? 'active' : ''}">Registrate</a></li>
+                            <li><a href="acerca-de.html" class="${paginaActual === 'acerca-de' ? 'active' : ''}">Acerca de</a></li>
+                            <li><a href="seleccion.html"class="${paginaActual === 'registrate' ? 'active' : ''}">Registrate</a></li>
                             <li><a href="contacto.html" class="${paginaActual === 'contacto' ? 'active' : ''}">Contacto</a></li>
                             <li class="last"><a href="sitemap.html" class="${paginaActual === 'carrito-compra' ? 'active' : ''}">Carrito Compra</a></li>
                         </ul>
