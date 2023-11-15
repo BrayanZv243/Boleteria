@@ -12,18 +12,21 @@ this.#agregarEstilos(shadow);
 #render(shadow) {
 // Inserta el HTML dentro del Shadow DOM
 shadow.innerHTML = `
-<link rel="stylesheet" href="../css/style.css">
+<body id="page1">
+    <div class="tail-top">
+        <div class="tail-bottom">
+            <div id="main">
 <div class="container-carrito">
     <div class="carrito-header">
         <div class="slogan-carrito">
             <p>TODOS LOS EVENTOS A TU ALCANCE</p>
         </div>
-        <div class="slogaan-logo"><img src="../images/1page-img1.jpg" alt=""></div>
+        <div class="slogaan-logo"><img src="/App Web/images/1page-img1.jpg" alt=""></div>
     </div>
 
     <div class="carrito-info-event">
         <div class="image-event">
-            <img src="../images/1page-img1.jpg" alt="">
+            <img src="/App Web/images/1page-img1.jpg" alt="">
         </div>
         <div class="column-event">
             <p>CHIVAS VS CRUZ AZUL</p>
@@ -38,22 +41,27 @@ shadow.innerHTML = `
     </div>
     <button style="background-color: orange; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">Mi Botón</button>
 </div>
+</div>
+        </div>
+    </div>
+</body>
 `;
 }
 
 #agregarEstilos(shadow) {
+   // "../css/style.css"
 // Agrega estilos específicos al Shadow DOM
 let link = document.createElement("link");
 link.setAttribute("rel", "stylesheet");
-link.setAttribute("href", "./home/home.css");
+link.setAttribute("href", "/App Web/carrito/carrito.css");
 
 let link2 = document.createElement("link");
 link2.setAttribute("rel", "stylesheet");
-link2.setAttribute("href", "./home/css/style.css");
+link2.setAttribute("href", "/App Web/css/style.css");
 
 let link3 = document.createElement("link");
 link3.setAttribute("rel", "stylesheet");
-link3.setAttribute("href", "./home/css/ie6.css");
+link3.setAttribute("href", "/App Web/css/ie6.css");
 
 shadow.appendChild(link);
 shadow.appendChild(link2);

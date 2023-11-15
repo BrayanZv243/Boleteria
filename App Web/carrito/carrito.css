@@ -1,0 +1,56 @@
+.carrito-header {
+	background-color: #f0f0f0;
+	padding: 20px;
+	text-align: center;
+	overflow: auto; /* Clearfix para evitar problemas con el contenedor */
+
+}
+.slogan-carrito {
+	display:block;
+	float:left;
+	width:50%;
+
+}
+
+
+.slogaan-logo {
+	display:block;
+	float:right;
+	width:50%;
+
+	text-align:right;
+}
+
+.carrito-info-event {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr); /* Repite 3 columnas con igual fracción de espacio */
+	gap: 20px; /* Espacio entre las columnas */
+	background-color: white;
+	padding: 20px;
+}
+
+.column-event{
+	display: flex;
+	flex-direction: column; /* Establece la dirección del contenedor a columna */
+	align-items: center;
+}
+.column-event p{
+	margin: 10px;
+}
+
+.container-carrito{
+	background-color: white;
+}
+
+.image-event img{
+	width: 100%;
+	height: auto;
+}
+button {
+	margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+	font-weight: bold;
+	
+  }

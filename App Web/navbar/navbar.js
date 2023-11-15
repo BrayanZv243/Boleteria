@@ -27,6 +27,9 @@ export class NavBarComponent extends HTMLElement {
             case "index.html":
                 paginaActual = "index";
                 break;
+            case "carrito.html":
+                paginaActual = "carrito";
+                break;
             default:
                 paginaActual = "otra_pagina";
         } 
@@ -60,7 +63,7 @@ export class NavBarComponent extends HTMLElement {
                             <li><a href="acerca-de.html" class="${paginaActual === 'acerca-de' ? 'active' : ''}">Acerca de</a></li>
                             <li><a href="seleccion.html"class="${paginaActual === 'registrate' ? 'active' : ''}">Registrate</a></li>
                             <li><a href="contacto.html" class="${paginaActual === 'contacto' ? 'active' : ''}">Contacto</a></li>
-                            <li class="last"><a href="sitemap.html" class="${paginaActual === 'carrito-compra' ? 'active' : ''}">Carrito Compra</a></li>
+                            <li class="last"><a href="carrito.html" class="${paginaActual === 'carrito' ? 'active' : ''}">Carrito Compra</a></li>
                         </ul>
                     </div>
                 </div>
