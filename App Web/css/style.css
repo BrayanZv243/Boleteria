@@ -432,54 +432,7 @@ h4 {
 	position:relative;
 	z-index:2;
 }
-#footer {
-	background:url(../images/footer-tail.gif) repeat-x left top #bfbfbf;
-	color:#1d1d1d;
-	font-size:.86em;
-	line-height:1.667em;
-	text-align:center;
-}
-#footer .left {
-	background:url(../images/footer-left.gif) no-repeat left top;
-}
-#footer .right {
-	min-height:89px;
-	height:auto !important;
-	height:89px;
-	background:url(../images/footer-right.gif) no-repeat right top;
-	text-align:center;
-}
-#footer .footerlink {
-	padding:35px 25px;
-}
-.footerlink p {
-	margin:0;
-	padding:0;
-	line-height:normal;
-	white-space:nowrap;
-	text-indent:inherit;
-	color:#1d1d1d;
-}
-.footerlink a {
-	color:#1d1d1d;
-	font-weight:normal;
-	margin:0;
-	padding:0;
-	border:none;
-	text-decoration:underline;
-	background-color:transparent;
-}
-.footerlink a:hover {
-	color:#1d1d1d;
-	background-color:transparent;
-	text-decoration:none;
-}
-.footerlink .lf {
-	float:left;
-}
-.footerlink .rf {
-	float:right;
-}
+
 a {
 	outline:none;
 }

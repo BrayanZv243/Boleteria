@@ -8,6 +8,8 @@ import { ContactoComponent } from "./contacto/contacto.js";
 import { NavBarComponent } from "./navbar/navbar.js";
 import { FooterComponent } from "./footer/footer.js";
 import { CarritoComponent } from "./carrito/carrito.js";
+import { SessionComponent } from "./sesion/sesion.js";
+import { RegistroComponent } from "./registro/registro.js";
 
 // Se definen los micro-frontends genéricos.
 window.customElements.define('navbar-info', NavBarComponent);
@@ -26,5 +28,11 @@ window.customElements.define('contacto-info', ContactoComponent);
 // Acerca de
 window.customElements.define('acerca-info', AcercaDeComponent);
 
-//Carrito 
+// Carrito 
 window.customElements.define('carrito-info', CarritoComponent);
+
+// Iniciar Sesión
+window.customElements.define('sesion-info', SessionComponent);
+
+// Registrar Usuario Normal
+window.customElements.define('registro-info', RegistroComponent);

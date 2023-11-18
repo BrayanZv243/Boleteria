@@ -22,8 +22,8 @@ export class FooterComponent extends HTMLElement {
                 <div class="left">
                 <div class="right">
                     <div class="footerlink">
-                    <p class="lf">Copyright &copy; 2023 <a href="#">Boletería.com</a> - All Rights Reserved</p>
-                    <p class="rf">Design by <a href="#">Equipaso 7</a></p>
+                    <p class="lf">Copyright &copy; 2023 <a href="#" >Boletería.com</a> - All Rights Reserved</p>
+                    <p class="rf">Design by <a href="acerca-de.html" target="_BLANK">Equipaso 7</a></p>
                     <div style="clear:both;"></div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@ export class FooterComponent extends HTMLElement {
     #agregarEstilos(shadow) {
         let link = document.createElement("link");
         link.setAttribute("rel", "stylesheet");
-        link.setAttribute("href", "/App Web/home/home.css");
+        link.setAttribute("href", "/App Web/footer/footer.css");
 
         let link2 = document.createElement("link");
         link2.setAttribute("rel", "stylesheet");

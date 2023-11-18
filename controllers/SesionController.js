@@ -16,15 +16,15 @@ class SessionController {
             const errores = await SessionController.validarCampos(correo, contraseña);
 
             if (errores.length > 0) {
-                next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
-                res.status(400).json({ statusCode: 400, message: errores.join(', ') });
+                next(new AppError(`Error de validación: ${errores.join(', ')}`, 401));
+                res.status(401).json({ statusCode: 401, message: errores.join(', ') });
             } else {
                 // Obtenemos el usuario por correo
                 const usuarioEncontrado = await UsuarioDAO.obtenerUsuarioPorCorreo(correo);
 
                 // Validamos si encontró un usuario
                 if (!usuarioEncontrado) {
-                    return res.status(400).json({ statusCode: 400, message: `El usuario ${correo} no existe` });
+                    return res.status(401).json({ statusCode: 401, message: `Usuario o contraseña incorrectos` });
                 }
 
                 // Validamos que el correo y contraseña coincidan.
@@ -38,7 +38,7 @@ class SessionController {
                         "token": token
                     });
                 } else {
-                    res.status(400).json({ statusCode: 400, mensaje: `El correo o contraseña no son correctos.` })
+                    res.status(401).json({ statusCode: 401, mensaje: `El correo o contraseña no son correctos.` })
                 }
 
                 
@@ -66,7 +66,7 @@ class SessionController {
             
 
         } catch (error) {
-            console.log(error);
+            console.log("Error en controlador sesion: "+error);
 
         }
     }

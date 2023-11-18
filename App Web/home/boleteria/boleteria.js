@@ -1,14 +1,52 @@
+import { EventosService } from "../../servicios/EventosService.js";
+
 
 export class BoleteriaComponent extends HTMLElement {
+  #eventosServices = new EventosService();
   constructor() {
     super()
+    this.eventos = []
   }
 
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
+
+    // Obtenemos la cookie con el token y lo validamos
+    const token = this.#getCookieSession('cookieSesion')
+
+    // Para validar se hace la petición a los eventos
+
+    this.#obtenerEventos(token);
+
     this.#render(shadow);
     this.#agregarEstilos(shadow);
     this.#agregarJS(shadow);
+  }
+
+  #getCookieSession(cookieName) {
+    const name = cookieName + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+
+    for (let i = 0; i < cookieArray.length; i++) {
+      let cookie = cookieArray[i].trim();
+      if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+
+    return null;
+  }
+
+  async #obtenerEventos(token) {
+    const res = await this.#eventosServices.getEventos(token);
+    if (!res.mensaje) {
+      this.eventos = res;
+      
+    } else {
+      // Si no es un token válido, lo redireccionamos al login.
+      window.location.href = "/App Web/iniciar-sesion.html"
+    }
   }
 
   #render(shadow) {

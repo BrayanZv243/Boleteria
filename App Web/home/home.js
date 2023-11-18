@@ -1,8 +1,12 @@
+import { EventosService } from "../servicios/EventosService.js";
 
 export class HomeComponent extends HTMLElement {
+  #eventosServices = new EventosService();
+
   constructor() {
     super()
   }
+  
 
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
@@ -10,6 +14,7 @@ export class HomeComponent extends HTMLElement {
     this.#agregarEstilos(shadow);
     this.#agregarJS(shadow);
   }
+
 
   #render(shadow) {
     // Aquí se va a insertar todo el HTML
