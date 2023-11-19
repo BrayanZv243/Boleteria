@@ -10,6 +10,7 @@ import { FooterComponent } from "./footer/footer.js";
 import { CarritoComponent } from "./carrito/carrito.js";
 import { SessionComponent } from "./sesion/sesion.js";
 import { RegistroComponent } from "./registro/registro.js";
+import { RegistroEventoComponent } from "./registro-evento/registro-evento.js";
 
 // Se definen los micro-frontends genéricos.
 window.customElements.define('navbar-info', NavBarComponent);
@@ -36,3 +37,6 @@ window.customElements.define('sesion-info', SessionComponent);
 
 // Registrar Usuario Normal
 window.customElements.define('registro-info', RegistroComponent);
+
+// Registrar Evento
+window.customElements.define('registro-evento-info', RegistroEventoComponent);

@@ -10,7 +10,7 @@ async function verificarToken(req, res, next) {
     token = token.split(' ')[1];
     jwt.verify(token, secretKey, (error, usuario) => {
         if (error) {
-            return res.status(403).json({ mensaje: 'Token inválido' });
+            return res.status(403).json({ statusCode: 403, mensaje: 'Token inválido' });
         }
         // El token es válido, adjuntamos el usuario a la solicitud
         req.usuario = usuario;

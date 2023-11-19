@@ -1,3 +1,8 @@
 .blanco{
     color: #fff;
 }
+
+.btn-agregarEvento{
+    float: right;
+    font-size: 18px;
+}

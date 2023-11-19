@@ -1,6 +1,7 @@
 const { UsuarioDAO } = require('../dataAccess/usuarioDAO');
 const { CarritoCompraDAO } = require('../dataAccess/carritoCompraDAO');
 const { AppError } = require('../utils/appError');
+const { generarToken } = require('../auth/auth');
 
 const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 const total = 0;
@@ -21,7 +22,10 @@ class UsuarioController {
                 const idUsuario = usuario.dataValues.idUsuario;
                 const carritoCompraData = { idUsuario, total };
                 await CarritoCompraDAO.crearCarritoCompra(carritoCompraData);
-                res.status(201).json(usuario);
+
+                const token = await generarToken(usuarioData);
+
+                res.status(201).json({ "usuario": usuario, "token": token });
             }
 
         } catch (error) {

@@ -92,7 +92,7 @@ export class SessionComponent extends HTMLElement {
     async #iniciarSesion(data) {
         const res = await this.#servicio.loginUserNormal(data);
         
-        if (res.token) {
+        if (res && res.token) {
             // Establecemos la cookie con el token.
             this.#setSessionCookie('cookieSesion', res.token);
 

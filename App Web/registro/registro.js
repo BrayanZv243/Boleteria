@@ -1,4 +1,9 @@
+import { SessionService } from "../servicios/SessionService.js";
+
 export class RegistroComponent extends HTMLElement {
+
+    #servicio = new SessionService();
+
     constructor() {
         super()
     }
@@ -8,6 +13,11 @@ export class RegistroComponent extends HTMLElement {
         this.#render(shadow);
         this.#agregarEstilos(shadow);
         this.#agregarJS(shadow);
+
+        // Agregar el controlador de eventos al formulario
+        const formulario = shadow.querySelector('form');
+        formulario.addEventListener('submit', (event) => this.#handleFormSubmit(event));
+
     }
 
     #render(shadow) {
@@ -40,7 +50,7 @@ export class RegistroComponent extends HTMLElement {
 
                                                 <input type="password" name="" id="contraseña-registro" placeholder="Contraseña" required>
 
-                                                
+
                                                 <button type="submit" class="btn-comprar">Registrarse</button>
 
                                                 <p class="registro">
@@ -62,6 +72,50 @@ export class RegistroComponent extends HTMLElement {
     <!-- END PAGE SOURCE -->
 </body>
         `
+    }
+
+    #handleFormSubmit(event) {
+        // Prevenir el envío predeterminado del formulario
+        event.preventDefault();
+
+        // Obtener los valores del correo y la contraseña
+        const nombre = this.shadowRoot.querySelector('#nombre-registro').value;
+        const apellido = this.shadowRoot.querySelector('#apellido-registro').value;
+        const edad = this.shadowRoot.querySelector('#edad-registro').value;
+        const telefono = this.shadowRoot.querySelector('#telefono-registro').value;
+        const correo = this.shadowRoot.querySelector('#correo-registro').value;
+        const contraseña = this.shadowRoot.querySelector('#contraseña-registro').value;
+
+        // Llamar a la función #iniciarSesion con los valores
+        const data = {
+            nombre,
+            apellido,
+            tipoUsuario: "NORMAL",
+            edad,
+            telefono,
+            correo,
+            contraseña
+        }
+        this.#registrarUsuario(data);
+    }
+
+    async #registrarUsuario(data) {
+        const res = await this.#servicio.registerUserNormal(data);
+        console.log(res)
+        if (res && res.token) {
+            // Establecemos la cookie con el token.
+            this.#setSessionCookie('cookieSesion', res.token);
+
+            // Redireccionamos a la página de inicio.
+            window.location.href = "/App Web/index.html"
+
+        } else {
+            alert(res.message)
+        }
+    }
+
+    #setSessionCookie(name, value) {
+        document.cookie = `${name}=${encodeURIComponent(value)};path=/`;
     }
 
     // Se agregan los estilos al HTML.

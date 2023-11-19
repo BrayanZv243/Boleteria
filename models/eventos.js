@@ -30,6 +30,10 @@ module.exports = function(sequelize, DataTypes) {
     numBoletosDisponibles: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    nombreImagen: {
+      type: DataTypes.STRING(500),
+      allowNull: false
     }
   }, {
     sequelize,

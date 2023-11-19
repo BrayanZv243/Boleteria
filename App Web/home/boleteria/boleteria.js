@@ -1,11 +1,13 @@
 import { EventosService } from "../../servicios/EventosService.js";
-
+import { SessionService } from "../../servicios/SessionService.js";
 
 export class BoleteriaComponent extends HTMLElement {
   #eventosServices = new EventosService();
+  #sessionService = new SessionService();
   constructor() {
     super()
     this.eventos = []
+    this.tipoUsuario;
   }
 
   connectedCallback() {
@@ -17,7 +19,8 @@ export class BoleteriaComponent extends HTMLElement {
     // Para validar se hace la petición a los eventos
 
     this.#obtenerEventos(token);
-
+    // Obtenemos el tipo de usuario para asignar los botones.
+    this.tipoUsuario = this.#sessionService.getDataToken(token).rol;
     this.#render(shadow);
     this.#agregarEstilos(shadow);
     this.#agregarJS(shadow);
@@ -40,9 +43,9 @@ export class BoleteriaComponent extends HTMLElement {
 
   async #obtenerEventos(token) {
     const res = await this.#eventosServices.getEventos(token);
-    if (!res.mensaje) {
+    if (res && !res.mensaje) {
       this.eventos = res;
-      
+
     } else {
       // Si no es un token válido, lo redireccionamos al login.
       window.location.href = "/App Web/iniciar-sesion.html"
@@ -50,6 +53,8 @@ export class BoleteriaComponent extends HTMLElement {
   }
 
   #render(shadow) {
+    const contenidoExtra = this.tipoUsuario == 'ADMIN' ? '<br><br><br><div class="btn-agregarEvento"><a href="registro-evento.html" target="_blank" class="link2"><span><span>Agregar Evento</span ></span ></a ></div>' : '';
+
     // Aquí se va a insertar todo el HTML
     shadow.innerHTML += `
             
@@ -60,7 +65,7 @@ export class BoleteriaComponent extends HTMLElement {
     <div id="main">
       <div id="content">
         <div class="content">
-          <h3>Explora los <span>Eventos</span></h3>
+            <h3>Explora los <span>Eventos</span></h3>
           <ul class="movies">
             <li>
               <h4>Chivas vs América</h4>
@@ -82,6 +87,7 @@ export class BoleteriaComponent extends HTMLElement {
             </li>
             <li class="clear">&nbsp;</li>
           </ul>
+          ${contenidoExtra}
         </div>
       </div>
     </div>

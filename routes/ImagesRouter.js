@@ -4,11 +4,14 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'App Web/images'); // Directorio donde se guardarán los archivos
+        cb(null, 'App Web/images/eventos'); // Directorio donde se guardarán los archivos
     },
     filename: (req, file, cb) => {
+        console.log(file)
+        
         cb(null, file.originalname);
     },
+    
 });
 
 const upload = multer({ storage: storage });
@@ -20,7 +23,7 @@ const { verificarToken, verificarRolAdmin } = require('../auth/auth');
 
 const admin = "ADMIN"
 
-router.post('/', upload.single('image'), ImagesController.guardarImg);
+router.post('/', verificarToken, verificarRolAdmin(admin), upload.single('image'), ImagesController.guardarImg);
 
 router.get('/', ImagesController.obtenerImgs);
 router.get('/:filename', ImagesController.obtenerImgPorNombre);

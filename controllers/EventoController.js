@@ -1,6 +1,5 @@
 const { EventoDAO } = require('../dataAccess/eventoDAO');
 const { AppError } = require('../utils/appError');
-const regexFechaMySQL = /^\d{4}-\d{2}-\d{2}$/;
 
 const numBoletosDisponibles = 0;
 const numBoletosVendidos = 0;
@@ -8,15 +7,14 @@ const numBoletosVendidos = 0;
 class EventoController {
     static async crearEvento(req, res, next) {
         try {
-            const { nombre, lugar, tipo, fecha } = req.body;
+            const { nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen } = req.body;
 
-            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha);
+            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles);
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
-                res.status(400).json({ statusCode: 400, message: errores.join(', ') });
             } else {
-                const eventoData = { nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles };
+                const eventoData = { nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles, nombreImagen };
                 const evento = await EventoDAO.crearEvento(eventoData);
                 res.status(201).json(evento);
             }
@@ -105,8 +103,17 @@ class EventoController {
         }
     }
 
-    static async validarCampos(nombre, lugar, tipo, fecha) {
+    static async validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles) {
         const errores = [];
+
+        const eventos = await EventoDAO.obtenerEventos();
+
+        const eventoExiste = eventos.some(evento => nombre === evento.nombre);
+
+        if (eventoExiste) {
+            errores.push('Un evento con ese nombre ya existe');
+        }
+
 
         if (!nombre || typeof nombre !== 'string') {
             errores.push('El campo "nombre" es obligatorio y debe ser un String.');
@@ -138,8 +145,9 @@ class EventoController {
             }
         }
 
-        if (!regexFechaMySQL.test(fecha)){
-            errores.push('Formato de fecha inválida, pruebe con yyyy-mm-dd');
+        // Validar numBoletosDisponibles
+        if (typeof numBoletosDisponibles !== 'number' || isNaN(numBoletosDisponibles) || numBoletosDisponibles <= 0) {
+            errores.push('El campo "numBoletosDisponibles" debe ser un número positivo.');
         }
 
         return errores;
