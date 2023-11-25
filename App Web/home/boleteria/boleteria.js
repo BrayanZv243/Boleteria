@@ -10,7 +10,7 @@ export class BoleteriaComponent extends HTMLElement {
     this.tipoUsuario;
   }
 
-  connectedCallback() {
+  async connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
 
     // Obtenemos la cookie con el token y lo validamos
@@ -18,12 +18,13 @@ export class BoleteriaComponent extends HTMLElement {
 
     // Para validar se hace la petición a los eventos
 
-    this.#obtenerEventos(token);
+    await this.#obtenerEventos(token);
     // Obtenemos el tipo de usuario para asignar los botones.
     this.tipoUsuario = this.#sessionService.getDataToken(token).rol;
     this.#render(shadow);
     this.#agregarEstilos(shadow);
     this.#agregarJS(shadow);
+    console.log(this.eventos)
   }
 
   #getCookieSession(cookieName) {
@@ -67,25 +68,7 @@ export class BoleteriaComponent extends HTMLElement {
         <div class="content">
             <h3>Explora los <span>Eventos</span></h3>
           <ul class="movies">
-            <li>
-              <h4>Chivas vs América</h4>
-              <img src="./images/1page-img2.jpg" alt="" width="286" height="190"/>
-              <p class="blanco">¡Vive la emoción del clásico en vivo!</p>
-              <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=1&nombre="Chivas Vs América"' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
-            </li>
-            <li>
-              <h4>Luis Miguel En VIVO</h4>
-              <img src="./images/1page-img3.jpg" alt="" width="286" height="190"/>
-              <p class="blanco">¡Disfruta del nuevo album de Luis Miguel totalmente en vivo, totalmente en directo!</p>
-              <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=1&nombre="Luis Miguel En VIVO"' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
-            </li>
-            <li class="last">
-              <h4>El gallo de oro</h4>
-              <img src="./images/1page-img4.jpg" alt="" width="286" height="190"/>
-              <p class="blanco">Ven a vivir la resurrección del gallo de oro con sus nuevas canciones 2023.</p>
-              <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=1&nombre="El gallo de oro"' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
-            </li>
-            <li class="clear">&nbsp;</li>
+            ${this.#cargarEventosEnDOM()}
           </ul>
           ${contenidoExtra}
         </div>
@@ -97,6 +80,35 @@ export class BoleteriaComponent extends HTMLElement {
 </body>
 </html>
         `
+  }
+
+  #cargarEventosEnDOM() {
+    let HTMLEvento = ``;
+
+    this.eventos.forEach((evento) => {
+      HTMLEvento += `
+      <li>
+        <h4>${evento.nombre}</h4>
+        <img src="./images/eventos/${evento.nombreImagen}" alt=""/>
+        <p class="blanco">${evento.lugar} - ${this.#formatearFecha(evento.fecha)}</p>
+        <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=${evento.idEvento}&nombre=${evento.nombre}' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
+      </li>
+      `
+    });
+
+    return HTMLEvento;
+  }
+
+  #formatearFecha(fechaISO) {
+    const opciones = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+
+    // Convertir la cadena ISO a un objeto de fecha
+    const fecha = new Date(fechaISO);
+
+    // Formatear la fecha según las opciones proporcionadas
+    const fechaFormateada = fecha.toLocaleString('es-ES', opciones);
+
+    return fechaFormateada;
   }
 
   // Se agregan los estilos al HTML.
