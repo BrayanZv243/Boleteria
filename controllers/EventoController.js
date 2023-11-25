@@ -1,7 +1,6 @@
 const { EventoDAO } = require('../dataAccess/eventoDAO');
 const { AppError } = require('../utils/appError');
 
-const numBoletosDisponibles = 0;
 const numBoletosVendidos = 0;
 
 class EventoController {
@@ -9,7 +8,7 @@ class EventoController {
         try {
             const { nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen } = req.body;
 
-            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles);
+            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen);
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
@@ -103,15 +102,28 @@ class EventoController {
         }
     }
 
-    static async validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles) {
+    static async validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen) {
         const errores = [];
 
         const eventos = await EventoDAO.obtenerEventos();
 
-        const eventoExiste = eventos.some(evento => nombre === evento.nombre);
+        let eventoExiste = false;
+        let imagenExiste = false;
+
+        eventos.some(evento => {
+            eventoExiste = evento.nombre === nombre;
+            imagenExiste = evento.nombreImagen === nombreImagen;
+            
+            // Si ambas condiciones son verdaderas, no es necesario seguir iterando
+            return eventoExiste && imagenExiste;
+        });
 
         if (eventoExiste) {
             errores.push('Un evento con ese nombre ya existe');
+        }
+
+        if (imagenExiste) {
+            errores.push('Una imagen con ese nombre ya existe');
         }
 
 

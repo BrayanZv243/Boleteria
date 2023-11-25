@@ -1,44 +1,22 @@
 const { BoletoDAO } = require('../dataAccess/boletoDAO');
 const { EventoDAO } = require('../dataAccess/eventoDAO');
-const { AsientoDAO } = require('../dataAccess/asientoDAO');
 const { AppError } = require('../utils/appError');
 
 
 class BoletoController {
     static async crearBoleto(req, res, next) {
         try {
-            const { idEvento, idAsiento, precio, estado } = req.body;
+            const { idEvento, asientos, precio, estado, numBoletosDisponibles } = req.body;
 
-            const errores = await BoletoController.validarCampos(idEvento, idAsiento, precio, estado);
-
-            // Verificamos que no se repita el idEvento con el idAsiento.
-            // Básicamente asegurarnos de que no hayan boletos repetidos.
-            const respuestaBoletos = await BoletoDAO.obtenerBoletos();
-            const boletos = respuestaBoletos.map(boleto => ({
-                idBoleto: boleto.idBoleto,
-                idEvento: boleto.idEvento,
-                idAsiento: boleto.idAsiento,
-                precio: boleto.precio,
-                estado: boleto.estado
-            }));
-
-            boletos.forEach(boleto => {
-                if (boleto.idEvento === idEvento && boleto.idAsiento === idAsiento) {
-                    errores.push("No se permiten boletos repetidos. (Boletos en el mismo asiento y evento)");
-                    return;
-                }
-            });
+            const errores = await BoletoController.validarCampos(idEvento, precio, estado);
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
                 res.status(400).json({ statusCode: 400, message: errores.join(', ') });
             } else {
-                const boletoData = { idEvento, idAsiento, precio, estado };
-                const boleto = await BoletoDAO.crearBoleto(boletoData);
-                const evento = await EventoDAO.obtenerEventoPorId(idEvento);
-                evento.dataValues.numBoletosDisponibles++;
-                await EventoDAO.actualizarEvento(idEvento, evento);
-                res.status(201).json(boleto);
+                const boletoData = { idEvento, asientos, precio, estado, numBoletosDisponibles };
+                const boletos = await BoletoDAO.crearBoleto(boletoData);
+                res.status(201).json(boletos);
             }
 
         } catch (error) {
@@ -141,7 +119,7 @@ class BoletoController {
         }
     }
 
-    static async validarCampos(idEvento, idAsiento, precio, estado) {
+    static async validarCampos(idEvento, precio, estado) {
         const errores = [];
 
         if (idEvento === undefined || idEvento === null || idEvento === '') {
@@ -154,15 +132,7 @@ class BoletoController {
         const evento = await EventoDAO.obtenerEventoPorId(idEvento);
         if(!evento) errores.push('El evento debe existir');
 
-        if (idAsiento === undefined || idAsiento === null || idAsiento === '') {
-            errores.push('El campo idAsiento es obligatorio.');
-        } else if (isNaN(idAsiento) || !Number.isInteger(Number(idAsiento))) {
-            errores.push('El campo idAsiento debe ser un número entero.');
-        }
-
-        // Verificamos que el asiento exista.
-        const asiento = await AsientoDAO.obtenerAsientoPorId(idAsiento);
-        if (!asiento) errores.push('El asiento debe existir');
+        
 
 
         if (precio === undefined || precio === null || precio === '') {

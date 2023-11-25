@@ -35,16 +35,13 @@ export class BoletosService {
         }
     }
 
-    async postBoleto(data, token, idEvento, precio, asientos) {
-        const boletosEnviados = [];
-
-        // Se crean el número de boletos que se especificaron en el número de boletos disponibles.
-        for (let i = 0; i < data.numBoletosDisponibles; i++) {
+    async postBoleto(token, idEvento, precio, asientos, numBoletosDisponibles) {
             const dataBoleto = {
                 idEvento,
-                idAsiento: asientos[i].idAsiento,
+                asientos,
                 precio,
-                estado: "DISPONIBLE"
+                estado: "DISPONIBLE",
+                numBoletosDisponibles
             };
 
             try {
@@ -59,25 +56,20 @@ export class BoletosService {
 
                 // Enviar información del boleto
                 const res = await fetch(this.#urlBoletos, requestOptions);
-
                 if (res.ok) {
                     // La información del boleto se envió correctamente
-                    const boletoEnviado = await res.json();
-                    boletosEnviados.push(boletoEnviado);
+                    return await res.json();
                 } else {
                     // La información del boleto no se envió correctamente
                     const error = await res.json();
                     console.log(error);
-                    return error;
                 }
             } catch (error) {
                 // Manejar errores de red u otros errores
                 console.error('Error en la solicitud:', error);
             }
-        }
+        
 
-        // Devolver la lista de boletos enviados.
-        return boletosEnviados;
     }
 
 

@@ -8,10 +8,16 @@ const Asiento = models.asientos;
 class BoletoDAO {
     constructor() { }
 
-    static async crearBoleto(boleto) {
+    static async crearBoleto(boletos) {
         try {
-            const { idEvento, idAsiento, precio, estado } = boleto;
-            return await Boleto.create({ idEvento, idAsiento, precio, estado });
+            const { idEvento, asientos, precio, estado, numBoletosDisponibles } = boletos;
+            for (let i = 0; i < numBoletosDisponibles; i++) {
+                const idAsiento = asientos[i].idAsiento;
+                await Boleto.create({ idEvento, idAsiento, precio, estado });
+            }
+
+            return boletos;
+
         } catch (error) {
             console.log(error);
             throw error;

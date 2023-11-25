@@ -7,11 +7,8 @@ const storage = multer.diskStorage({
         cb(null, 'App Web/images/eventos'); // Directorio donde se guardarán los archivos
     },
     filename: (req, file, cb) => {
-        console.log(file)
-        
         cb(null, file.originalname);
     },
-    
 });
 
 const upload = multer({ storage: storage });
