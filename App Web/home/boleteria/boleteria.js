@@ -105,6 +105,9 @@ export class BoleteriaComponent extends HTMLElement {
     // Convertir la cadena ISO a un objeto de fecha
     const fecha = new Date(fechaISO);
 
+    // Restar 7 horas
+    fecha.setHours(fecha.getHours() + 7);
+
     // Formatear la fecha según las opciones proporcionadas
     const fechaFormateada = fecha.toLocaleString('es-ES', opciones);
 
