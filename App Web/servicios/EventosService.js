@@ -90,7 +90,7 @@ export class EventosService {
         }
     }
 
-    async putEvento(idEvento, eventoData, formData, token) {
+    async putEvento(idEvento, eventoData, formData, token, nombreImagenEliminar) {
         try {
             const requestOptions = {
                 method: 'PUT',
@@ -112,7 +112,8 @@ export class EventosService {
 
             if (resEvento.ok) {
                 // La información del evento se actualizó correctamente
-                const resImagen = await fetch(`${this.#urlEventosIMG}/${eventoData.nombreImagen}`, {
+                
+                const resImagen = await fetch(`${this.#urlEventosIMG}/${nombreImagenEliminar}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,

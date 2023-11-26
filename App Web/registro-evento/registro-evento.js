@@ -202,7 +202,10 @@ export class RegistroEventoComponent extends HTMLElement {
             }
             alert('Se registró el evento y sus boletos correctamente.');
         } else {
-            const evento = await this.#actualizarEvento(this.evento.idEvento, data, formData);
+            // Obtenemos el nombre de la imagen a eliminar.
+            const nombreImagenEliminar = this.#obtenerEventoPorURI().nombreImagen;
+
+            const evento = await this.#actualizarEvento(this.evento.idEvento, data, formData, nombreImagenEliminar);
             const res = await this.#actualizarBoletos(this.evento.idEvento, this.evento.boleto[0].idBoleto, precioBoleto, numBoletosDisponibles)
             if (!res) {
                 console.log(res)
@@ -229,8 +232,8 @@ export class RegistroEventoComponent extends HTMLElement {
         return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
-    async #actualizarEvento(idEvento, eventoData, formData){
-        const res = await this.#eventoServicio.putEvento(idEvento, eventoData, formData, this.token);
+    async #actualizarEvento(idEvento, eventoData, formData, nombreImagenEliminar){
+        const res = await this.#eventoServicio.putEvento(idEvento, eventoData, formData, this.token, nombreImagenEliminar);
         const json = JSON.stringify(res);
         const evento = JSON.parse(json);
 
