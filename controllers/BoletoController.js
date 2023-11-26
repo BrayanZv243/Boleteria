@@ -78,9 +78,9 @@ class BoletoController {
             const id = req.params.id;
 
             const boletoData = req.body;
-            const { idEvento, idAsiento, precio, estado } = req.body;
+            const { idEvento, precio, estado } = req.body;
 
-            const errores = await BoletoController.validarCampos(idEvento, idAsiento, precio, estado);
+            const errores = await BoletoController.validarCampos(idEvento, precio, estado);
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));

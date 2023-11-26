@@ -24,7 +24,7 @@ class ImagesController {
 
     static async obtenerImgs(req, res, next) {
         try {
-            const directoryPath = path.join(__dirname, '../App Web/images'); // Ruta al directorio de imágenes
+            const directoryPath = path.join(__dirname, '../App Web/images/eventos'); // Ruta al directorio de imágenes
 
             fs.readdir(directoryPath, (err, files) => {
                 if (err) {

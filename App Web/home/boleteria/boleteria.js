@@ -1,13 +1,18 @@
 import { EventosService } from "../../servicios/EventosService.js";
 import { SessionService } from "../../servicios/SessionService.js";
+import { BoletosService } from "../../servicios/BoletosService.js";
 
 export class BoleteriaComponent extends HTMLElement {
   #eventosServices = new EventosService();
   #sessionService = new SessionService();
+  #boletosService = new BoletosService();
+
   constructor() {
     super()
-    this.eventos = []
+    this.eventos = [];
+    this.boletos = [];
     this.tipoUsuario;
+    this.isAdmin = false;
   }
 
   async connectedCallback() {
@@ -19,12 +24,26 @@ export class BoleteriaComponent extends HTMLElement {
     // Para validar se hace la petición a los eventos
 
     await this.#obtenerEventos(token);
+    await this.#obtenerBoletos(token);
+    this.#mapearBoletosAEventos();
     // Obtenemos el tipo de usuario para asignar los botones.
     this.tipoUsuario = this.#sessionService.getDataToken(token).rol;
     this.#render(shadow);
+    this.#handlerEliminarEventos(shadow, token);
     this.#agregarEstilos(shadow);
     this.#agregarJS(shadow);
-    console.log(this.eventos)
+  }
+
+  #handlerEliminarEventos(shadow, token){
+    // Agregar el controlador de eventos a los enlaces de eliminación
+    const enlacesEliminar = shadow.querySelectorAll('.eliminarEvento');
+    enlacesEliminar.forEach((enlaceEliminar) => {
+      enlaceEliminar.addEventListener('click', (event) => {
+        event.preventDefault(); // Evita la navegación estándar del enlace
+        const idEvento = enlaceEliminar.getAttribute('data-idevento');
+        this.#eliminarEvento(idEvento, token);
+      });
+    });
   }
 
   #getCookieSession(cookieName) {
@@ -53,8 +72,63 @@ export class BoleteriaComponent extends HTMLElement {
     }
   }
 
+  async #eliminarEvento(idEvento, token) {
+
+    // Obtenemos todos los datos del evento seleccionado a eliminar.    
+    const eventoSeleccionado = this.eventos.find(evento => evento.idEvento === parseInt(idEvento));
+    
+    const res = await this.#eventosServices.deleteEvento(eventoSeleccionado, token);
+
+    console.log(JSON.stringify(res))
+
+  }
+
+  async #obtenerBoletos(token) {
+    const res = await this.#boletosService.getBoletos(token);
+    if (res && !res.mensaje) {
+      this.boletos = res;
+    } else {
+      // Si no es un token válido, lo redireccionamos al login.
+      window.location.href = "/App Web/iniciar-sesion.html"
+    }
+  }
+
+  #mapearBoletosAEventos() {
+    // Mapa para almacenar información de boletos por idEvento
+    const boletosPorEvento = {};
+
+    // Iterar sobre la lista de boletos y asignar la información al mapa
+    this.boletos.forEach((boleto) => {
+      const idEvento = boleto.idEvento;
+
+      // Verificar si ya hay un objeto de boleto para este idEvento
+      if (!boletosPorEvento.hasOwnProperty(idEvento)) {
+        boletosPorEvento[idEvento] = [];
+      }
+
+      // Agregar el boleto al arreglo asociado al idEvento
+      boletosPorEvento[idEvento].push({
+        idBoleto: boleto.idBoleto,
+        precio: boleto.precio
+      });
+    });
+
+    // Actualizar el array de eventos con la información de boletos
+    this.eventos.forEach((evento) => {
+      const idEvento = evento.idEvento;
+
+      // Verificar si hay información de boletos asociada a este idEvento en el mapa
+      if (boletosPorEvento.hasOwnProperty(idEvento)) {
+        // Agregar el campo 'boleto' al objeto de evento
+        evento.boleto = boletosPorEvento[idEvento];
+      }
+    });
+  }
+
+
   #render(shadow) {
-    const contenidoExtra = this.tipoUsuario == 'ADMIN' ? '<br><br><br><div class="btn-agregarEvento"><a href="registro-evento.html" target="_blank" class="link2"><span><span>Agregar Evento</span ></span ></a ></div>' : '';
+    this.isAdmin = this.tipoUsuario == 'ADMIN'
+    const contenidoExtra = this.isAdmin ? '<br><br><br><div class="btn-agregarEvento"><a href="registro-evento.html" target="_blank" class="link2"><span><span>Agregar Evento</span ></span ></a ></div>' : '';
 
     // Aquí se va a insertar todo el HTML
     shadow.innerHTML += `
@@ -86,13 +160,23 @@ export class BoleteriaComponent extends HTMLElement {
     let HTMLEvento = ``;
 
     this.eventos.forEach((evento) => {
+      const encodedEvento = encodeURIComponent(JSON.stringify(evento));
+
       HTMLEvento += `
       <div class="evento">
         <li>
-          <h4>${evento.nombre}</h4>
-          <img src="./images/eventos/${evento.nombreImagen}" alt=""/>
+          <div class="evento-data">
+            <h4>${evento.nombre}</h4>
+                ${this.isAdmin ? `<a href="registro-evento.html?evento=${encodedEvento}" target="_blank"><img class="img-icono" src="/App Web/images/editEvento.png"></a>` : ''}
+                ${this.isAdmin ? `<a href="" data-idevento="${evento.idEvento}" class="eliminarEvento"><img class="img-icono" src="/App Web/images/trash-icon.png"></a>` : ''}
+          </div>
+          
+          <img class="img-evento" src="./images/eventos/${evento.nombreImagen}" alt=""/>
           <p class="blanco">${evento.lugar} - ${this.#formatearFecha(evento.fecha)}</p>
+          <p class="blanco">Precio: $${evento.boleto[0].precio} - Boletos Restantes: ${evento.numBoletosDisponibles}</p>
+
           <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=${evento.idEvento}&nombre=${evento.nombre}&img=${evento.nombreImagen}' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
+          
       </li>
       </div>
       

@@ -378,3 +378,43 @@
 {"isOperational":true,"level":"error","status":"fail","statusCode":500}
 {"isOperational":true,"level":"error","status":"fail","statusCode":400}
 {"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\Boleteria\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\Boleteria\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\Boleteria\\App Web\\images\\Captura.PNG","status":404,"statusCode":404,"syscall":"stat"}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"code":"ENOENT","errno":-4058,"expose":false,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\Boleteria\\App Web\\images\\lol.jpg","status":404,"statusCode":404,"syscall":"stat"}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":{"fields":["idEvento"],"index":"fk_boletos_eventos1","name":"SequelizeForeignKeyConstraintError","original":{"code":"ER_ROW_IS_REFERENCED_2","errno":1451,"sql":"DELETE FROM `eventos` WHERE `idEvento` = 186","sqlMessage":"Cannot delete or update a parent row: a foreign key constraint fails (`boleteria`.`boletos`, CONSTRAINT `fk_boletos_eventos1` FOREIGN KEY (`idEvento`) REFERENCES `eventos` (`idEvento`))","sqlState":"23000"},"parameters":{},"parent":{"code":"ER_ROW_IS_REFERENCED_2","errno":1451,"sql":"DELETE FROM `eventos` WHERE `idEvento` = 186","sqlMessage":"Cannot delete or update a parent row: a foreign key constraint fails (`boleteria`.`boletos`, CONSTRAINT `fk_boletos_eventos1` FOREIGN KEY (`idEvento`) REFERENCES `eventos` (`idEvento`))","sqlState":"23000"},"reltype":"parent","sql":"DELETE FROM `eventos` WHERE `idEvento` = 186","table":"eventos","value":186}}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}

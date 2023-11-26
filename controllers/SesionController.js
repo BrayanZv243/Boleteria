@@ -21,10 +21,9 @@ class SessionController {
             } else {
                 // Obtenemos el usuario por correo
                 const usuarioEncontrado = await UsuarioDAO.obtenerUsuarioPorCorreo(correo);
-
                 // Validamos si encontró un usuario
                 if (!usuarioEncontrado) {
-                    return res.status(401).json({ statusCode: 401, message: `Usuario o contraseña incorrectos` });
+                    return res.status(401).json({ statusCode: 401, mensaje: `Usuario o contraseña incorrectos` });
                 }
 
                 // Validamos que el correo y contraseña coincidan.

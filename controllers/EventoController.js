@@ -3,12 +3,33 @@ const { AppError } = require('../utils/appError');
 
 const numBoletosVendidos = 0;
 
+
 class EventoController {
     static async crearEvento(req, res, next) {
         try {
             const { nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen } = req.body;
 
             const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen);
+
+            const eventos = await EventoDAO.obtenerEventos();
+            let eventoExiste = false;
+            let imagenExiste = false;
+
+            eventos.some(evento => {
+                eventoExiste = evento.nombre === nombre;
+                imagenExiste = evento.nombreImagen === nombreImagen;
+
+                // Si ambas condiciones son verdaderas, no es necesario seguir iterando
+                return eventoExiste && imagenExiste;
+            });
+
+            if (eventoExiste) {
+                errores.push('Un evento con ese nombre ya existe');
+            }
+
+            if (imagenExiste) {
+                errores.push('Una imagen con ese nombre ya existe');
+            }
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
@@ -62,18 +83,16 @@ class EventoController {
             const id = req.params.id;
 
             const eventoData = req.body;
-            const { nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles } = req.body;
+            const { nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles, nombreImagen } = req.body;
 
-            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles);
+            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen);
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
-                res.status(400).json({ statusCode: 400, message: errores.join(', ') });
             } else {
                 const evento = await EventoDAO.actualizarEvento(id, eventoData);
                 if (evento === null || evento === undefined) {
                     next(new AppError('No se encontró el evento', 404));
-                    res.status(404).json({ statusCode: 404, message: 'No se encontró el evento con el id especificado' });
                 } else {
                     res.status(200).json(evento);
                 }
@@ -81,7 +100,6 @@ class EventoController {
 
         } catch (error) {
             next(new AppError('No se pudo actualizar el evento ', 404));
-            res.status(400).json({ statusCode: 400, message: 'No se logró obtener el evento' });
             console.log(error);
         }
     }
@@ -98,34 +116,12 @@ class EventoController {
             }
 
         } catch (error) {
-            next(new AppError('No se pudo eliminar el evento ', 404));
+            next(new AppError('No se pudo eliminar el evento ' + error, 404));
         }
     }
 
     static async validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen) {
         const errores = [];
-
-        const eventos = await EventoDAO.obtenerEventos();
-
-        let eventoExiste = false;
-        let imagenExiste = false;
-
-        eventos.some(evento => {
-            eventoExiste = evento.nombre === nombre;
-            imagenExiste = evento.nombreImagen === nombreImagen;
-            
-            // Si ambas condiciones son verdaderas, no es necesario seguir iterando
-            return eventoExiste && imagenExiste;
-        });
-
-        if (eventoExiste) {
-            errores.push('Un evento con ese nombre ya existe');
-        }
-
-        if (imagenExiste) {
-            errores.push('Una imagen con ese nombre ya existe');
-        }
-
 
         if (!nombre || typeof nombre !== 'string') {
             errores.push('El campo "nombre" es obligatorio y debe ser un String.');
@@ -152,7 +148,7 @@ class EventoController {
             // Luego, comprobamos si el día es igual o posterior
             if (fechaIngresada.getFullYear() === fechaActual.getFullYear() &&
                 fechaIngresada.getMonth() === fechaActual.getMonth() &&
-                fechaIngresada.getDate()+1 < fechaActual.getDate()) {
+                fechaIngresada.getDate() + 1 < fechaActual.getDate()) {
                 errores.push('La fecha no puede ser anterior a la fecha actual.');
             }
         }

@@ -86,7 +86,7 @@ class BoletoDAO {
     static async actualizarBoleto(idBoleto, boleto) {
         try {
             const { idEvento, idAsiento, precio, estado } = boleto;
-            await Boleto.update({ idEvento, idAsiento, precio, estado }, { where: { idBoleto } });
+            await Boleto.update({ idAsiento, precio, estado }, { where: { idEvento }, multi: true });
             return await Boleto.findByPk(idBoleto);
         } catch (error) {
             console.log(error);
