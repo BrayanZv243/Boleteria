@@ -87,12 +87,15 @@ export class BoleteriaComponent extends HTMLElement {
 
     this.eventos.forEach((evento) => {
       HTMLEvento += `
-      <li>
-        <h4>${evento.nombre}</h4>
-        <img src="./images/eventos/${evento.nombreImagen}" alt=""/>
-        <p class="blanco">${evento.lugar} - ${this.#formatearFecha(evento.fecha)}</p>
-        <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=${evento.idEvento}&nombre=${evento.nombre}' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
+      <div class="evento">
+        <li>
+          <h4>${evento.nombre}</h4>
+          <img src="./images/eventos/${evento.nombreImagen}" alt=""/>
+          <p class="blanco">${evento.lugar} - ${this.#formatearFecha(evento.fecha)}</p>
+          <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=${evento.idEvento}&nombre=${evento.nombre}&img=${evento.nombreImagen}' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
       </li>
+      </div>
+      
       `
     });
 

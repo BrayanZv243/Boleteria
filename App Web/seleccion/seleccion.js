@@ -12,24 +12,26 @@ export class SeleccionComponent extends HTMLElement {
 
     let nombreEvento = urlActual.searchParams.get("nombre");
 
+    let img = urlActual.searchParams.get("img");
+
     // Con el idEvento lo buscamos y obtenemos todas sus especs, pero para
     // eso se necesitaría hacer la petción y eso se hará después.
 
     // const evento = await...
 
     //return idEvento;
-    return nombreEvento;
+    return {idEvento, nombreEvento, img};
   }
 
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
-    const nombreEvento = this.#obtenerEvento();
-    this.#render(shadow, nombreEvento);
+    const {idEvento, nombreEvento, img} = this.#obtenerEvento();
+    this.#render(shadow, nombreEvento, img);
     this.#agregarEstilos(shadow);
-    this.#agregarJS(shadow);
+    
   }
 
-  #render(shadow, nombreEvento) {
+  #render(shadow, nombreEvento, img) {
     // Aquí se va a insertar todo el HTML
     shadow.innerHTML += `
             
@@ -50,10 +52,17 @@ export class SeleccionComponent extends HTMLElement {
                     <div class="box">
                         <div class="border-right">
                             <div class="border-left">
-                                <img src="/App Web/images/asientos.png" alt="" class="img-asientos" />
+                                <div class="caja-img">
+                                    <img src="/App Web/images/asientos.png" alt="" class="img-asientos" />
+                                </div>
+                                
                                 <div class="caja">
 
-                                    <h3><span>${nombreEvento ? nombreEvento : "Nombre Evento"}</span></h3>
+                                    <div class="eventoData">
+                                        <img src="/App Web/images/eventos/${img}">
+                                        <h3><span>${nombreEvento ? nombreEvento : "Nombre Evento"}</span></h3>
+                                    </div>
+                                    
 
                                     <div class="contenido">
                                         <!-- Todos los elementos del formulario y el botón -->
@@ -135,36 +144,5 @@ export class SeleccionComponent extends HTMLElement {
 
   }
 
-  #agregarJS(shadow) {
-    let link = document.createElement("link");
-    link.setAttribute("type", "text/javascript");
-    link.setAttribute("href", "/App Web/js/jquery-1.4.2.min.js");
-
-    let link2 = document.createElement("link");
-    link2.setAttribute("type", "text/javascript");
-    link2.setAttribute("href", "/App Web/js/cufon-yui.js");
-
-    let link3 = document.createElement("link");
-    link3.setAttribute("type", "text/javascript");
-    link3.setAttribute("href", "/App Web/js/cufon-replace.js");
-
-    let link4 = document.createElement("link");
-    link4.setAttribute("type", "text/javascript");
-    link4.setAttribute("href", "/App Web/js/Gill_Sans_400.font.js");
-
-    let link5 = document.createElement("link");
-    link5.setAttribute("type", "text/javascript");
-    link5.setAttribute("href", "/App Web/js/script.js");
-
-    let link6 = document.createElement("link");
-    link6.setAttribute("type", "text/javascript");
-    link6.setAttribute("href", "/App Web/js/ie_png.js");
-
-    shadow.appendChild(link);
-    shadow.appendChild(link2);
-    shadow.appendChild(link3);
-    shadow.appendChild(link4);
-    shadow.appendChild(link5);
-    shadow.appendChild(link6);
-  }
+  
 }
