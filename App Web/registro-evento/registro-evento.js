@@ -125,7 +125,7 @@ export class RegistroEventoComponent extends HTMLElement {
                                                 <label for="fechaEvento" class="registro">Fecha del Evento:</label>
                                                 <input type="datetime-local" id="fecha-evento" name="fecha-evento" required>
 
-                                                <input type="number" name="" id="boletos-evento" placeholder="Boletos a Vender (MAX:${this.asientos.length})" required ${this.isActualizando ? 'disabled' : ''} min="0" max="${this.asientos.length} ">
+                                                <input type="number" name="" id="boletos-evento" placeholder="Boletos a Vender (MAX:${this.asientos.length})" required ${this.isActualizando ? 'disabled' : ''} min="0" max="${this.asientos.length}">
                                                 <input type="number" name="" id="precio-boleto-evento" placeholder="Precio del Boleto MXN" required }>
 
                                                 <label for="imagen" class="registro">Selecciona una imagen:</label>
@@ -191,6 +191,7 @@ export class RegistroEventoComponent extends HTMLElement {
 
         if (!this.isActualizando) {
             const idEvento = await this.#registrarEvento(data, formData);
+            if (!idEvento) return;
             const res = await this.#registrarBoletos(idEvento, precioBoleto, numBoletosDisponibles)
             if (!res) {
                 console.log(res)

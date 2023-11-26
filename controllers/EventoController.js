@@ -1,4 +1,5 @@
 const { EventoDAO } = require('../dataAccess/eventoDAO');
+const { AsientoDAO } = require('../dataAccess/asientoDAO');
 const { AppError } = require('../utils/appError');
 
 const numBoletosVendidos = 0;
@@ -9,7 +10,7 @@ class EventoController {
         try {
             const { nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen } = req.body;
 
-            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen);
+            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles);
 
             const eventos = await EventoDAO.obtenerEventos();
             let eventoExiste = false;
@@ -36,7 +37,7 @@ class EventoController {
             } else {
                 const eventoData = { nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles, nombreImagen };
                 const evento = await EventoDAO.crearEvento(eventoData);
-                res.status(201).json(evento);
+                res.status(200).json(evento);
             }
 
         } catch (error) {
@@ -85,7 +86,7 @@ class EventoController {
             const eventoData = req.body;
             const { nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles, nombreImagen } = req.body;
 
-            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen);
+            const errores = await EventoController.validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles);
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
@@ -120,7 +121,7 @@ class EventoController {
         }
     }
 
-    static async validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles, nombreImagen) {
+    static async validarCampos(nombre, lugar, tipo, fecha, numBoletosDisponibles) {
         const errores = [];
 
         if (!nombre || typeof nombre !== 'string') {
@@ -156,6 +157,13 @@ class EventoController {
         // Validar numBoletosDisponibles
         if (typeof numBoletosDisponibles !== 'number' || isNaN(numBoletosDisponibles) || numBoletosDisponibles <= 0) {
             errores.push('El campo "numBoletosDisponibles" debe ser un número positivo.');
+        }
+
+        // Validamos que el numBolestosDisponibles no pueda ser mayor al número de asientos registrados.
+        // Obtenemos los asientos.
+        const asientos = await AsientoDAO.obtenerAsientos();
+        if(numBoletosDisponibles > asientos.length){
+            errores.push(`No puedes registrar más asientos de los que hay (${asientos.length}). Intenta con menos.`);
         }
 
         return errores;
