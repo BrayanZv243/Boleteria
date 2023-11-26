@@ -15,5 +15,7 @@ router.get('/evento/:id', verificarToken, BoletoController.obtenerBoletosPorIdEv
 
 router.put('/:id', verificarToken, verificarRolAdmin(admin), BoletoController.actualizarBoleto);
 router.delete('/:id', verificarToken, verificarRolAdmin(admin), BoletoController.eliminarBoleto);
+router.delete('/evento/:id', verificarToken, verificarRolAdmin(admin), BoletoController.eliminarBoletosPorIdEvento);
+
 
 module.exports = router;

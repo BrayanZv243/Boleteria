@@ -22,9 +22,11 @@ const admin = "ADMIN"
 
 router.post('/', verificarToken, verificarRolAdmin(admin), upload.single('image'), ImagesController.guardarImg);
 
-router.get('/', ImagesController.obtenerImgs);
-router.get('/:filename', ImagesController.obtenerImgPorNombre);
+router.get('/', verificarToken, ImagesController.obtenerImgs);
+router.get('/:filename', verificarToken, ImagesController.obtenerImgPorNombre);
 
-router.put('/:filename', upload.single('image'), ImagesController.actualizarImg);
+router.put('/:filename', verificarToken, verificarRolAdmin(admin), upload.single('image'), ImagesController.actualizarImg);
+
+router.delete('/:filename', verificarToken, verificarRolAdmin(admin), ImagesController.eliminarImg);
 
 module.exports = router;

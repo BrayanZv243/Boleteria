@@ -34,7 +34,7 @@ export class BoleteriaComponent extends HTMLElement {
     this.#agregarJS(shadow);
   }
 
-  #handlerEliminarEventos(shadow, token){
+  #handlerEliminarEventos(shadow, token) {
     // Agregar el controlador de eventos a los enlaces de eliminación
     const enlacesEliminar = shadow.querySelectorAll('.eliminarEvento');
     enlacesEliminar.forEach((enlaceEliminar) => {
@@ -73,14 +73,25 @@ export class BoleteriaComponent extends HTMLElement {
   }
 
   async #eliminarEvento(idEvento, token) {
+    // Pregunta al usuario si realmente desea eliminar los boletos
+    const confirmacion = window.confirm('¿Estás seguro de que deseas eliminar todos los boletos para este evento?');
 
-    // Obtenemos todos los datos del evento seleccionado a eliminar.    
-    const eventoSeleccionado = this.eventos.find(evento => evento.idEvento === parseInt(idEvento));
-    
-    const res = await this.#eventosServices.deleteEvento(eventoSeleccionado, token);
+    if (!confirmacion) return null;
 
-    console.log(JSON.stringify(res))
+    // Primero eliminamos los boletos.
+    const resBoletos = this.#boletosService.deleteBoletosPorIdEvento(token, idEvento);
 
+    if (resBoletos.statusCode != 200) {
+      // Obtenemos todos los datos del evento seleccionado a eliminar.    
+      const eventoSeleccionado = this.eventos.find(evento => evento.idEvento === parseInt(idEvento));
+
+      const res = await this.#eventosServices.deleteEvento(eventoSeleccionado, token);
+      console.log(res);
+      
+      alert('Evento eliminado correctamente.');
+    } else {
+      console.log(res);
+    }
   }
 
   async #obtenerBoletos(token) {
@@ -161,26 +172,29 @@ export class BoleteriaComponent extends HTMLElement {
 
     this.eventos.forEach((evento) => {
       const encodedEvento = encodeURIComponent(JSON.stringify(evento));
+      try {
+        HTMLEvento += `
+            <div class="evento">
+              <li>
+                <div class="evento-data">
+                  <h4>${evento.nombre}</h4>
+                      ${this.isAdmin ? `<a href="registro-evento.html?evento=${encodedEvento}" target="_blank"><img class="img-icono" src="/App Web/images/editEvento.png"></a>` : ''}
+                      ${this.isAdmin ? `<a href="" data-idevento="${evento.idEvento}" class="eliminarEvento"><img class="img-icono" src="/App Web/images/trash-icon.png"></a>` : ''}
+                </div>
+                
+                <img class="img-evento" src="./images/eventos/${evento.nombreImagen}" alt="imagen-evento"/>
+                  <p class="blanco">${evento.lugar} - ${this.#formatearFecha(evento.fecha)}</p>
+                  <p class="blanco">Precio: $${evento.boleto[0].precio} - Boletos Restantes: ${evento.numBoletosDisponibles}</p>
 
-      HTMLEvento += `
-      <div class="evento">
-        <li>
-          <div class="evento-data">
-            <h4>${evento.nombre}</h4>
-                ${this.isAdmin ? `<a href="registro-evento.html?evento=${encodedEvento}" target="_blank"><img class="img-icono" src="/App Web/images/editEvento.png"></a>` : ''}
-                ${this.isAdmin ? `<a href="" data-idevento="${evento.idEvento}" class="eliminarEvento"><img class="img-icono" src="/App Web/images/trash-icon.png"></a>` : ''}
-          </div>
-          
-          <img class="img-evento" src="./images/eventos/${evento.nombreImagen}" alt=""/>
-          <p class="blanco">${evento.lugar} - ${this.#formatearFecha(evento.fecha)}</p>
-          <p class="blanco">Precio: $${evento.boleto[0].precio} - Boletos Restantes: ${evento.numBoletosDisponibles}</p>
+                <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=${evento.idEvento}&nombre=${evento.nombre}&img=${evento.nombreImagen}' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
+              </li>
+            </div>
+        
+        `
+      } catch (error) {
 
-          <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=${evento.idEvento}&nombre=${evento.nombre}&img=${evento.nombreImagen}' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
-          
-      </li>
-      </div>
-      
-      `
+      }
+
     });
 
     return HTMLEvento;

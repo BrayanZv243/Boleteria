@@ -50,12 +50,12 @@ class BoletoDAO {
             return await Boleto.findByPk(id, {
                 include: [
                     {
-                        model: Evento, 
-                        as: "idEvento_evento" 
+                        model: Evento,
+                        as: "idEvento_evento"
                     },
                     {
-                        model: Asiento, 
-                        as: "idAsiento_asiento" 
+                        model: Asiento,
+                        as: "idAsiento_asiento"
                     }
                 ]
             });
@@ -64,7 +64,7 @@ class BoletoDAO {
             throw error;
         }
     }
-    
+
     static async obtenerBoletosPorIdEvento(idEvento) {
         try {
             const boletosDeIdEvento = [];
@@ -105,6 +105,31 @@ class BoletoDAO {
             throw error;
         }
     }
+
+    static async eliminarBoletosPorIdEvento(idEvento) {
+        try {
+            const boletos = await Boleto.findAll({
+                where: { idEvento },
+            });
+
+            if (!boletos || boletos.length === 0) {
+                console.log('No se encontraron boletos para el evento con idEvento:', idEvento);
+                return null;
+            }
+
+            // Eliminar cada boleto encontrado
+            for (const boleto of boletos) {
+                await boleto.destroy();
+            }
+
+            console.log(`Boletos eliminados correctamente para el evento con idEvento: ${idEvento}`);
+            return boletos;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
 }
 
 module.exports = { BoletoDAO };

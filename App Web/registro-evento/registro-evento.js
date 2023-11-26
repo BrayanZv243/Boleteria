@@ -33,12 +33,12 @@ export class RegistroEventoComponent extends HTMLElement {
 
     async #getAsientos(token) {
         this.asientos = await this.#asientosService.getAsientos(token);
-        if(this.asientos.mensaje && this.asientos.statusCode === 403){
+        if (this.asientos.mensaje && this.asientos.statusCode === 403) {
             window.location.href = "/App Web/iniciar-sesion.html"
         }
     }
 
-    #obtenerEventoPorURI(){
+    #obtenerEventoPorURI() {
         const urlParams = new URLSearchParams(window.location.search);
         const informacionRecibida = urlParams.get('evento');
         const evento = JSON.parse(decodeURIComponent(informacionRecibida));
@@ -49,13 +49,12 @@ export class RegistroEventoComponent extends HTMLElement {
         const shadow = this.attachShadow({ mode: "open" });
         this.token = this.#getCookieSession('cookieSesion');
 
-        
         this.#getAsientos(this.token)
             .then(() => {
                 this.evento = this.#obtenerEventoPorURI();
                 this.isActualizando = this.evento != null;
                 this.#render(shadow);
-                if(this.isActualizando){
+                if (this.isActualizando) {
                     this.#llenarCamposActualizando(this.evento);
                 }
                 this.#agregarEstilos(shadow);
@@ -66,21 +65,21 @@ export class RegistroEventoComponent extends HTMLElement {
                     event.stopPropagation();
                     this.#handleFormSubmit(event);
                 });
-                
+
             })
             .catch((err) => {
                 console.log(err);
             });
     }
 
-    #llenarCamposActualizando(evento){
+    #llenarCamposActualizando(evento) {
         // Obtener los valores del formulario
         this.shadowRoot.querySelector('#nombre-evento').value = evento.nombre;
         this.shadowRoot.querySelector('#lugar-evento').value = evento.lugar;
         const select = this.shadowRoot.getElementById("tipo-evento");
         const opcionPreseleccionada = select.querySelector(`option[value="${evento.tipo}"]`);
         opcionPreseleccionada ? opcionPreseleccionada.selected = true : false;
-        
+
         const fechaEvento = new Date(evento.fecha);
         fechaEvento.setHours(fechaEvento.getHours() + 7);
         const formatoFecha = `${fechaEvento.getFullYear()}-${('0' + (fechaEvento.getMonth() + 1)).slice(-2)}-${('0' + fechaEvento.getDate()).slice(-2)}T${('0' + fechaEvento.getHours()).slice(-2)}:${('0' + fechaEvento.getMinutes()).slice(-2)}`;
@@ -94,7 +93,7 @@ export class RegistroEventoComponent extends HTMLElement {
 
     #render(shadow) {
         // Aquí se va a insertar todo el HTML
-        
+
         shadow.innerHTML += `
             
   <body id="page4">
@@ -149,7 +148,6 @@ export class RegistroEventoComponent extends HTMLElement {
     }
 
     async #handleFormSubmit(event) {
-        
         // Obtener los valores del formulario
         const nombre = this.shadowRoot.querySelector('#nombre-evento').value;
         const lugar = this.shadowRoot.querySelector('#lugar-evento').value;
@@ -190,8 +188,8 @@ export class RegistroEventoComponent extends HTMLElement {
             nombreImagen
         }
 
-        
-        if(!this.isActualizando){
+
+        if (!this.isActualizando) {
             const idEvento = await this.#registrarEvento(data, formData);
             const res = await this.#registrarBoletos(idEvento, precioBoleto, numBoletosDisponibles)
             if (!res) {
@@ -213,14 +211,10 @@ export class RegistroEventoComponent extends HTMLElement {
                 alert('Ocurrió un error inesperado.');
                 return;
             }
-            
-            
-            
+
             window.location.href = 'index.html';
         }
-        
 
-        
     }
 
     #formatLocalDate(date) {
@@ -230,23 +224,6 @@ export class RegistroEventoComponent extends HTMLElement {
         const hours = date.getHours().toString().padStart(2, '0');
         const minutes = date.getMinutes().toString().padStart(2, '0');
         return `${year}-${month}-${day}T${hours}:${minutes}`;
-    }
-
-    async #actualizarEvento(idEvento, eventoData, formData, nombreImagenEliminar){
-        const res = await this.#eventoServicio.putEvento(idEvento, eventoData, formData, this.token, nombreImagenEliminar);
-        const json = JSON.stringify(res);
-        const evento = JSON.parse(json);
-
-        if (evento && evento.status == 'fail') {
-            alert(evento.message);
-            return;
-        }
-        if (res && res.statusCode == 403) {
-            window.location.href = "/App Web/iniciar-sesion.html"
-            return;
-        }
-
-        return evento.idEvento;
     }
 
     async #registrarEvento(data, formData) {
@@ -267,13 +244,29 @@ export class RegistroEventoComponent extends HTMLElement {
         return evento.idEvento;
     }
 
+    async #actualizarEvento(idEvento, eventoData, formData, nombreImagenEliminar) {
+        const res = await this.#eventoServicio.putEvento(idEvento, eventoData, formData, this.token, nombreImagenEliminar);
+        const json = JSON.stringify(res);
+        const evento = JSON.parse(json);
+
+        if (evento && evento.status == 'fail') {
+            alert(evento.message);
+            return;
+        }
+        if (res && res.statusCode == 403) {
+            window.location.href = "/App Web/iniciar-sesion.html"
+            return;
+        }
+
+        return evento.idEvento;
+    }
+
     async #registrarBoletos(idEvento, precio, numBoletosDisponibles) {
         return await this.#boletosService.postBoleto(this.token, idEvento, precio, this.asientos, numBoletosDisponibles);
     }
 
-    async #actualizarBoletos(idEvento, idBoleto, precio){
+    async #actualizarBoletos(idEvento, idBoleto, precio) {
         return await this.#boletosService.putBoleto(idEvento, this.token, idBoleto, precio);
-
     }
 
     // Se agregan los estilos al HTML.

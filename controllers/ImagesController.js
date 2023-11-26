@@ -87,11 +87,24 @@ class ImagesController {
 
     static async eliminarImg(req, res, next) {
         try {
+            const { filename } = req.params;
+            const imagePath = path.join(__dirname, '../App Web/images/eventos', filename);
 
+            // Verifica si la imagen con el nombre especificado existe en el directorio
+            if (!fs.existsSync(imagePath)) {
+                return res.status(404).json({ message: 'La imagen no existe' });
+            }
+
+            // Elimina el archivo
+            await fs.promises.unlink(imagePath);
+
+            return res.status(200).json({ message: 'Imagen eliminada con éxito' });
         } catch (error) {
-            console.log(error);
+            console.error('Error en la función eliminarImg:', error);
+            res.status(500).json({ message: 'Error en el servidor al eliminar la imagen' });
         }
     }
+
 }
 
 module.exports = ImagesController;

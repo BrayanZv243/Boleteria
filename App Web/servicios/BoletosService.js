@@ -36,41 +36,41 @@ export class BoletosService {
     }
 
     async postBoleto(token, idEvento, precio, asientos, numBoletosDisponibles) {
-            const dataBoleto = {
-                idEvento,
-                asientos,
-                precio,
-                estado: "DISPONIBLE",
-                numBoletosDisponibles
+        const dataBoleto = {
+            idEvento,
+            asientos,
+            precio,
+            estado: "DISPONIBLE",
+            numBoletosDisponibles
+        };
+
+        try {
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataBoleto),
             };
 
-            try {
-                const requestOptions = {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(dataBoleto),
-                };
-
-                // Enviar información del boleto
-                const res = await fetch(this.#urlBoletos, requestOptions);
-                if (res.ok) {
-                    // La información del boleto se envió correctamente
-                    return await res.json();
-                } else {
-                    // La información del boleto no se envió correctamente
-                    const error = await res.json();
-                    console.log(error);
-                }
-            } catch (error) {
-                // Manejar errores de red u otros errores
-                console.error('Error en la solicitud:', error);
+            // Enviar información del boleto
+            const res = await fetch(this.#urlBoletos, requestOptions);
+            if (res.ok) {
+                // La información del boleto se envió correctamente
+                return await res.json();
+            } else {
+                // La información del boleto no se envió correctamente
+                const error = await res.json();
+                console.log(error);
             }
+        } catch (error) {
+            // Manejar errores de red u otros errores
+            console.error('Error en la solicitud:', error);
+        }
     }
 
-    async getBoletosPorIdEvento(token, idEvento){
+    async getBoletosPorIdEvento(token, idEvento) {
         try {
             let res = await fetch(`${this.#urlBoletos}/evento/${idEvento}`, {
                 method: 'GET',
@@ -121,7 +121,7 @@ export class BoletosService {
             };
             // Enviar información del boleto
             const res = await fetch(`${this.#urlBoletos}/${idBoleto}`, requestOptions);
-            
+
             if (res.ok) {
                 // La información del boleto se actualizó correctamente
                 return await res.json();
@@ -136,6 +136,32 @@ export class BoletosService {
         }
     }
 
+    async deleteBoletosPorIdEvento(token, idEvento) {
+        try {
+            const url = `${this.#urlBoletos}/evento/${idEvento}`;
 
+            const requestOptions = {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            };
+
+            const res = await fetch(url, requestOptions);
+
+            if (res.ok) {
+                // El boleto se eliminó correctamente
+                console.log('Boletos eliminados correctamente');
+                return res.json();
+            } else {
+                // Hubo un problema al eliminar el boleto
+                const error = await res.json();
+                console.log('Error al eliminar los boletos:', error);
+            }
+        } catch (error) {
+            // Manejar errores de red u otros errores
+            console.error('Error en la solicitud:', error);
+        }
+    }
 
 }

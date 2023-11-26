@@ -119,6 +119,23 @@ class BoletoController {
         }
     }
 
+    static async eliminarBoletosPorIdEvento(req, res, next) {
+        try {
+            const id = req.params.id;
+
+            const boletos = await BoletoDAO.eliminarBoletosPorIdEvento(id);
+            if (boletos === null || boletos === undefined) {
+                res.status(404).json({ statusCode: 404, message: 'No se encontraron los boletos con el idEvento especificado' });
+            } else {
+                res.status(200).json(boletos);
+            }
+
+        } catch (error) {
+            next(new AppError('No se pudo eliminar los boletos ', 404));
+            console.log(error);
+        }
+    }
+
     static async validarCampos(idEvento, precio, estado) {
         const errores = [];
 
