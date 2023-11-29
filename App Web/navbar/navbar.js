@@ -49,15 +49,18 @@ export class NavBarComponent extends HTMLElement {
     #render(shadow, paginaActual) {
         // Aquí se va a insertar todo el HTML
         shadow.innerHTML += `
-<body id="page1">
+
     <div class="tail-top">
         <div class="tail-bottom">
             <div id="main">
                 <div id="header">
                     <div class="row-1">
-                        <div class="fleft"><a href="#">Explora el mundo de <span>Boletería</span></a></div>
+                        <div class="fleft">
+                            <a href="#">Explora el mundo de <span>Boletería </span> </a>
+                        </div>
                     </div>
                     <div class="row-2">
+                    
                         <ul>
                             <li><a href="index.html" class="${paginaActual === 'index' ? 'active' : ''}">Inicio</a></li>
                             <li><a href="acerca-de.html" class="${paginaActual === 'acerca-de' ? 'active' : ''}">Acerca de</a></li>
@@ -70,7 +73,6 @@ export class NavBarComponent extends HTMLElement {
             </div>
         </div>
     </div>
-</body>
         `
     }
 

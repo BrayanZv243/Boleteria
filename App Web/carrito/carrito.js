@@ -1,17 +1,17 @@
 export class CarritoComponent extends HTMLElement {
-constructor() {
-super();
-}
+    constructor() {
+        super();
+    }
 
-connectedCallback() {
-const shadow = this.attachShadow({ mode: "open" });
-this.#render(shadow);
-this.#agregarEstilos(shadow);
-}
+    connectedCallback() {
+        const shadow = this.attachShadow({ mode: "open" });
+        this.#render(shadow);
+        this.#agregarEstilos(shadow);
+    }
 
-#render(shadow) {
-// Inserta el HTML dentro del Shadow DOM
-shadow.innerHTML = `
+    #render(shadow) {
+        // Inserta el HTML dentro del Shadow DOM
+        shadow.innerHTML = `
 <body id="page1">
     <div class="tail-top">
         <div class="tail-bottom">
@@ -46,25 +46,25 @@ shadow.innerHTML = `
     </div>
 </body>
 `;
-}
+    }
 
-#agregarEstilos(shadow) {
-   // "../css/style.css"
-// Agrega estilos específicos al Shadow DOM
-let link = document.createElement("link");
-link.setAttribute("rel", "stylesheet");
-link.setAttribute("href", "/App Web/carrito/carrito.css");
+    #agregarEstilos(shadow) {
+        // "../css/style.css"
+        // Agrega estilos específicos al Shadow DOM
+        let link = document.createElement("link");
+        link.setAttribute("rel", "stylesheet");
+        link.setAttribute("href", "/App Web/carrito/carrito.css");
 
-let link2 = document.createElement("link");
-link2.setAttribute("rel", "stylesheet");
-link2.setAttribute("href", "/App Web/css/style.css");
+        let link2 = document.createElement("link");
+        link2.setAttribute("rel", "stylesheet");
+        link2.setAttribute("href", "/App Web/css/style.css");
 
-let link3 = document.createElement("link");
-link3.setAttribute("rel", "stylesheet");
-link3.setAttribute("href", "/App Web/css/ie6.css");
+        let link3 = document.createElement("link");
+        link3.setAttribute("rel", "stylesheet");
+        link3.setAttribute("href", "/App Web/css/ie6.css");
 
-shadow.appendChild(link);
-shadow.appendChild(link2);
-shadow.appendChild(link3);
-}
+        shadow.appendChild(link);
+        shadow.appendChild(link2);
+        shadow.appendChild(link3);
+    }
 }

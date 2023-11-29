@@ -1,12 +1,15 @@
 import { EventosService } from "../servicios/EventosService.js";
 import { AsientosService } from "../servicios/AsientosService.js";
 import { BoletosService } from "../servicios/BoletosService.js";
+import { CookiesService } from "../servicios/CookiesService.js";
 
 export class RegistroEventoComponent extends HTMLElement {
 
     #eventoServicio = new EventosService();
     #asientosService = new AsientosService();
     #boletosService = new BoletosService();
+    #cookiesService = new CookiesService();
+
 
     constructor() {
         super()
@@ -16,20 +19,6 @@ export class RegistroEventoComponent extends HTMLElement {
         this.evento;
     }
 
-    #getCookieSession(cookieName) {
-        const name = cookieName + "=";
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const cookieArray = decodedCookie.split(';');
-
-        for (let i = 0; i < cookieArray.length; i++) {
-            let cookie = cookieArray[i].trim();
-            if (cookie.indexOf(name) === 0) {
-                return cookie.substring(name.length, cookie.length);
-            }
-        }
-
-        return null;
-    }
 
     async #getAsientos(token) {
         this.asientos = await this.#asientosService.getAsientos(token);
@@ -47,7 +36,7 @@ export class RegistroEventoComponent extends HTMLElement {
 
     connectedCallback() {
         const shadow = this.attachShadow({ mode: "open" });
-        this.token = this.#getCookieSession('cookieSesion');
+        this.token = this.#cookiesService.getCookieSession('cookieSesion');
 
         this.#getAsientos(this.token)
             .then(() => {

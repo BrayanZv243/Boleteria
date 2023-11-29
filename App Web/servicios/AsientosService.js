@@ -68,4 +68,37 @@ export class AsientosService {
         }
     }
 
+    async deleteAsiento(idAsiento, token) {
+        try {
+            const requestOptions = {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            };
+
+            // Construir la URL del asiento específico
+            const url = `${this.#urlAsientos}/${idAsiento}`;
+
+            // Realizar la solicitud DELETE
+            const res = await fetch(url, requestOptions);
+
+            if (res.ok) {
+                // El asiento se eliminó correctamente
+                return res.json();
+            } else {
+                // Hubo un problema al eliminar el asiento
+                const error = await res.json();
+                console.log(error);
+                return error;
+            }
+        } catch (error) {
+            // Manejar errores de red u otros errores
+            console.error('Error en la solicitud:', error);
+            return null;
+        }
+    }
+
+
 }

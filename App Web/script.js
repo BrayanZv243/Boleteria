@@ -12,6 +12,8 @@ import { SessionComponent } from "./sesion/sesion.js";
 import { RegistroComponent } from "./registro/registro.js";
 import { RegistroEventoComponent } from "./registro-evento/registro-evento.js";
 import { PerfilUsuarioComponent } from "./perfil-usuario/perfil-usuario.js";
+import { AsientoComponent } from "./asientos/asiento.js";
+import { RegistroAsientoComponent } from "./asientos/registro-asiento.js";
 
 // Se definen los micro-frontends genéricos.
 window.customElements.define('navbar-info', NavBarComponent);
@@ -44,4 +46,9 @@ window.customElements.define('registro-evento-info', RegistroEventoComponent);
 
 // Perfil Usuario
 window.customElements.define('perfil-usuario-info', PerfilUsuarioComponent);
+
+// Asientos
+window.customElements.define('asiento-info', AsientoComponent);
+window.customElements.define('registro-asiento-info', RegistroAsientoComponent);
+
 

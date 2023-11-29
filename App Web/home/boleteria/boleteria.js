@@ -1,11 +1,14 @@
 import { EventosService } from "../../servicios/EventosService.js";
 import { SessionService } from "../../servicios/SessionService.js";
 import { BoletosService } from "../../servicios/BoletosService.js";
+import { CookiesService } from "../../servicios/CookiesService.js";
 
 export class BoleteriaComponent extends HTMLElement {
   #eventosServices = new EventosService();
   #sessionService = new SessionService();
   #boletosService = new BoletosService();
+  #cookiesService = new CookiesService();
+
 
   constructor() {
     super()
@@ -19,7 +22,7 @@ export class BoleteriaComponent extends HTMLElement {
     const shadow = this.attachShadow({ mode: "open" });
 
     // Obtenemos la cookie con el token y lo validamos
-    const token = this.#getCookieSession('cookieSesion')
+    const token = this.#cookiesService.getCookieSession('cookieSesion');
 
     // Para validar se hace la petición a los eventos
 
@@ -44,21 +47,6 @@ export class BoleteriaComponent extends HTMLElement {
         this.#eliminarEvento(idEvento, token);
       });
     });
-  }
-
-  #getCookieSession(cookieName) {
-    const name = cookieName + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(';');
-
-    for (let i = 0; i < cookieArray.length; i++) {
-      let cookie = cookieArray[i].trim();
-      if (cookie.indexOf(name) === 0) {
-        return cookie.substring(name.length, cookie.length);
-      }
-    }
-
-    return null;
   }
 
   async #obtenerEventos(token) {
@@ -87,7 +75,7 @@ export class BoleteriaComponent extends HTMLElement {
 
       const res = await this.#eventosServices.deleteEvento(eventoSeleccionado, token);
       console.log(res);
-      
+
       alert('Evento eliminado correctamente.');
     } else {
       console.log(res);
@@ -139,7 +127,23 @@ export class BoleteriaComponent extends HTMLElement {
 
   #render(shadow) {
     this.isAdmin = this.tipoUsuario == 'ADMIN'
-    const contenidoExtra = this.isAdmin ? '<br><br><br><div class="btn-agregarEvento"><a href="registro-evento.html" target="_blank" class="link2"><span><span>Agregar Evento</span ></span ></a ></div>' : '';
+
+    const botones = `
+                    <div class="admin">
+                        <div class="btn-admin">
+                          <a href="registro-evento.html" target="_blank" class="link2">
+                            <span><span>Agregar Evento</span></span>
+                          </a>
+                      </div>'
+
+                      <div class="btn-admin">
+                          <a href="asiento.html" target="_blank" class="link2">
+                            <span><span>Agregar Asientos</span></span>
+                          </a>
+                      </div>'
+                    </div>
+                    `
+    const contenidoExtra = this.isAdmin ? botones : '';
 
     // Aquí se va a insertar todo el HTML
     shadow.innerHTML += `

@@ -1,8 +1,10 @@
 import { SessionService } from "../servicios/SessionService.js";
+import { CookiesService } from "../servicios/CookiesService.js";
 
 export class SessionComponent extends HTMLElement {
 
-    #servicio = new SessionService();
+    #sesionService = new SessionService();
+    #cookiesService = new CookiesService();
 
     constructor() {
         super()
@@ -90,11 +92,11 @@ export class SessionComponent extends HTMLElement {
     }
 
     async #iniciarSesion(data) {
-        const res = await this.#servicio.loginUserNormal(data);
+        const res = await this.#sesionService.loginUserNormal(data);
         
         if (res && res.token) {
             // Establecemos la cookie con el token.
-            this.#setSessionCookie('cookieSesion', res.token);
+            this.#cookiesService.setSessionCookie('cookieSesion', res.token);
 
             // Redireccionamos a la página de inicio.
             window.location.href = "/App Web/index.html"
@@ -102,10 +104,6 @@ export class SessionComponent extends HTMLElement {
         } else {
             alert(res.mensaje)
         }
-    }
-
-    #setSessionCookie(name, value) {
-        document.cookie = `${name}=${encodeURIComponent(value) };path=/`;
     }
 
     // Se agregan los estilos al HTML.

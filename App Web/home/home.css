@@ -2,9 +2,20 @@
     color: #fff;
 }
 
-.btn-agregarEvento{
+.btn-admin{
     float: right;
     font-size: 18px;
+    
+}
+
+.admin {
+    height: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 65px;
+    margin-bottom: -25px;
+    gap: 15px;
 }
 
 .evento-data {

@@ -30,7 +30,7 @@ export class ContactoComponent extends HTMLElement {
                     <span>País:</span><p class="blanco">México</p>
                     <span>Teléfono:</span><p class="blanco">644 159 6164</p>
                     <span></span></div>
-                  <div class="extra-wrap"><span>Información general:</span><br />
+                  
                     <p class="blanco">¡Bienvenido a nuestra página de contacto! Estamos encantados de que estés aquí. En Boletería, valoramos tu retroalimentación, preguntas y comentarios. Ya sea que estés interesado en nuestros boletos, tengas alguna consulta o simplemente quieras saludarnos, estamos aquí para ayudarte.
 
 Nuestra misión es brindar un servicio excepcional, y tu opinión es fundamental para lograrlo. Utiliza nuestro formulario de contacto para enviarnos un mensaje directo, o encuentra nuestra información de contacto detallada a continuación. Nos esforzamos por responder a todas las consultas de manera oportuna.

@@ -1,8 +1,10 @@
 import { UsuariosService } from "../servicios/UsuarioService.js";
+import { CookiesService } from "../servicios/CookiesService.js";
 
 export class PerfilUsuarioComponent extends HTMLElement {
 
     #usuarioService = new UsuariosService();
+    #cookiesService = new CookiesService();
 
     constructor() {
         super()
@@ -10,43 +12,13 @@ export class PerfilUsuarioComponent extends HTMLElement {
         this.usuario;
     }
 
-    #getCookieSession(cookieName) {
-        const name = cookieName + "=";
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const cookieArray = decodedCookie.split(';');
-
-        for (let i = 0; i < cookieArray.length; i++) {
-            let cookie = cookieArray[i].trim();
-            if (cookie.indexOf(name) === 0) {
-                return cookie.substring(name.length, cookie.length);
-            }
-        }
-
-        return null;
-    }
-
-
-    #decodeJwt(token) {
-        // Dividir el token en partes (encabezado, payload, firma)
-        var parts = token.split('.');
-        var decodedPayload = null;
-
-        if (parts.length === 3) {
-            // Decodificar la parte de carga útil (payload)
-            var payload = parts[1];
-            decodedPayload = JSON.parse(atob(payload));
-        }
-
-        return decodedPayload;
-    }
-
     async connectedCallback() {
         const shadow = this.attachShadow({ mode: "open" });
 
         try {
-            this.token = this.#getCookieSession('cookieSesion');
+            this.token = this.#cookiesService.getCookieSession('cookieSesion');
             // Obtenemos los datos del usuario con su ID dado su token en la cookie.
-            this.usuario = await this.#usuarioService.getUsuarioPorID(this.token, this.#decodeJwt(this.token).idUsuario);
+            this.usuario = await this.#usuarioService.getUsuarioPorID(this.token, this.#cookiesService.decodeJwt(this.token).idUsuario);
         } catch (error) {
             // Ocurrió un error al obtener los datos del usuario, se le pide que favor inicie sesión de nuevo
             alert('Sesión expirada, inicie sesión de nuevo por favor.');
@@ -181,7 +153,7 @@ export class PerfilUsuarioComponent extends HTMLElement {
             alert('Se eliminó tu cuenta, Esperamos verte de nuevo algún día :(');
 
             // Eliminamos la cookie con el token JWT.
-            this.#eliminarCookie('cookieSesion');
+            this.#cookiesService.eliminarCookie('cookieSesion');
 
             // Redireccionamos al login
             window.location.href = "iniciar-sesion.html"
@@ -227,13 +199,6 @@ export class PerfilUsuarioComponent extends HTMLElement {
         return res;
 
     }
-
-    #eliminarCookie(nombreCookie) {
-        // Establece la fecha de expiración en el pasado
-        document.cookie = `${nombreCookie}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    }
-
-
 
     #validarFormulario() {
         // Obtener referencias a los elementos del formulario

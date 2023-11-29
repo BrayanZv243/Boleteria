@@ -86,7 +86,7 @@ export class RegistroComponent extends HTMLElement {
         const correo = this.shadowRoot.querySelector('#correo-registro').value;
         const contraseña = this.shadowRoot.querySelector('#contraseña-registro').value;
 
-        // Llamar a la función #iniciarSesion con los valores
+        
         const data = {
             nombre,
             apellido,
