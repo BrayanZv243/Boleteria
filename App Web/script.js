@@ -11,6 +11,7 @@ import { CarritoComponent } from "./carrito/carrito.js";
 import { SessionComponent } from "./sesion/sesion.js";
 import { RegistroComponent } from "./registro/registro.js";
 import { RegistroEventoComponent } from "./registro-evento/registro-evento.js";
+import { PerfilUsuarioComponent } from "./perfil-usuario/perfil-usuario.js";
 
 // Se definen los micro-frontends genéricos.
 window.customElements.define('navbar-info', NavBarComponent);
@@ -40,3 +41,7 @@ window.customElements.define('registro-info', RegistroComponent);
 
 // Registrar Evento
 window.customElements.define('registro-evento-info', RegistroEventoComponent);
+
+// Perfil Usuario
+window.customElements.define('perfil-usuario-info', PerfilUsuarioComponent);
+

@@ -22,7 +22,7 @@ class UsuarioController {
                 const idUsuario = usuario.dataValues.idUsuario;
                 const carritoCompraData = { idUsuario, total };
                 await CarritoCompraDAO.crearCarritoCompra(carritoCompraData);
-
+                usuarioData.idUsuario = idUsuario;
                 const token = await generarToken(usuarioData);
 
                 res.status(201).json({ "usuario": usuario, "token": token });
@@ -70,11 +70,11 @@ class UsuarioController {
     static async actualizarUsuario(req, res, next) {
         try {
             const id = req.params.id;
-
             const usuarioData = req.body;
-            const { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña } = req.body;
 
-            const errores = await UsuarioController.validarCampos(nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña);
+            const { nombre, apellido, edad, telefono, correo, contraseña } = req.body;
+
+            const errores = await UsuarioController.validarCampos(nombre, apellido, 'tipoUsuario', edad, telefono, correo, contraseña);
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));

@@ -37,7 +37,7 @@ async function generarToken(usuario) {
     };
 
     // Generar el token con el payload y la clave secreta
-    const token = jwt.sign(payload, secretKey, { expiresIn: '1h' }); // Cambia el tiempo de expiración según tus necesidades
+    const token = jwt.sign(payload, secretKey, { expiresIn: '5h' });
 
     return token;
 }

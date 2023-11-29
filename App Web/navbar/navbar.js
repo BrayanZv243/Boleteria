@@ -18,8 +18,8 @@ export class NavBarComponent extends HTMLElement {
             case "acerca-de.html":
                 paginaActual = "acerca-de";
                 break;
-            case "registrate.html":
-                paginaActual = "registrate";
+            case "perfil-usuario.html":
+                paginaActual = "mi-perfil";
                 break;
             case "contacto.html":
                 paginaActual = "contacto";
@@ -61,7 +61,7 @@ export class NavBarComponent extends HTMLElement {
                         <ul>
                             <li><a href="index.html" class="${paginaActual === 'index' ? 'active' : ''}">Inicio</a></li>
                             <li><a href="acerca-de.html" class="${paginaActual === 'acerca-de' ? 'active' : ''}">Acerca de</a></li>
-                            <li><a href="seleccion.html"class="${paginaActual === 'registrate' ? 'active' : ''}">Registrate</a></li>
+                            <li><a href="perfil-usuario.html"class="${paginaActual === 'mi-perfil' ? 'active' : ''}">Mi Perfil</a></li>
                             <li><a href="contacto.html" class="${paginaActual === 'contacto' ? 'active' : ''}">Contacto</a></li>
                             <li class="last"><a href="carrito.html" class="${paginaActual === 'carrito' ? 'active' : ''}">Carrito Compra</a></li>
                         </ul>

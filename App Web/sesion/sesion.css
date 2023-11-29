@@ -100,6 +100,7 @@ select {
     background-color: #5a5959;
 }
 
+
 .main-container {
     background-color: #333;
     /* Color de fondo de contraste */
@@ -115,8 +116,6 @@ select {
 .bienvenida {
     text-align: center;
     margin-top: -100px;
-        
-        
 }
 
 .icono {
@@ -124,5 +123,24 @@ select {
     max-width: 100%;
     max-height: 100%;
     vertical-align: middle;
+}
 
+
+.btn-eliminar {
+    width: 100%;
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-eliminar:hover {
+    background-color: rgb(200, 11, 11);
+}
+
+.btn-eliminar:active {
+    background-color: #a80606;
 }
