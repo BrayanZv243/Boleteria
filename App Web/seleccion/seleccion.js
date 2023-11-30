@@ -1,39 +1,68 @@
+import { AsientosService } from "../servicios/AsientosService.js";
+import { BoletosService } from "../servicios/BoletosService.js";
+import { CarritoCompraService } from "../servicios/CarritoCompraService.js";
+import { CookiesService } from "../servicios/CookiesService.js";
+
 export class SeleccionComponent extends HTMLElement {
-  constructor() {
-    super()
-  }
 
-  // Este método se encargará de obtener el evento seleccionado.
-  #obtenerEvento(){
-    let urlActual = new URL(window.location.href);
-    
-    // Obtener parámetros de la URL
-    let idEvento = urlActual.searchParams.get("idEvento");
+    #asientosService = new AsientosService();
+    #boletosService = new BoletosService();
+    #carritoCompraService = new CarritoCompraService();
+    #cookiesService = new CookiesService();
 
-    let nombreEvento = urlActual.searchParams.get("nombre");
+    constructor() {
+        super()
+        this.token;
+        this.asiento;
+        this.boleto;
 
-    let img = urlActual.searchParams.get("img");
+        this.idEvento;
+        this.idAsiento = ""; // Variable para almacenar la fila seleccionada.
+        this.idBoleto = ""; // Variable para almacenar el tipo de boleto seleccionado.
+        this.precioSeleccionado; // Variable para almacenar el precio de boleto seleccionado.
+    }
 
-    // Con el idEvento lo buscamos y obtenemos todas sus especs, pero para
-    // eso se necesitaría hacer la petción y eso se hará después.
+    // Este método se encargará de obtener el evento seleccionado.
+    #obtenerEvento() {
+        let urlActual = new URL(window.location.href);
 
-    // const evento = await...
+        // Obtener parámetros de la URL
+        let idEvento = urlActual.searchParams.get("idEvento");
 
-    //return idEvento;
-    return {idEvento, nombreEvento, img};
-  }
+        let nombreEvento = urlActual.searchParams.get("nombre");
 
-  connectedCallback() {
-    const shadow = this.attachShadow({ mode: "open" });
-    const {idEvento, nombreEvento, img} = this.#obtenerEvento();
-    this.#render(shadow, nombreEvento, img);
-    this.#agregarEstilos(shadow);
-    
-  }
+        let img = urlActual.searchParams.get("img");
 
-  #render(shadow, nombreEvento, img) {
-    // Aquí se va a insertar todo el HTML
-    shadow.innerHTML += `
+        this.idEvento = idEvento;
+        return { idEvento, nombreEvento, img };
+    }
+
+    async connectedCallback() {
+        const shadow = this.attachShadow({ mode: "open" });
+        const { nombreEvento, img } = this.#obtenerEvento();
+        this.token = this.#cookiesService.getCookieSession('cookieSesion');
+        try {
+            this.asientos = await this.#asientosService.getAsientos(this.token);
+            this.boletos = await this.#boletosService.getBoletos(this.token);
+        } catch (error) {
+            console.log(error);
+            alert('Ocurrió un error al obtener los boletos, Inicie sesión otra vez por favor.');
+            window.location.href = "iniciar-sesion.html";
+        }
+
+        this.#render(shadow, nombreEvento, img);
+        this.#agregarEstilos(shadow);
+
+        await this.#cargarBoletosDisponibles();
+
+        // Agregar manejador de eventos al botón "Añadir al Carrito"
+        const btnAgregarCarrito = this.shadowRoot.querySelector('.btn-comprar');
+        btnAgregarCarrito.addEventListener('click', () => this.#agregarAlCarrito());
+    }
+
+    #render(shadow, nombreEvento, img) {
+        // Aquí se va a insertar todo el HTML
+        shadow.innerHTML += `
             
   <body id="page4">
     <!-- START PAGE SOURCE -->
@@ -66,83 +95,138 @@ export class SeleccionComponent extends HTMLElement {
 
                                     <div class="contenido">
                                         <!-- Todos los elementos del formulario y el botón -->
+                                        <p class="parrafo">Boletos Disponibles</p>
 
-                                        <select id="fila" name="fila">
+                                        <select id="filaYNumero" name="fila">
                                             <option selected value="0">Fila</option>
-                                            <option value="A">A</option>
-                                            <option value="B">B</option>
-                                            <option value="Z">Z</option>
-
                                         </select>
-
-                                        <select id="numero" name="numero">
-                                            <option selected value="0">Número Fila</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="100">100</option>
-
-                                        </select>
-
-                                        <select>
-                                            <option selected value="0">Método de pago</option>
-                                            <option value="1">BBVA</option>
-                                            <option value="2">Bancomer</option>
-                                            <option value="3">Santander</option>
-                                            <option value="3">PayPal</option>
-                                        </select>
+                                        <input type="text" disabled name="" id="tipoBoleto" placeholder="Tipo de Boleto" required>
+                                        <input type="text" disabled name="" id="precioBoleto" placeholder="Precio del Boleto" required>
 
 
-                                        <select id="tipo-boletos" name="tipo-boletos">
-                                            <option selected value="0">Tipo de Boleto</option>
-                                            <option value="Normal">Normal</option>
-                                            <option value="VIP">VIP</option>
-                                        </select>
-
-                                        <button type="submit" class="btn-comprar">Comprar Boleto</button>
+                                        <button type="button" class="btn-comprar">Añadir al Carrito</button>
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
     <!-- END PAGE SOURCE -->
 </body>
-      
         `
-  }
+    }
 
-  // Se agregan los estilos al HTML.
-  #agregarEstilos(shadow) {
-    let link = document.createElement("link");
-    link.setAttribute("rel", "stylesheet");
-    link.setAttribute("href", "/App Web/seleccion/seleccion.css");
+    async #cargarBoletosDisponibles() {
+        const filaYNumero = this.shadowRoot.getElementById('filaYNumero');
+        const tipoBoleto = this.shadowRoot.getElementById('tipoBoleto');
+        const precioBoleto = this.shadowRoot.getElementById('precioBoleto');
 
-    let link2 = document.createElement("link");
-    link2.setAttribute("rel", "stylesheet");
-    link2.setAttribute("href", "/App Web/css/style.css");
+        // Filtrar los asientos disponibles (con boletos en estado "DISPONIBLE")
+        const asientosDisponibles = this.asientos.filter(asiento => {
+            const boletoAsociado = this.boletos.find(boleto => boleto.idAsiento === asiento.idAsiento);
+            return boletoAsociado && boletoAsociado.estado === 'DISPONIBLE';
+        });
 
-    let link3 = document.createElement("link");
-    link3.setAttribute("rel", "stylesheet");
-    link3.setAttribute("href", "/App Web/css/ie6.css");
+        // Extraer filas únicas de los asientos disponibles
+        const filasDisponibles = [...new Set(asientosDisponibles.map(asiento => asiento.filaYNumero))];
+
+        // Crear opciones dinámicamente y agregarlas al select
+        filasDisponibles.forEach(fila => {
+            const option = document.createElement('option');
+            option.value = fila;
+            option.text = fila;
+            filaYNumero.appendChild(option);
+        });
+
+        // Añadir evento change al select
+        filaYNumero.addEventListener('change', (event) => {
+            const filaYNumeroSeleccionado = event.target.value;
+
+            // Encontrar el asiento correspondiente
+            const asientoSeleccionado = asientosDisponibles.find(asiento => asiento.filaYNumero === filaYNumeroSeleccionado);
+            // Encontrar el boleto asociado al asiento
+
+            const boletoAsociado = this.boletos.find(boleto => boleto.idAsiento === asientoSeleccionado.idAsiento && boleto.idEvento === parseInt(this.idEvento));
+            // Actualizar los campos del formulario
+            tipoBoleto.value = boletoAsociado.idAsiento_asiento.tipo;
+            precioBoleto.value = `$${boletoAsociado.precio} MXN`;
+
+            this.idAsiento = boletoAsociado.idAsiento;
+            this.idBoleto = boletoAsociado.idBoleto;
+            this.precioSeleccionado = boletoAsociado.precio;
+        });
+    }
 
 
-    shadow.appendChild(link);
-    shadow.appendChild(link2);
-    shadow.appendChild(link3);
+    async #agregarAlCarrito() {
 
-  }
+        
 
-  
+        // Verificar si se han seleccionado los datos necesarios
+        if (!this.idAsiento || !this.idBoleto || !this.precioSeleccionado) {
+            alert('Seleccione una fila y un tipo de boleto antes de agregar al carrito.');
+            return;
+        }
+
+        // Crear un objeto boleto con los datos seleccionados
+        const boletoSeleccionado = {
+            idBoleto: this.idBoleto,
+            idAsiento: this.idAsiento,
+            precio: parseInt(this.precioSeleccionado)
+        };
+
+        const idBoleto = boletoSeleccionado.idBoleto;
+        const boletos = [{
+            idBoleto
+        }]
+
+        // Primero obtenemos el id del usuario para poder obtener su carrito de compra.
+        const idUsuario = this.#cookiesService.decodeJwt(this.token).idUsuario;
+        
+        // Obtenemos su carrito de compra.
+        const idCC = await this.#carritoCompraService.getCarritoCompraPorIDUsuario(this.token, idUsuario);
+        
+        const res = await this.#carritoCompraService.agregarBoletosACarritoCompra(this.token, idCC.idCarrito_Compra, boletos)
+        
+        if (res && res.message == 'Boletos Agregados con éxito'){
+            alert(res.message);
+            window.location.href = "carrito.html"
+            return;
+        }
+        console.log(res);
+        alert(res.message);
+
+        // Limpiar las variables después de agregar al carrito si es necesario
+        this.filaSeleccionada = "";
+        this.tipoBoletoSeleccionado = "";
+        this.precioSeleccionado = "";
+    }
+
+
+
+    // Se agregan los estilos al HTML.
+    #agregarEstilos(shadow) {
+        let link = document.createElement("link");
+        link.setAttribute("rel", "stylesheet");
+        link.setAttribute("href", "/App Web/seleccion/seleccion.css");
+
+        let link2 = document.createElement("link");
+        link2.setAttribute("rel", "stylesheet");
+        link2.setAttribute("href", "/App Web/css/style.css");
+
+        let link3 = document.createElement("link");
+        link3.setAttribute("rel", "stylesheet");
+        link3.setAttribute("href", "/App Web/css/ie6.css");
+
+
+        shadow.appendChild(link);
+        shadow.appendChild(link2);
+        shadow.appendChild(link3);
+
+    }
+
+
 }

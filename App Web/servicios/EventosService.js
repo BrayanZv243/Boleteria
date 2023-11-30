@@ -35,6 +35,38 @@ export class EventosService {
         }
     }
 
+    async getEventoPorID(token, idEvento) {
+        try {
+            let res = await fetch(`${this.#urlEventos}/${idEvento}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+                .catch(err => {
+                    return null;
+                });
+
+            if (res && res.ok) {
+                // La solicitud fue exitosa (código de respuesta 200-299)
+                const responseData = await res.json();
+
+                return responseData;
+            } else {
+                if (res) {
+                    // La solicitud no fue exitosa
+                    return res.json();
+                }
+                return null;
+            }
+        } catch (error) {
+            // Manejar errores de red u otros errores
+            console.error('Error en la solicitud:', error);
+            return null;
+        }
+    }
+
 
     async postEvento(eventoData, formData, token) {
         try {

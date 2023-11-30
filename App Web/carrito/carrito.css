@@ -1,56 +1,82 @@
-.carrito-header {
-	background-color: #f0f0f0;
-	padding: 20px;
-	text-align: center;
-	overflow: auto; /* Clearfix para evitar problemas con el contenedor */
 
-}
-.slogan-carrito {
-	display:block;
-	float:left;
-	width:50%;
-
-}
-
-
-.slogaan-logo {
-	display:block;
-	float:right;
-	width:50%;
-
-	text-align:right;
-}
-
-.carrito-info-event {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr); /* Repite 3 columnas con igual fracción de espacio */
-	gap: 20px; /* Espacio entre las columnas */
-	background-color: white;
-	padding: 20px;
-}
-
-.column-event{
+.event-container {
 	display: flex;
-	flex-direction: column; /* Establece la dirección del contenedor a columna */
+	justify-content: space-between;
 	align-items: center;
-}
-.column-event p{
-	margin: 10px;
-}
-
-.container-carrito{
-	background-color: white;
-}
-
-.image-event img{
-	width: 100%;
-	height: auto;
-}
-button {
-	margin-top: 80px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-	font-weight: bold;
+	background-color: rgb(34, 35, 35);
+	color: rgb(214, 209, 209);
+	font-size: 24px;
+	border: 2px solid #fff;
+	border-radius: 10px;
+	margin-top: 10px !important;
+	transition: transform 0.3s ease-in-out;
+	cursor: pointer;
 	
-  }
+	
+}
+
+.event-container:hover {
+	transform: scale(1.1);
+	
+}
+
+.event-container:not(:hover) {
+	transform: scale(1);
+	margin-bottom: 0;
+}
+
+
+.image-event {
+	flex-basis: 30%;
+	margin-bottom: 50px;
+}
+
+img {
+	width: 100%;
+	height: 200px;
+	padding-left: 20px;
+	padding-top: 50px;
+}
+
+.event-details {
+	display: flex;
+	flex-basis: 65%;
+	justify-content: space-between;
+	padding: 40px;
+	
+}
+
+select {
+	/* Reset */
+	appearance: none;
+	border: 0;
+	outline: 0;
+	font: inherit;
+	/* Personalize */
+	width: 20rem;
+	padding: 1rem 4rem 1rem 1rem;
+	background: var(--arrow-icon) no-repeat right 0.8em center / 1.4em,
+		linear-gradient(to left, var(--arrow-bg) 3em, var(--select-bg) 3em);
+	color: #999;
+	border-radius: 0.25em;
+	box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+
+
+
+	/* Remove IE arrow */
+	&::-ms-expand {
+		display: none;
+	}
+
+	/* Remove focus outline */
+	&:focus {
+		outline: none;
+	}
+
+	/* <option> colors */
+	option {
+		color: inherit;
+		background-color: var(--option-bg);
+	}
+}

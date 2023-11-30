@@ -10,6 +10,7 @@ const admin = "ADMIN"
 router.get('/', verificarToken, verificarRolAdmin(admin), CarritoCompraController.obtenerCarritosCompra);
 router.get('/usuario/:id', verificarToken, CarritoCompraController.obtenerCarritoCompraPorIdUsuario);
 router.get('/:id', verificarToken, CarritoCompraController.obtenerCarritoCompraPorId);
+router.get('/:id/boletos', verificarToken, CarritoCompraController.obtenerBoletosDeUnCarritoCompra);
 
 router.put('/:id/boletos', verificarToken, CarritoCompraController.agregarBoletosACarritoCompra);
 

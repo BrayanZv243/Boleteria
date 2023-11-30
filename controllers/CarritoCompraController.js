@@ -49,6 +49,25 @@ class CarritoCompraController {
 
     }
 
+
+    static async obtenerBoletosDeUnCarritoCompra(req, res, next) {
+        try {
+            const id = req.params.id;
+
+            const boletosCarritoCompra = await CarritoCompraDAO.obtenerBoletosDeUnCarritoCompra(id);
+
+            if (boletosCarritoCompra === null || boletosCarritoCompra === undefined) {
+                res.status(404).json({ statusCode: 404, message: 'No se encontraron boletos para ese carrito compra' });
+            } else {
+                res.status(200).json(boletosCarritoCompra);
+            }
+        } catch (error) {
+            next(new AppError('No se logró obtener los boletos del carrito compra ', 404));
+            console.log(error);
+        }
+
+    }
+
     static async obtenerCarritoCompraPorIdUsuario(req, res, next) {
         try {
             const id = req.params.id;
