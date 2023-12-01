@@ -94,6 +94,17 @@ class BoletoDAO {
         }
     }
 
+    static async actualizarBoletoAVendido(idBoleto, boleto) {
+        try {
+            const { estado } = boleto;
+            await Boleto.update({ estado }, { where: { idBoleto }});
+            return await Boleto.findByPk(idBoleto);
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
     static async eliminarBoletoPorId(id) {
         try {
             const boleto = await Boleto.findByPk(id);

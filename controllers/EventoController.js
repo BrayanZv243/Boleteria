@@ -4,7 +4,6 @@ const { AppError } = require('../utils/appError');
 
 const numBoletosVendidos = 0;
 
-
 class EventoController {
     static async crearEvento(req, res, next) {
         try {

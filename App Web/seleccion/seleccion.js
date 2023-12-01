@@ -124,9 +124,9 @@ export class SeleccionComponent extends HTMLElement {
         const tipoBoleto = this.shadowRoot.getElementById('tipoBoleto');
         const precioBoleto = this.shadowRoot.getElementById('precioBoleto');
 
-        // Filtrar los asientos disponibles (con boletos en estado "DISPONIBLE")
+        // Filtrar los asientos disponibles del evento seleccionado (con boletos en estado "DISPONIBLE")
         const asientosDisponibles = this.asientos.filter(asiento => {
-            const boletoAsociado = this.boletos.find(boleto => boleto.idAsiento === asiento.idAsiento);
+            const boletoAsociado = this.boletos.find(boleto => boleto.idAsiento === asiento.idAsiento && boleto.idEvento === parseInt(this.idEvento));
             return boletoAsociado && boletoAsociado.estado === 'DISPONIBLE';
         });
 
@@ -147,9 +147,10 @@ export class SeleccionComponent extends HTMLElement {
 
             // Encontrar el asiento correspondiente
             const asientoSeleccionado = asientosDisponibles.find(asiento => asiento.filaYNumero === filaYNumeroSeleccionado);
-            // Encontrar el boleto asociado al asiento
 
+            // Encontrar el boleto asociado al asiento
             const boletoAsociado = this.boletos.find(boleto => boleto.idAsiento === asientoSeleccionado.idAsiento && boleto.idEvento === parseInt(this.idEvento));
+            
             // Actualizar los campos del formulario
             tipoBoleto.value = boletoAsociado.idAsiento_asiento.tipo;
             precioBoleto.value = `$${boletoAsociado.precio} MXN`;

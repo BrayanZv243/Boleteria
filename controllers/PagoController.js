@@ -3,30 +3,36 @@ const { UsuarioDAO } = require('../dataAccess/usuarioDAO');
 const { EventoDAO } = require('../dataAccess/eventoDAO');
 const { BoletoDAO } = require('../dataAccess/boletoDAO');
 const { AppError } = require('../utils/appError');
-const { CompraDAO } = require('../dataAccess/compraDAO')
-const regexFechaMySQL = /^(?:\d{4}-\d{1,2}-\d{1,2})$/;
+const { CompraDAO } = require('../dataAccess/compraDAO');
+const { CarritoCompraDAO } = require('../dataAccess/carritoCompraDAO');
+
 const IVA = .16;
 
 class PagoController {
     static async crearPago(req, res, next) {
         try {
-            const { idUsuario, metodo, fecha, boletos } = req.body;
+            let { idUsuario, metodo, fecha, boletos } = req.body;
+            
             const errores = await PagoController.validarCampos(idUsuario, metodo, fecha, boletos);
 
             if (errores.length > 0) {
-                next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
                 res.status(400).json({ statusCode: 400, message: errores.join(', ') });
             } else {
-                const monto = boletos.reduce((total, boleto) => total + boleto.precio, 0);
-                
+
+                // Restar 7 horas para mysql
+                fecha = new Date(fecha);
+                fecha.setHours(fecha.getHours() - 7);
+
+                let monto = boletos.reduce((total, boleto) => total + boleto.precio, 0);
+                monto = parseFloat(monto) + (parseFloat(monto) * IVA);
                 const pagoData = { idUsuario, monto, metodo, fecha };
                 const pago = await PagoDAO.crearPago(pagoData);
 
                 const idPago = pago.dataValues.idPago;
-                const total = parseFloat(monto) + (parseFloat(monto) * IVA);
+                const total = monto;
                 const compraData = { idPago, total, boletos }
                 
-                await CompraDAO.crearCompra(compraData)
+                await CompraDAO.crearCompra(compraData);
                 
                 for (let i = 0; i < boletos.length; i++) {
                     // Actualizamos el número de boletos disponibles y vendidos.
@@ -39,12 +45,16 @@ class PagoController {
 
                     // Actualizamos de DISPONIBLE A VENDIDO.
                     boleto.estado = "VENDIDO";
-                    await BoletoDAO.actualizarBoleto(boleto.idBoleto, boleto);
+                    await BoletoDAO.actualizarBoletoAVendido(boleto.idBoleto, boleto);
                 }
+                
                 // Sirve para eliminar los boletos del carrito compra una vez hecho el pago.
-                // Descomentarear una vez hecho el front.
-                //const carritoCompra = CarritoCompraDAO.obtenerCarritoCompraPorIdUsuario(idUsuario);
-                //await CarritoCompraDAO.eliminarBoletosDeCarritoCompra(carritoCompra.dataValues.idCarrito_Compra, boletos)
+                const carritoCompra = await CarritoCompraDAO.obtenerCarritoCompraPorIdUsuario(idUsuario);
+
+                await CarritoCompraDAO.eliminarBoletosDeCarritoCompra(carritoCompra.dataValues.idCarrito_Compra, boletos);
+                // Actualizamos el total del carrito de compra a 0.
+                await CarritoCompraDAO.actualizarCarritoCompra(carritoCompra.dataValues.idCarrito_Compra, 0);
+
 
                 res.status(201).json(pago);
             }
@@ -164,19 +174,15 @@ class PagoController {
 
         const fechaActual = new Date();
         const fechaIngresada = new Date(fecha);
-        fechaActual.setDate(fechaActual.getDate() - 1);
-        fechaIngresada.setHours(0, 0, 0, 0);
-        fechaActual.setHours(0, 0, 0, 0);
+
+        fechaActual.setSeconds(0, 0);
+        fechaIngresada.setSeconds(0, 0);
 
         // Comprobamos si el año y el mes son iguales o posteriores
         if (fechaIngresada < fechaActual) {
             errores.push('La fecha no puede ser anterior a la fecha actual.');
         } else if (fechaIngresada > fechaActual) {
             errores.push('La fecha no puede ser posterior a la fecha actual.');
-        }
-
-        if (!regexFechaMySQL.test(fecha)) {
-            errores.push('Formato de fecha inválida, pruebe con yyyy-mm-dd');
         }
 
         if(!Array.isArray(boletos)){
@@ -192,7 +198,7 @@ class PagoController {
             const boleto = boletos[i];
             const evento = await EventoDAO.obtenerEventoPorId(boleto.idEvento);
             const numBoletosDisponibles = evento.dataValues.numBoletosDisponibles;
-            console.log(numBoletosDisponibles)
+
             if(numBoletosDisponibles == 0){
                 errores.push("Se han terminado los boletos del evento "+ evento.nombre);
             }

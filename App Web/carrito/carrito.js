@@ -1,11 +1,13 @@
 import { CarritoCompraService } from "../servicios/CarritoCompraService.js";
 import { EventosService } from "../servicios/EventosService.js";
+import { PagosService } from "../servicios/PagosService.js";
 import { CookiesService } from "../servicios/CookiesService.js";
 
 export class CarritoComponent extends HTMLElement {
 
     #carritoServices = new CarritoCompraService();
     #eventosServices = new EventosService();
+    #pagosServices = new PagosService();
     #cookiesServices = new CookiesService();
 
     constructor() {
@@ -14,6 +16,9 @@ export class CarritoComponent extends HTMLElement {
         this.carritoCompra;
         this.idUsuario;
         this.token;
+
+        this.total = 0;
+        this.subtotal = 0;
     }
 
     async connectedCallback() {
@@ -29,30 +34,37 @@ export class CarritoComponent extends HTMLElement {
         // Obtener todos los elementos con la clase 'event-container'
         const cardsEventos = shadow.querySelectorAll('.event-container');
         const cardPagarCarrito = shadow.querySelector('#pagarCarrito');
-        
+
 
         // Agregar el evento click a cada elemento
         cardsEventos.forEach(card => {
             card.addEventListener('click', () => {
                 // Obtener el idBoleto del atributo data-idboleto
                 const idBoleto = card.getAttribute('data-idboleto');
-                
-                if(idBoleto) {
+
+                if (idBoleto) {
                     // Llamar a la función de manejo de clics con el idBoleto
-                    this.#handleDeleteBoletoDeCarrito(idBoleto);
+                    const boletos = [{
+                        idBoleto: parseInt(idBoleto)
+                    }];
+
+                    if (confirm('¿Estás seguro de eliminar el boleto del carrito?')) this.#handleDeleteBoletoDeCarrito(boletos);
                 }
 
                 const selectElement = card.querySelector('select');
+
                 if (selectElement) {
                     selectElement.addEventListener('click', (event) => {
                         event.stopPropagation(); // Detener la propagación del evento
                     });
                 }
-                
+
             });
         });
-
-        cardPagarCarrito.addEventListener('click', () => this.#handlePagarCarrito(shadow));
+        if(this.boletosEnCarrito.length != 0){
+            cardPagarCarrito.addEventListener('click', () => this.#handlePagarCarrito(shadow));
+        }
+        
     }
 
     async #obtenerBoletosEnCarritoCompra() {
@@ -83,6 +95,10 @@ export class CarritoComponent extends HTMLElement {
     }
 
     async #cargarEventosEnCarrito() {
+        if(this.boletosEnCarrito.length == 0){
+            return this.#cargarCarroVacio();
+        }
+
         let htmlCarritoBoletos = await Promise.all(this.boletosEnCarrito.map(async (boleto) => {
             const evento = await this.#obtenerEventoPorID(boleto.idBoleto_boleto.idEvento);
             return `<br><br><br><br>
@@ -105,9 +121,9 @@ export class CarritoComponent extends HTMLElement {
             </div>`;
         }));
 
-        const subtotal = parseFloat(this.boletosEnCarrito.reduce((acumulador, boleto) => acumulador + parseFloat(boleto.idBoleto_boleto.precio), 0)).toFixed(2);
-        const iva = parseFloat((subtotal * 0.16)).toFixed(2);
-        const total = parseFloat((parseFloat(subtotal) + parseFloat(iva))).toFixed(2);
+        this.subtotal = parseFloat(this.boletosEnCarrito.reduce((acumulador, boleto) => acumulador + parseFloat(boleto.idBoleto_boleto.precio), 0)).toFixed(2);
+        const iva = parseFloat((this.subtotal * 0.16)).toFixed(2);
+        this.total = parseFloat((parseFloat(this.subtotal) + parseFloat(iva))).toFixed(2);
         // Agregamos la tarjeta para pagar
         htmlCarritoBoletos += `
             <br><br><br><br><br><br><br>
@@ -117,9 +133,9 @@ export class CarritoComponent extends HTMLElement {
                 </div>
                 <div class="event-details">
                     <div class="column-event">
-                        <p>SUBTOTAL: $${subtotal} MXN</p>
+                        <p>SUBTOTAL: $${this.subtotal} MXN</p>
                         <p>IVA (16%): $${iva} MXN</p>
-                        <p>TOTAL: $${total} MXN</p>
+                        <p>TOTAL: $${this.total} MXN</p>
                         <select id="metodoPago">
                             <option selected value="0">Método de pago</option>
                             <option value="BBVA">BBVA</option>
@@ -136,28 +152,94 @@ export class CarritoComponent extends HTMLElement {
         return htmlCarritoBoletos;
     }
 
-    #handlePagarCarrito(shadow){
+    #cargarCarroVacio(){
+        return `
+            <br><br><br><br><br><br><br>
+            <div class="event-container">
+                <div class="image-event">
+                    <img src="/App Web/images/carrito.png" alt="">
+                </div>
+                <div class="event-details">
+                    <div class="column-event">
+                        <p>---------------------------------------</p>
+                        <p>¡Tú carrito está vacío! :(</p>
+                        <p>---------------------------------------</p>
+                        
+                    </div>
+                </div>
+            </div>
+            <br><br><br><br><br><br><br>
+            `
+    }
+
+    async #handlePagarCarrito(shadow) {
         const metodoPago = shadow.querySelector('#metodoPago').value;
-        console.log(metodoPago)
-        if(metodoPago == '0'){
+
+        if (metodoPago == '0') {
             alert('Seleccione un método de pago, por favor.');
             return;
         }
 
         let confirmacion = confirm(`Estás a punto de realizar el pago de tu carrito, con método de pago ${metodoPago}`);
 
-        if(!confirmacion) return;
+        if (!confirmacion) return;
 
-        // Aquí se realiza la compra, Se borran todos los articulos del carrito
-        // y se guarda el pago con los datos correspondientes.
-        // También se actualizan los boletos comprados de 'DISPONIBLE' a 'VENDIDO'.
-        // En compras_has_boletos se guardan todos los boletos que se compraron con
-        // el id de compra único.
+        const boletosMapeados = this.#mapearBoletos(this.boletosEnCarrito);
+
+        const pago = {
+            idUsuario: this.idUsuario,
+            metodo: metodoPago,
+            fecha: this.#formatLocalDate(new Date()),
+            boletos: boletosMapeados
+        }
+
+
+        const res = await this.#pagosServices.postPago(this.token, pago);
+
+        if(res && res.idPago){
+            console.log(res);
+            alert('¡Gracias por su compra! :)');
+            // Redirigimos a mis compras...
+
+            return;
+        } 
+
+        console.log(res);
+        alert('Ocurrió un error inesperado.');
     }
 
-    #handleDeleteBoletoDeCarrito(idBoleto) {
-        // Aquí puedes hacer lo que quieras con el idBoleto, por ejemplo, guardarlo
-        console.log('Se hizo clic en el evento. IdBoleto:', idBoleto);
+    #formatLocalDate(date) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
+    #mapearBoletos(boletos){
+        const boletosTransformados = boletos.map(boletoOriginal => {
+            const { idBoleto_boleto } = boletoOriginal;
+            return {
+                idBoleto: idBoleto_boleto.idBoleto,
+                idEvento: idBoleto_boleto.idEvento,
+                idAsiento: idBoleto_boleto.idAsiento,
+                precio: parseFloat(idBoleto_boleto.precio), // Convertir a centavos
+                estado: idBoleto_boleto.estado
+            };
+        });
+
+        return boletosTransformados;
+    }
+
+    async #handleDeleteBoletoDeCarrito(boletos) {
+        const res = await this.#carritoServices.deleteACarritoCompra(this.token, this.carritoCompra.idCarrito_Compra, boletos);
+
+        if (res) {
+            console.log(res);
+            alert(res.message);
+            location.reload();
+        }
     }
 
     async #obtenerEventoPorID(idEvento) {

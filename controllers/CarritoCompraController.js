@@ -165,7 +165,7 @@ class CarritoCompraController {
         const nestedArray = Object.values(boletosRequest);
         const boletosArray = [].concat(...nestedArray);
         const boletos = [];
-
+        
         // Validamos que los boletos existan y los obtenemos.
         for (const boletoObj of boletosArray) {
             if (boletoObj && boletoObj.idBoleto && typeof boletoObj.idBoleto === 'number' && Number.isInteger(boletoObj.idBoleto)) {
