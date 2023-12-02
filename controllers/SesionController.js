@@ -1,10 +1,7 @@
 const { UsuarioDAO } = require('../dataAccess/usuarioDAO');
-const jwt = require('jsonwebtoken');
-const bodyParser = require('body-parser');
-const saltRounds = 10;
 const { generarToken } = require('../auth/auth');
 const { AppError } = require('../utils/appError');
-
+const bcrypt = require('bcrypt');
 
 class SessionController {
 
@@ -21,54 +18,34 @@ class SessionController {
             } else {
                 // Obtenemos el usuario por correo
                 const usuarioEncontrado = await UsuarioDAO.obtenerUsuarioPorCorreo(correo);
+
                 // Validamos si encontró un usuario
                 if (!usuarioEncontrado) {
                     return res.status(401).json({ statusCode: 401, mensaje: `Usuario o contraseña incorrectos` });
                 }
 
-                // Validamos que el correo y contraseña coincidan.
-                const correoEncontrado = usuarioEncontrado.dataValues.correo;
-                const contraseñaEncontrada = usuarioEncontrado.dataValues.contraseña;
+                // Extraemos el hash y la sal de la contraseña almacenada
+                const [hashGuardado, saltGuardado] = usuarioEncontrado.dataValues.contraseña.split(':');
 
-                if (correo === correoEncontrado && contraseña === contraseñaEncontrada) {
+                // Comparamos la contraseña proporcionada con el hash y la sal almacenados
+                const esContraseñaCorrecta = await bcrypt.compare(contraseña, hashGuardado);
+
+                if (esContraseñaCorrecta) {
                     const token = await generarToken(usuarioEncontrado);
                     res.status(200).json({
-                        "message": "Token generado con éxito para usuario "+usuarioEncontrado.tipoUsuario,
+                        "message": "Token generado con éxito para usuario " + usuarioEncontrado.tipoUsuario,
                         "token": token
                     });
                 } else {
-                    res.status(401).json({ statusCode: 401, mensaje: `El correo o contraseña no son correctos.` })
+                    res.status(401).json({ statusCode: 401, mensaje: `El correo o contraseña no son correctos.` });
                 }
-
-                
             }
 
-            // Aquí es para desencriptar la contraseña.
-            // Generar una sal y hash de contraseña
-            /*
-            bcrypt.genSalt(saltRounds, (err, salt) => {
-                bcrypt.hash('contrasenaDelUsuario', salt, (err, hash) => {
-                    // Almacena el hash y la sal en la base de datos
-                });
-            });
-
-            // Verificar una contraseña
-            bcrypt.compare('contrasenaIngresada', hashAlmacenado, (err, result) => {
-                if (result) {
-                    // La contraseña es válida
-                } else {
-                    // La contraseña es incorrecta
-                }
-            });
-            */
-
-            
-
         } catch (error) {
-            console.log("Error en controlador sesion: "+error);
-
+            console.log("Error en controlador sesion: " + error);
         }
     }
+
 
     static async validarCampos(correo, contraseña) {
         const errores = [];

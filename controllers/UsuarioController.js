@@ -2,7 +2,8 @@ const { UsuarioDAO } = require('../dataAccess/usuarioDAO');
 const { CarritoCompraDAO } = require('../dataAccess/carritoCompraDAO');
 const { AppError } = require('../utils/appError');
 const { generarToken } = require('../auth/auth');
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 const total = 0;
 
@@ -17,14 +18,30 @@ class UsuarioController {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
                 res.status(400).json({ statusCode: 400, message: errores.join(', ') });
             } else {
-                const usuarioData = { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña };
+                // Generar una sal única
+                
+                const salt = await bcrypt.genSalt(saltRounds);
+
+                // Concatenar la contraseña con la sal
+                const passwordWithSalt = `${contraseña}:${salt}`;
+
+                // Aplicar una función hash a la combinación de contraseña y sal
+                const hash = await bcrypt.hash(passwordWithSalt, saltRounds);
+
+                // Almacenar el hash y la sal en el formato deseado
+                const usuarioData = { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña: `${hash}:${salt}` };
                 const usuario = await UsuarioDAO.crearUsuario(usuarioData);
+
+                // Crear carrito de compra para el usuario
                 const idUsuario = usuario.dataValues.idUsuario;
                 const carritoCompraData = { idUsuario, total };
                 await CarritoCompraDAO.crearCarritoCompra(carritoCompraData);
+
+                // Generar token para el usuario
                 usuarioData.idUsuario = idUsuario;
                 const token = await generarToken(usuarioData);
 
+                // Responder con la respuesta y el token
                 res.status(201).json({ "usuario": usuario, "token": token });
             }
 
@@ -70,29 +87,51 @@ class UsuarioController {
     static async actualizarUsuario(req, res, next) {
         try {
             const id = req.params.id;
-            const usuarioData = req.body;
+            const { nombre, apellido, edad, telefono, correo, contraseñaAntigua, nuevaContraseña } = req.body;
 
-            const { nombre, apellido, edad, telefono, correo, contraseña } = req.body;
-
-            const errores = await UsuarioController.validarCampos(nombre, apellido, 'tipoUsuario', edad, telefono, correo, contraseña);
+            // Validamos los datos
+            const errores = await UsuarioController.validarCampos(nombre, apellido, 'tipoUsuario', edad, telefono, correo, nuevaContraseña);
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
             } else {
-                const usuario = await UsuarioDAO.actualizarUsuario(id, usuarioData);
-                if (usuario === null || usuario === undefined) {
+                // Obtenemos el usuario por su ID
+                const usuario = await UsuarioDAO.obtenerUsuarioPorId(id);
+
+                if (!usuario) {
                     next(new AppError('No se encontró el usuario', 404));
-                    res.status(404).json({ statusCode: 404, message: 'No se encontró el usuario con el id especificado' });
+                    res.status(404).json({ statusCode: 404, message: 'No se encontró el usuario con el ID especificado' });
                 } else {
-                    res.status(200).json(usuario);
+                    // Extraemos el hash y la sal de la contraseña almacenada
+                    const [hashGuardado, saltGuardado] = usuario.dataValues.contraseña.split(':');
+
+                    // Comparamos la contraseña antigua proporcionada con el hash y la sal almacenados
+                    const esContraseñaAntiguaCorrecta = await bcrypt.compare(contraseñaAntigua, hashGuardado);
+
+                    if (esContraseñaAntiguaCorrecta) {
+                        // Generamos la sal y el hash de la nueva contraseña
+                        const salt = await bcrypt.genSalt(saltRounds);
+                        const hash = await bcrypt.hash(nuevaContraseña, salt);
+
+                        const usuarioData = { nombre, apellido, edad, telefono, correo, contraseña: `${hash}:${salt}` };
+
+                        // Actualizamos el usuario con los nuevos datos
+                        const usuarioActualizado = await UsuarioDAO.actualizarUsuario(id, usuarioData);
+
+                        res.status(200).json(usuarioActualizado);
+                    } else {
+                        // La contraseña antigua no coincide
+                        res.status(401).json({ statusCode: 401, message: 'La contraseña antigua proporcionada no es correcta' });
+                    }
                 }
             }
 
         } catch (error) {
-            next(new AppError('No se pudo actualizar el usuario ', 404));
-            res.status(400).json({ statusCode: 400, message: 'No se logró actualizar el usuario' });
+            console.log(error);
+            res.status(400).json({ statusCode: 500, message: 'No se logró actualizar el usuario' });
         }
     }
+
 
     static async eliminarUsuario(req, res, next) {
         try {
@@ -135,7 +174,7 @@ class UsuarioController {
             errores.push('La edad debe ser mayor o igual a 18');
         }
 
-        if (!telefono || telefono.length === 0) {
+        if (!telefono || telefono.length === 0 || telefono.length > 10) {
             errores.push('El teléfono es obligatorio');
         }
 

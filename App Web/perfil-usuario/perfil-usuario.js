@@ -26,40 +26,17 @@ export class PerfilUsuarioComponent extends HTMLElement {
     }
 
     #handleEvents(shadow) {
-        const administrarCuenta = shadow.querySelector('#miFormulario');
-        administrarCuenta.addEventListener('submit', (event) => {
-            event.preventDefault(); // Evita la recarga automática de la página
+        const actualizarCuenta = shadow.querySelector('#miFormulario');
+        actualizarCuenta.addEventListener('submit', (event) => this.#handleActualizarCuenta(event));
+                
+        const cerrarSesion = shadow.querySelector('#cerrarSesion');
+        cerrarSesion.addEventListener('click', (event) => this.#handleCerrarSesion(event));
 
-            const submitButton = event.submitter;
-
-            switch (submitButton.id) {
-                case 'actualizarUsuario':
-                    // Realizar la lógica de actualización.
-                    this.#handleActualizarCuenta(event);
-                    break;
-                case 'cerrarSesion':
-                    // Realizar la lógica de cerrar sesión.
-                    this.#cerrarSesion(event);
-                    break;
-                case 'eliminarUsuario':
-                    // Realizar la lógica de eliminación.
-                    this.#handleEliminarCuenta(event);
-                    break;
-                default:
-                    alert('Ocurrió un error.');
-                    this.#cerrarSesion(event);
-                    break;
-            }
-
-        });
+        const eliminarCuenta = shadow.querySelector('#eliminarCuenta');
+        eliminarCuenta.addEventListener('click', (event) => this.#handleEliminarCuenta(event));
 
         const misCompras = shadow.querySelector('#misCompras');
-
-        misCompras.addEventListener('click', (event) => {
-            event.preventDefault();
-
-            this.#handleVerMisCompras(event);
-        });
+        misCompras.addEventListener('click', (event) =>  this.#handleVerMisCompras(event));
     }
 
     async connectedCallback() {
@@ -99,12 +76,13 @@ export class PerfilUsuarioComponent extends HTMLElement {
                                                 <input type="number" name="" id="edadUsuario" placeholder="Edad" value="${usuario.edad}" required>
                                                 <input type="number" name="" id="telefonoUsuario" placeholder="Teléfono" value="${usuario.telefono}" required>
                                                 <input type="email" name="" id="correo" placeholder="Correo Email" value="${usuario.correo}" required>
-                                                <input type="password" name="" id="contraseña" placeholder="Contraseña" value="${usuario.contraseña}" required>
-                                                <input type="password" name="" id="contraseñaConfirmar" placeholder="Confirmar Contraseña" value="${usuario.contraseña}" required>
+                                                <input type="password" name="" id="contraseñaAntigua" placeholder="Contraseña Antigua" required>
+                                                <input type="password" name="" id="contraseña" placeholder="Nueva Contraseña" required>
+                                                <input type="password" name="" id="contraseñaConfirmar" placeholder="Confirmar nueva Contraseña" required>
                                                 
                                                 <button type="submit" id="actualizarUsuario" class="btn-comprar">Actualizar Cuenta</button>
-                                                <button type="submit" id="cerrarSesion" class="btn-comprar">Cerrar Sesión</button>
-                                                <button type="submit" id="eliminarUsuario" class="btn-eliminar">Eliminar Cuenta</button>
+                                                <button type="button" id="cerrarSesion" class="btn-comprar">Cerrar Sesión</button>
+                                                <button type="button" id="eliminarCuenta" class="btn-eliminar">Eliminar Cuenta</button>
 
                                             </div>
                                         </form>
@@ -127,7 +105,7 @@ export class PerfilUsuarioComponent extends HTMLElement {
         window.location.href = "mis-compras.html";
     }
 
-    #cerrarSesion(event) {
+    #handleCerrarSesion(event) {
         const confirmacion = confirm('¿Estás seguro de cerrar la sesión?');
 
         if (!confirmacion) return;
@@ -140,12 +118,15 @@ export class PerfilUsuarioComponent extends HTMLElement {
     }
 
     async #handleActualizarCuenta(event) {
+        event.preventDefault();
+
         const nombre = this.shadowRoot.getElementById('nombreUsuario').value;
         const apellido = this.shadowRoot.getElementById('apellidoUsuario').value;
         const edad = this.shadowRoot.getElementById('edadUsuario').value;
         const telefono = this.shadowRoot.getElementById('telefonoUsuario').value;
         const correo = this.shadowRoot.getElementById('correo').value;
-        const contraseña = this.shadowRoot.getElementById('contraseña').value;
+        const contraseñaAntigua = this.shadowRoot.getElementById('contraseñaAntigua').value;
+        const nuevaContraseña = this.shadowRoot.getElementById('contraseña').value;
 
         if (!this.#validarFormulario()) {
             return false;
@@ -157,12 +138,13 @@ export class PerfilUsuarioComponent extends HTMLElement {
             edad,
             telefono,
             correo,
-            contraseña
+            contraseñaAntigua,
+            nuevaContraseña
         }
 
         const res = await this.#actualizarUsuario(this.usuario.idUsuario, data);
 
-        if (!res && res.message) {
+        if (res && res.message) {
             alert(res.message);
             return;
         }
@@ -241,6 +223,18 @@ export class PerfilUsuarioComponent extends HTMLElement {
             window.location.href = "/App Web/iniciar-sesion.html"
             return;
         }
+
+        if (res && res.statusCode == 400) {
+            alert('Bad Request');
+            return;
+        }
+
+        if(res && res.statusCode == 500){
+            alert('Error en el servidor.');
+            return;
+        }
+
+        console.log(res);
 
         return res;
 
