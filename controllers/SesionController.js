@@ -2,6 +2,7 @@ const { UsuarioDAO } = require('../dataAccess/usuarioDAO');
 const { generarToken } = require('../auth/auth');
 const { AppError } = require('../utils/appError');
 const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 class SessionController {
 
@@ -20,13 +21,13 @@ class SessionController {
                 const usuarioEncontrado = await UsuarioDAO.obtenerUsuarioPorCorreo(correo);
 
                 // Validamos si encontró un usuario
-                if (!usuarioEncontrado) {
+                if (!usuarioEncontrado || usuarioEncontrado.activa == 'INACTIVA') {
                     return res.status(401).json({ statusCode: 401, mensaje: `Usuario o contraseña incorrectos` });
                 }
 
                 // Extraemos el hash y la sal de la contraseña almacenada
                 const [hashGuardado, saltGuardado] = usuarioEncontrado.dataValues.contraseña.split(':');
-
+                
                 // Comparamos la contraseña proporcionada con el hash y la sal almacenados
                 const esContraseñaCorrecta = await bcrypt.compare(contraseña, hashGuardado);
 
@@ -45,6 +46,7 @@ class SessionController {
             console.log("Error en controlador sesion: " + error);
         }
     }
+
 
 
     static async validarCampos(correo, contraseña) {

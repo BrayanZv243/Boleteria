@@ -12,19 +12,29 @@ export class RegistroAsientoComponent extends HTMLElement {
         this.token;
     }
 
-    async connectedCallback() {
-        const shadow = this.attachShadow({ mode: "open" });
-        this.token = this.#cookiesService.getCookieSession('cookieSesion');
+    async #validarSesion() {
         try {
+            this.token = this.#cookiesService.getCookieSession('cookieSesion');
             this.asientos = await this.#asientosService.getAsientos(this.token);
         } catch (error) {
             console.log(error);
             alert('Hubo un error al cargar los asientos');
+            window.location.href = "iniciar-sesion.html";
         }
+    }
+
+    async connectedCallback() {
+        const shadow = this.attachShadow({ mode: "open" });
+
+        await this.#validarSesion();
         this.#render(shadow);
         this.#agregarEstilos(shadow);
         this.#agregarJS(shadow);
+        this.#handlerEvents(shadow);
+        
+    }
 
+    #handlerEvents(shadow){
         // Agregar el controlador de eventos al formulario
         const formulario = shadow.querySelector('form');
         formulario.addEventListener('submit', (event) => this.#handleFormSubmit(event));
@@ -89,18 +99,18 @@ export class RegistroAsientoComponent extends HTMLElement {
         const numero = numeroInput.value.trim();
         const tipo = tipoAsientoSelect.value;
 
-        if (!this.#validarFormulario(fila, numero, tipo)){
+        if (!this.#validarFormulario(fila, numero, tipo)) {
             return;
         }
-        
+
         const data = {
             tipo,
             filaYNumero: `${fila.toUpperCase()}${numero}`
         }
-        
+
         const res = await this.#registrarAsiento(data)
 
-        if(res && res.idAsiento){
+        if (res && res.idAsiento) {
             alert('Se registró éxitosamente el asiento.')
             location.reload();
             return;
@@ -108,25 +118,25 @@ export class RegistroAsientoComponent extends HTMLElement {
 
         console.log(res);
         alert('Ocurrió un error al guardar el asiento');
-        
+
     }
 
-    async #registrarAsiento(data){
+    async #registrarAsiento(data) {
         return await this.#asientosService.postAsiento(data, this.token);
     }
 
     #validarFormulario(fila, numero, tipoAsiento) {
         // Validar la fila
-        const filaRegex = /^[A-Za-z]{1,4}$/;
+        const filaRegex = /^[A-Za-z]{1,2}$/;
         if (!filaRegex.test(fila)) {
-            alert('La fila debe contener de 1 a 4 letras (A-Z).');
+            alert('La fila debe contener de 1 a 2 letras (A-Z).');
             return false;
         }
 
         // Validar el número
-        const numeroRegex = /^[1-9][0-9]{0,2}$/;
+        const numeroRegex = /^(?:[1-9]|[1-9][0-9]|99)$/;
         if (!numeroRegex.test(numero)) {
-            alert('El número debe ser un valor numérico entre 1 y 999.');
+            alert('El número debe ser un valor numérico entre 1 y 99.');
             return false;
         }
 

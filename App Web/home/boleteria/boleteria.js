@@ -66,22 +66,33 @@ export class BoleteriaComponent extends HTMLElement {
 
     if (!confirmacion) return null;
 
+    // Preguntamos a la BD si ese evento ya ha vendido boletos.
+
+    const boletosDeEvento = await this.#boletosService.getBoletosPorIdEvento(token, parseInt(idEvento));
+
+    const hasBoletosVendidos = boletosDeEvento.find((boleto) => boleto.estado == 'VENDIDO');
+
+    // Si ya ha vendido boletos, no se podrá eliminar.
+    if (hasBoletosVendidos) {
+      alert('Ese evento ya ha vendido boletos, no se puede eliminar, se eliminará automáticamente cuando la fecha de estreno pase.');
+      return;
+    }
+
     // Primero eliminamos los boletos.
     const resBoletos = await this.#boletosService.deleteBoletosPorIdEvento(token, idEvento);
 
     if (resBoletos.statusCode != 200) {
       // Obtenemos todos los datos del evento seleccionado a eliminar.
-      console.log(this.eventos);
 
       const eventoSeleccionado = this.eventos.find(evento => evento.idEvento === parseInt(idEvento));
       console.log(eventoSeleccionado)
       const res = await this.#eventosServices.deleteEvento(eventoSeleccionado, token);
-      console.log(res);
 
       alert('Evento eliminado correctamente.');
     } else {
       console.log(res);
     }
+
   }
 
   async #obtenerBoletos(token) {

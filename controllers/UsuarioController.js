@@ -5,6 +5,7 @@ const { generarToken } = require('../auth/auth');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const total = 0;
+const activa = 'ACTIVA';
 
 class UsuarioController {
     static async crearUsuario(req, res, next) {
@@ -13,6 +14,11 @@ class UsuarioController {
 
             const errores = await UsuarioController.validarCampos(nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña);
 
+            const usuarioEncontrado = await UsuarioDAO.obtenerUsuarioPorCorreo(correo);
+            if (usuarioEncontrado && usuarioEncontrado.dataValues.activa === 'ACTIVA') {
+                errores.push(`El correo ${correo} ya existe en nuestra Boletería.`);
+            }
+
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
             } else {
@@ -20,14 +26,11 @@ class UsuarioController {
                 
                 const salt = await bcrypt.genSalt(saltRounds);
 
-                // Concatenar la contraseña con la sal
-                const passwordWithSalt = `${contraseña}:${salt}`;
-
                 // Aplicar una función hash a la combinación de contraseña y sal
-                const hash = await bcrypt.hash(passwordWithSalt, saltRounds);
+                const hash = await bcrypt.hash(contraseña, saltRounds);
 
                 // Almacenar el hash y la sal en el formato deseado
-                const usuarioData = { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña: `${hash}:${salt}` };
+                const usuarioData = { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña: `${hash}:${salt}`, activa };
                 const usuario = await UsuarioDAO.crearUsuario(usuarioData);
 
                 // Crear carrito de compra para el usuario
@@ -135,10 +138,6 @@ class UsuarioController {
         try {
             const id = req.params.id;
 
-            // Eliminamos primero su carrito de compras.
-            const idCarritoCompra = await CarritoCompraDAO.obtenerCarritoCompraPorIdUsuario(id);
-            await CarritoCompraDAO.eliminarCarritoCompra(idCarritoCompra.dataValues.idCarrito_Compra);
-
             const usuario = await UsuarioDAO.eliminarUsuario(id);
             if (usuario === null || usuario === undefined) {
                 next(new AppError('No se encontró el usuario', 404));
@@ -171,7 +170,13 @@ class UsuarioController {
             errores.push('El tipo de usuario es obligatorio');
         }
 
-        if (!edad || edad > 150 || !Number.isInteger(edad)) {
+        if (!edad || edad > 150) {
+            errores.push('Ingrese una edad válida');
+        }
+
+        try {
+            edad = parseInt(edad);
+        } catch (error) {
             errores.push('Ingrese una edad válida');
         }
 
@@ -185,11 +190,6 @@ class UsuarioController {
 
         if (!correo || !regexCorreo.test(correo)) {
             errores.push('El correo no es válido');
-        }
-
-        const usuarioEncontrado = await UsuarioDAO.obtenerUsuarioPorCorreo(correo);
-        if(usuarioEncontrado) {
-            errores.push(`El correo ${correo} ya existe en nuestra Boletería.`);
         }
 
         if (!contraseña || contraseña.length < 8) {

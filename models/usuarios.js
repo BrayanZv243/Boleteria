@@ -31,8 +31,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
-    'contraseña': {
+    contraseña: {
       type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    activa: {
+      type: DataTypes.STRING(45),
       allowNull: false
     }
   }, {

@@ -148,7 +148,6 @@ export class PerfilUsuarioComponent extends HTMLElement {
             alert(res.message);
             return;
         }
-        alert('Se actualizó el usuario correctamente');
         location.reload();
     }
 
@@ -251,52 +250,52 @@ export class PerfilUsuarioComponent extends HTMLElement {
         const contraseñaConfirmar = this.shadowRoot.getElementById('contraseñaConfirmar').value;
 
         // Realizar validaciones
-        if (!nombreUsuario.value.trim()) {
+        if (!nombreUsuario.trim()) {
             alert('Por favor, ingrese un nombre válido.');
             return false;
         }
 
-        if (!/^[A-Za-z]+$/.test(nombreUsuario.value.trim())) {
+        if (!/^[A-Za-z]+$/.test(nombreUsuario.trim())) {
             alert('El nombre debe contener solo letras.');
             return false;
         }
 
-        if (!apellidoUsuario.value.trim()) {
+        if (!apellidoUsuario.trim()) {
             alert('Por favor, ingrese un apellido válido.');
             return false;
         }
 
-        if (!/^[A-Za-z]+$/.test(apellidoUsuario.value.trim())) {
+        if (!/^[A-Za-z]+$/.test(apellidoUsuario.trim())) {
             alert('El apellido debe contener solo letras.');
             return false;
         }
 
-        if (isNaN(edadUsuario.value) || edadUsuario.value <= 0) {
+        if (isNaN(edadUsuario) || edadUsuario <= 0) {
             alert('Por favor, ingrese una edad válida.');
             return false;
         }
 
-        if (!Number.isInteger(Number(edadUsuario.value))) {
+        if (!Number.isInteger(Number(edadUsuario))) {
             alert('La edad debe ser un número entero.');
             return false;
         }
 
-        if (isNaN(telefonoUsuario.value) || telefonoUsuario.value <= 0 || telefonoUsuario.value.length !== 10) {
+        if (isNaN(telefonoUsuario) || telefonoUsuario <= 0 || telefonoUsuario.length !== 10) {
             alert('Por favor, ingrese un número de teléfono válido de 10 dígitos.');
             return false;
         }
 
-        if (!correo.value.trim() || !/\S+@\S+\.\S+/.test(correo.value)) {
+        if (!correo.trim() || !/\S+@\S+\.\S+/.test(correo)) {
             alert('Por favor, ingrese un correo electrónico válido.');
             return false;
         }
 
-        if (contraseña.value.length < 8) {
+        if (contraseña.length < 8) {
             alert('La contraseña debe tener al menos 8 caracteres.');
             return false;
         }
 
-        if (contraseña.value !== contraseñaConfirmar.value) {
+        if (contraseña !== contraseñaConfirmar) {
             alert('Las contraseñas no coinciden.');
             return false;
         }

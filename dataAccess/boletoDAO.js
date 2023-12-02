@@ -70,9 +70,8 @@ class BoletoDAO {
             const boletosDeIdEvento = [];
             const respuesta = await Boleto.findAll();
             const boletos = respuesta.map((registro) => registro.toJSON());
-
             boletos.forEach((boleto) => {
-                if (boleto.idEvento === idEvento) {
+                if (boleto.idEvento === parseInt(idEvento)) {
                     boletosDeIdEvento.push(boleto);
                 }
             });

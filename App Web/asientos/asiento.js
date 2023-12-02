@@ -81,13 +81,13 @@ export class AsientoComponent extends HTMLElement {
         return filasHTML.join('');
     }
 
-    async #eliminarAsiento(evento){
+    async #eliminarAsiento(evento) {
         var confirmacion = confirm("¿Estás seguro de que quieres eliminar el asiento? Esta acción es irreversible");
 
-        if(!confirmacion) return;
+        if (!confirmacion) return;
 
         const idAsiento = evento.target.dataset.id;
-        
+
         const res = await this.#asientosService.deleteAsiento(idAsiento, this.token);
 
         if (res && res.idAsiento) {
@@ -97,14 +97,19 @@ export class AsientoComponent extends HTMLElement {
         }
 
         console.log(res);
-        alert('Ocurrió un error al eliminar el asiento');
+        alert(res.message);
     }
 
 
     // Función para separar la fila y el número
     #separarFilaYNumero(cadena) {
-        var fila = cadena.charAt(0);
-        var numero = parseInt(cadena.slice(1));
+        // Encuentra la posición del primer número en la cadena
+        const indiceNumero = cadena.search(/\d/);
+
+        // Separa la cadena en Fila y Número
+        const fila = cadena.substring(0, indiceNumero);
+        const numero = cadena.substring(indiceNumero);
+
         return { fila, numero };
     }
 
@@ -114,7 +119,7 @@ export class AsientoComponent extends HTMLElement {
         link.setAttribute("rel", "stylesheet");
         link.setAttribute("href", "/App Web/carrito/carrito.css");
 
-        
+
 
         let link2 = document.createElement("link");
         link2.setAttribute("rel", "stylesheet");

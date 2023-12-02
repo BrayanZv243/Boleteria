@@ -9,8 +9,8 @@ class UsuarioDAO {
 
     static async crearUsuario(usuario) {
         try {
-            const { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña } = usuario;
-            return await Usuario.create({ nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña });
+            const { nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña, activa } = usuario;
+            return await Usuario.create({ nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña, activa });
         } catch (error) {
             return null;
         }
@@ -68,10 +68,10 @@ class UsuarioDAO {
 
     static async eliminarUsuario(id) {
         try {
-            const usuario = await Usuario.findByPk(id);
-            if (!usuario) return null;
-            await usuario.destroy();
-            return usuario;
+            await Usuario.update({
+                activa : "INACTIVA"
+            }, { where: { idusuario: id } })
+            return 'Usuario desactivado';
         } catch (error) {
             throw error;
         }
