@@ -210,7 +210,7 @@ export class EventosService {
             // Maneja la respuesta del servidor
             if (resEliminarEvento.ok) {
                 // El evento se eliminó correctamente
-                return resEliminarEvento;
+                return await resEliminarEvento.json();
             } else {
                 // El evento no se eliminó correctamente
                 const errorData = await resEliminarEvento.json();

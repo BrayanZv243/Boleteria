@@ -67,12 +67,14 @@ export class BoleteriaComponent extends HTMLElement {
     if (!confirmacion) return null;
 
     // Primero eliminamos los boletos.
-    const resBoletos = this.#boletosService.deleteBoletosPorIdEvento(token, idEvento);
+    const resBoletos = await this.#boletosService.deleteBoletosPorIdEvento(token, idEvento);
 
     if (resBoletos.statusCode != 200) {
-      // Obtenemos todos los datos del evento seleccionado a eliminar.    
-      const eventoSeleccionado = this.eventos.find(evento => evento.idEvento === parseInt(idEvento));
+      // Obtenemos todos los datos del evento seleccionado a eliminar.
+      console.log(this.eventos);
 
+      const eventoSeleccionado = this.eventos.find(evento => evento.idEvento === parseInt(idEvento));
+      console.log(eventoSeleccionado)
       const res = await this.#eventosServices.deleteEvento(eventoSeleccionado, token);
       console.log(res);
 

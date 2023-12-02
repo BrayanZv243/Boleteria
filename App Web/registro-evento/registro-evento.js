@@ -189,6 +189,7 @@ export class RegistroEventoComponent extends HTMLElement {
                 return;
             }
             alert('Se registró el evento y sus boletos correctamente.');
+            window.location.href = "index.html";
         } else {
             // Obtenemos el nombre de la imagen a eliminar.
             const nombreImagenEliminar = this.#obtenerEventoPorURI().nombreImagen;

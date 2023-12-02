@@ -116,6 +116,7 @@ class EventoController {
             }
 
         } catch (error) {
+            console.log(error);
             next(new AppError('No se pudo eliminar el evento ' + error, 404));
         }
     }
@@ -148,7 +149,7 @@ class EventoController {
             // Luego, comprobamos si el día es igual o posterior
             if (fechaIngresada.getFullYear() === fechaActual.getFullYear() &&
                 fechaIngresada.getMonth() === fechaActual.getMonth() &&
-                fechaIngresada.getDate() + 1 < fechaActual.getDate()) {
+                fechaIngresada.getDate() < fechaActual.getDate()) {
                 errores.push('La fecha no puede ser anterior a la fecha actual.');
             }
         }
