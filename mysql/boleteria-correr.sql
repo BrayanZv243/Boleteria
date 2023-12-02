@@ -27,7 +27,7 @@ CREATE TABLE `asientos` (
   `tipo` varchar(255) NOT NULL,
   `filaYNumero` varchar(255) NOT NULL,
   PRIMARY KEY (`idAsiento`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `asientos` (
 
 LOCK TABLES `asientos` WRITE;
 /*!40000 ALTER TABLE `asientos` DISABLE KEYS */;
-INSERT INTO `asientos` VALUES (2,'VIP','H25'),(3,'VIP','A1'),(4,'NORMAL','B10'),(5,'VIP+','C5'),(6,'ELITE','D20'),(7,'VIP','E15'),(8,'NORMAL','F30'),(9,'VIP+','G3'),(10,'ELITE','H8'),(11,'VIP','I12'),(14,'NORMAL','H25');
+INSERT INTO `asientos` VALUES (2,'VIP','H25'),(3,'VIP','A1'),(4,'NORMAL','B10'),(5,'VIP+','C5'),(6,'ELITE','D20'),(7,'VIP','E15'),(8,'NORMAL','F30'),(9,'VIP+','G3'),(10,'ELITE','H8'),(11,'VIP','I12'),(14,'NORMAL','H25'),(17,'NORMAL','AA22'),(18,'VIP+','AC52');
 /*!40000 ALTER TABLE `asientos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +58,7 @@ CREATE TABLE `boletos` (
   KEY `fk_boletos_asientos1_idx` (`idAsiento`),
   CONSTRAINT `fk_boletos_asientos1` FOREIGN KEY (`idAsiento`) REFERENCES `asientos` (`idAsiento`),
   CONSTRAINT `fk_boletos_eventos1` FOREIGN KEY (`idEvento`) REFERENCES `eventos` (`idEvento`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=392 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `boletos` (
 
 LOCK TABLES `boletos` WRITE;
 /*!40000 ALTER TABLE `boletos` DISABLE KEYS */;
-INSERT INTO `boletos` VALUES (2,7,5,150.00,'DISPONIBLE'),(3,8,2,25000.00,'VENDIDO'),(4,7,6,1500.00,'DISPONIBLE'),(7,12,5,25000.00,'VENDIDO'),(8,12,5,25000.00,'VENDIDO'),(9,12,7,15500.00,'DISPONIBLE');
+INSERT INTO `boletos` VALUES (302,189,2,50.00,'VENDIDO'),(303,189,3,50.00,'VENDIDO'),(304,189,4,50.00,'DISPONIBLE'),(305,189,5,50.00,'DISPONIBLE'),(306,189,6,50.00,'DISPONIBLE'),(329,192,2,990.00,'VENDIDO'),(330,192,3,990.00,'VENDIDO'),(331,192,4,990.00,'VENDIDO'),(332,192,5,990.00,'DISPONIBLE'),(333,192,6,990.00,'DISPONIBLE'),(334,192,7,990.00,'DISPONIBLE'),(335,192,8,990.00,'DISPONIBLE'),(336,192,9,990.00,'VENDIDO'),(337,192,10,990.00,'DISPONIBLE');
 /*!40000 ALTER TABLE `boletos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,7 +85,7 @@ CREATE TABLE `carrito_compra` (
   PRIMARY KEY (`idCarrito_Compra`),
   KEY `fk_carrito_compra_usuarios1_idx` (`idUsuario`),
   CONSTRAINT `fk_carrito_compra_usuarios1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +94,7 @@ CREATE TABLE `carrito_compra` (
 
 LOCK TABLES `carrito_compra` WRITE;
 /*!40000 ALTER TABLE `carrito_compra` DISABLE KEYS */;
-INSERT INTO `carrito_compra` VALUES (7,75,25150.00),(8,76,0.00),(9,77,0.00);
+INSERT INTO `carrito_compra` VALUES (7,75,0.00),(9,77,0.00),(12,80,0.00),(13,81,0.00),(25,92,0.00);
 /*!40000 ALTER TABLE `carrito_compra` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +122,6 @@ CREATE TABLE `carrito_compra_has_boletos` (
 
 LOCK TABLES `carrito_compra_has_boletos` WRITE;
 /*!40000 ALTER TABLE `carrito_compra_has_boletos` DISABLE KEYS */;
-INSERT INTO `carrito_compra_has_boletos` VALUES (7,2),(7,3);
 /*!40000 ALTER TABLE `carrito_compra_has_boletos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +139,7 @@ CREATE TABLE `compras` (
   PRIMARY KEY (`idCompra`),
   KEY `fk_compras_pagos1_idx` (`idPago`),
   CONSTRAINT `fk_compras_pagos1` FOREIGN KEY (`idPago`) REFERENCES `pagos` (`idPago`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +148,7 @@ CREATE TABLE `compras` (
 
 LOCK TABLES `compras` WRITE;
 /*!40000 ALTER TABLE `compras` DISABLE KEYS */;
-INSERT INTO `compras` VALUES (11,18,29000.00);
+INSERT INTO `compras` VALUES (16,23,1206.40),(17,24,1148.40),(18,25,1148.40),(19,26,1206.40);
 /*!40000 ALTER TABLE `compras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,7 +176,7 @@ CREATE TABLE `compras_has_boletos` (
 
 LOCK TABLES `compras_has_boletos` WRITE;
 /*!40000 ALTER TABLE `compras_has_boletos` DISABLE KEYS */;
-INSERT INTO `compras_has_boletos` VALUES (11,8);
+INSERT INTO `compras_has_boletos` VALUES (16,302),(19,303),(17,329),(16,330),(18,331),(19,336);
 /*!40000 ALTER TABLE `compras_has_boletos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,7 +197,7 @@ CREATE TABLE `eventos` (
   `numBoletosDisponibles` int NOT NULL,
   `nombreImagen` varchar(500) NOT NULL,
   PRIMARY KEY (`idEvento`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,7 +206,7 @@ CREATE TABLE `eventos` (
 
 LOCK TABLES `eventos` WRITE;
 /*!40000 ALTER TABLE `eventos` DISABLE KEYS */;
-INSERT INTO `eventos` VALUES (1,'Peso Pluma','Arena ITSON','Concierto','2023-11-26 00:00:00',0,100,''),(7,'Evento 1','Las Lomas','Concierto','2023-10-23 00:00:00',6,194,''),(8,'Evento 2','Centro de Convenciones','Conferencia','2023-11-15 00:00:00',3,147,''),(10,'Evento 4','Estadio Nacional','Deporte','2023-11-08 00:00:00',0,300,''),(11,'Evento 5','Parque de la Ciudad','Festival','2024-07-20 00:00:00',0,250,''),(12,'Peso Pluma','Arena ITSON','Concierto','2023-11-25 00:00:00',252,1,''),(13,'Peso Pluma','Arena ITSON','Concierto','2023-11-25 00:00:00',0,0,''),(99,'Kimetsu no Yaiba Evento','Animecon - Obregón','CONCIERTO','2023-11-26 04:06:00',0,22,'kayn.png');
+INSERT INTO `eventos` VALUES (189,'Torneo Smash Bros','Animecon','CONCIERTO','2023-12-15 20:30:00',2,3,'smash.jpg'),(192,'Kimetsu no Yaiba Evento','Animecon - Obregón','ARTE Y CULTURA','2023-12-08 13:29:00',4,6,'102197914.png');
 /*!40000 ALTER TABLE `eventos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,7 +226,7 @@ CREATE TABLE `pagos` (
   PRIMARY KEY (`idPago`),
   KEY `idUsuario_idx` (`idUsuario`),
   CONSTRAINT `idUsuario` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,7 +235,7 @@ CREATE TABLE `pagos` (
 
 LOCK TABLES `pagos` WRITE;
 /*!40000 ALTER TABLE `pagos` DISABLE KEYS */;
-INSERT INTO `pagos` VALUES (18,75,25000.00,'BBVA','2023-10-26 00:00:00');
+INSERT INTO `pagos` VALUES (23,80,1206.40,'BBVA','2023-12-01 14:01:00'),(24,80,1148.40,'BBVA','2023-12-01 15:49:00'),(25,77,1148.40,'BBVA','2023-12-01 18:06:00'),(26,80,1206.40,'BANCO AZTECA','2023-12-01 21:29:00');
 /*!40000 ALTER TABLE `pagos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,8 +278,9 @@ CREATE TABLE `usuarios` (
   `telefono` varchar(255) NOT NULL,
   `correo` varchar(255) NOT NULL,
   `contraseña` varchar(255) NOT NULL,
+  `activa` varchar(45) NOT NULL,
   PRIMARY KEY (`idUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -289,12 +289,16 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (75,'Brayan','Zavala','NORMAL',20,'6441596164','zavala_243@hotmail.com','123456789'),(76,'Brayan','Zavala','ADMIN',20,'6441596164','brayan@hotmail.com','1'),(77,'Kevin','Salazar','NORMAL',25,'6441596164','kevin@hotmail.com','12345678');
+INSERT INTO `usuarios` VALUES (75,'Brayan','Zavala','NORMAL',20,'6441596164','zavala_243@hotmail.com','$2b$10$9ZXD6yNFse4fZBcVwYBqBeU32IPRs31Rvu3IEKX.5sbfTPimRxyZu:$2b$10$9ZXD6yNFse4fZBcVwYBqBe','ACTIVA'),(77,'Kevin','Salazar','NORMAL',25,'6441596164','kevin@hotmail.com','$2b$10$tEACj.dnSR/.zkqtNmjN..00.3qDq4HQZIaYyOHKiXWqfahWVuoNi:$2b$10$tEACj.dnSR/.zkqtNmjN..','ACTIVA'),(80,'Brayan','Zavala','ADMIN',20,'6441596164','brayan@hotmail.com','$2b$10$W7Nm9RJYvrdhbMGQlA/VnuFJbYfwYcvAUFhG1nQp6NILdXJWjXV2a:$2b$10$W7Nm9RJYvrdhbMGQlA/Vnu','ACTIVA'),(81,'Luis','Toledo','NORMAL',21,'6441596164','luis@hotmail.com','$2b$10$E9Hu.a3t739FrOL7qWHT0OCcr3P0RqovHc.oJLdK/NxEtfNK9i.iK:$2b$10$1h7gYgJjhSaT3LESXKViye','ACTIVA'),(92,'Sofia','Cazares','NORMAL',55,'1234567891','sofia@hotmail.com','$2b$10$P88RNpQruha7ZhEhVOikvujQr2k912UAAOwMLr6t3Y4sL/6hO8.nC:$2b$10$nz3qlNpWWjWGUN11kytLk.','INACTIVA');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Dumping events for database 'boleteria'
+--
+
+--
+-- Dumping routines for database 'boleteria'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -306,4 +310,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-18 21:07:51
+-- Dump completed on 2023-12-02 16:55:29
