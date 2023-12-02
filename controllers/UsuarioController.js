@@ -4,7 +4,6 @@ const { AppError } = require('../utils/appError');
 const { generarToken } = require('../auth/auth');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 const total = 0;
 
 class UsuarioController {
@@ -16,7 +15,6 @@ class UsuarioController {
 
             if (errores.length > 0) {
                 next(new AppError(`Error de validación: ${errores.join(', ')}`, 400));
-                res.status(400).json({ statusCode: 400, message: errores.join(', ') });
             } else {
                 // Generar una sal única
                 
@@ -157,12 +155,15 @@ class UsuarioController {
 
     static async validarCampos(nombre, apellido, tipoUsuario, edad, telefono, correo, contraseña) {
         const errores = [];
+        const regexLetras = /^[a-zA-Z]+$/;
+        const regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        const regexTelefono = /^\d{10}$/;
 
-        if (!nombre || nombre.length === 0) {
+        if (!nombre || nombre.length === 0 || !regexLetras.test(nombre)) {
             errores.push('El nombre es obligatorio');
         }
 
-        if (!apellido || apellido.length === 0) {
+        if (!apellido || apellido.length === 0 || !regexLetras.test(apellido)) {
             errores.push('El apellido es obligatorio');
         }
 
@@ -170,16 +171,25 @@ class UsuarioController {
             errores.push('El tipo de usuario es obligatorio');
         }
 
-        if (!edad || edad < 18) {
-            errores.push('La edad debe ser mayor o igual a 18');
+        if (!edad || edad > 150 || !Number.isInteger(edad)) {
+            errores.push('Ingrese una edad válida');
         }
 
         if (!telefono || telefono.length === 0 || telefono.length > 10) {
             errores.push('El teléfono es obligatorio');
         }
 
-        if (!correo || !regex.test(correo)) {
+        if(!regexTelefono.test(telefono)){
+            errores.push('Ingrese un teléfono válido de 10 números');
+        }
+
+        if (!correo || !regexCorreo.test(correo)) {
             errores.push('El correo no es válido');
+        }
+
+        const usuarioEncontrado = await UsuarioDAO.obtenerUsuarioPorCorreo(correo);
+        if(usuarioEncontrado) {
+            errores.push(`El correo ${correo} ya existe en nuestra Boletería.`);
         }
 
         if (!contraseña || contraseña.length < 8) {

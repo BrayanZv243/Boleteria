@@ -129,7 +129,7 @@ export class PerfilUsuarioComponent extends HTMLElement {
         const nuevaContraseña = this.shadowRoot.getElementById('contraseña').value;
 
         if (!this.#validarFormulario()) {
-            return false;
+            return;
         }
 
         const data = {
@@ -242,17 +242,22 @@ export class PerfilUsuarioComponent extends HTMLElement {
 
     #validarFormulario() {
         // Obtener referencias a los elementos del formulario
-        const nombreUsuario = this.shadowRoot.getElementById('nombreUsuario');
-        const apellidoUsuario = this.shadowRoot.getElementById('apellidoUsuario');
-        const edadUsuario = this.shadowRoot.getElementById('edadUsuario');
-        const telefonoUsuario = this.shadowRoot.getElementById('telefonoUsuario');
-        const correo = this.shadowRoot.getElementById('correo');
-        const contraseña = this.shadowRoot.getElementById('contraseña');
-        const contraseñaConfirmar = this.shadowRoot.getElementById('contraseñaConfirmar');
+        const nombreUsuario = this.shadowRoot.getElementById('nombreUsuario').value;
+        const apellidoUsuario = this.shadowRoot.getElementById('apellidoUsuario').value;
+        const edadUsuario = this.shadowRoot.getElementById('edadUsuario').value;
+        const telefonoUsuario = this.shadowRoot.getElementById('telefonoUsuario').value;
+        const correo = this.shadowRoot.getElementById('correo').value;
+        const contraseña = this.shadowRoot.getElementById('contraseña').value;
+        const contraseñaConfirmar = this.shadowRoot.getElementById('contraseñaConfirmar').value;
 
         // Realizar validaciones
         if (!nombreUsuario.value.trim()) {
             alert('Por favor, ingrese un nombre válido.');
+            return false;
+        }
+
+        if (!/^[A-Za-z]+$/.test(nombreUsuario.value.trim())) {
+            alert('El nombre debe contener solo letras.');
             return false;
         }
 
@@ -261,13 +266,23 @@ export class PerfilUsuarioComponent extends HTMLElement {
             return false;
         }
 
+        if (!/^[A-Za-z]+$/.test(apellidoUsuario.value.trim())) {
+            alert('El apellido debe contener solo letras.');
+            return false;
+        }
+
         if (isNaN(edadUsuario.value) || edadUsuario.value <= 0) {
             alert('Por favor, ingrese una edad válida.');
             return false;
         }
 
-        if (isNaN(telefonoUsuario.value) || telefonoUsuario.value <= 0) {
-            alert('Por favor, ingrese un número de teléfono válido.');
+        if (!Number.isInteger(Number(edadUsuario.value))) {
+            alert('La edad debe ser un número entero.');
+            return false;
+        }
+
+        if (isNaN(telefonoUsuario.value) || telefonoUsuario.value <= 0 || telefonoUsuario.value.length !== 10) {
+            alert('Por favor, ingrese un número de teléfono válido de 10 dígitos.');
             return false;
         }
 
@@ -288,9 +303,6 @@ export class PerfilUsuarioComponent extends HTMLElement {
 
         return true;
     }
-
-
-
 
     // Se agregan los estilos al HTML.
     #agregarEstilos(shadow) {

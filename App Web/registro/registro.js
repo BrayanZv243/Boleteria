@@ -49,6 +49,7 @@ export class RegistroComponent extends HTMLElement {
                                                 <input type="email" name="" id="correo-registro" placeholder="Correo" required>
 
                                                 <input type="password" name="" id="contraseña-registro" placeholder="Contraseña" required>
+                                                <input type="password" name="" id="contraseña-confirmar" placeholder="Confirmar Contraseña" required>
 
 
                                                 <button type="submit" class="btn-comprar">Registrarse</button>
@@ -86,12 +87,13 @@ export class RegistroComponent extends HTMLElement {
         const correo = this.shadowRoot.querySelector('#correo-registro').value;
         const contraseña = this.shadowRoot.querySelector('#contraseña-registro').value;
 
+        if(!this.#validarFormulario()) return;
         
         const data = {
             nombre,
             apellido,
             tipoUsuario: "NORMAL",
-            edad,
+            edad: parseInt(edad),
             telefono,
             correo,
             contraseña
@@ -138,6 +140,72 @@ export class RegistroComponent extends HTMLElement {
         shadow.appendChild(link3);
 
     }
+
+    #validarFormulario() {
+        // Obtener referencias a los elementos del formulario
+        const nombre = this.shadowRoot.querySelector('#nombre-registro').value;
+        const apellido = this.shadowRoot.querySelector('#apellido-registro').value;
+        const edad = this.shadowRoot.querySelector('#edad-registro').value;
+        const telefono = this.shadowRoot.querySelector('#telefono-registro').value;
+        const correo = this.shadowRoot.querySelector('#correo-registro').value;
+        const contraseña = this.shadowRoot.querySelector('#contraseña-registro').value;
+        const contraseñaConfirmar = this.shadowRoot.querySelector('#contraseña-confirmar').value;
+
+
+        // Realizar validaciones
+        if (!nombre.trim()) {
+            alert('Por favor, ingrese un nombre válido.');
+            return false;
+        }
+
+        if (!/^[A-Za-z]+$/.test(nombre.trim())) {
+            alert('El nombre debe contener solo letras.');
+            return false;
+        }
+
+        if (!apellido.trim()) {
+            alert('Por favor, ingrese un apellido válido.');
+            return false;
+        }
+
+        if (!/^[A-Za-z]+$/.test(apellido.trim())) {
+            alert('El apellido debe contener solo letras.');
+            return false;
+        }
+
+        if (isNaN(edad) || edad <= 0) {
+            alert('Por favor, ingrese una edad válida.');
+            return false;
+        }
+
+        if (!Number.isInteger(Number(edad))) {
+            alert('La edad debe ser un número entero.');
+            return false;
+        }
+
+        if (isNaN(telefono) || telefono.length !== 10) {
+            alert('Por favor, ingrese un número de teléfono válido de 10 dígitos.');
+            return false;
+        }
+
+        if (!correo.trim() || !/\S+@\S+\.\S+/.test(correo)) {
+            alert('Por favor, ingrese un correo electrónico válido.');
+            return false;
+        }
+
+        if (contraseña.length < 8) {
+            alert('La contraseña debe tener al menos 8 caracteres.');
+            return false;
+        }
+
+        if (contraseña !== contraseñaConfirmar) {
+            alert('Las contraseñas no coinciden.');
+            return false;
+        }
+
+        return true;
+    }
+
 
     #agregarJS(shadow) {
         let link = document.createElement("link");
