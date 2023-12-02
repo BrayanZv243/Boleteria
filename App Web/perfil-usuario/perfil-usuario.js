@@ -12,9 +12,8 @@ export class PerfilUsuarioComponent extends HTMLElement {
         this.usuario;
     }
 
-    async connectedCallback() {
-        const shadow = this.attachShadow({ mode: "open" });
-
+    // Obtiene los datos del usuario.
+    async #getDataUser() {
         try {
             this.token = this.#cookiesService.getCookieSession('cookieSesion');
             // Obtenemos los datos del usuario con su ID dado su token en la cookie.
@@ -24,25 +23,51 @@ export class PerfilUsuarioComponent extends HTMLElement {
             alert('Sesión expirada, inicie sesión de nuevo por favor.');
             window.location.href = "iniciar-sesion.html"
         }
+    }
 
-        this.#render(shadow, this.usuario);
-        this.#agregarEstilos(shadow);
+    #handleEvents(shadow) {
         const administrarCuenta = shadow.querySelector('#miFormulario');
         administrarCuenta.addEventListener('submit', (event) => {
             event.preventDefault(); // Evita la recarga automática de la página
 
             const submitButton = event.submitter;
 
-            if (submitButton.id === 'actualizarUsuario') {
-                // Realizar la lógica de actualización
-                this.#handleActualizarCuenta(event);
-            } else if (submitButton.id === 'eliminarUsuario') {
-                // Realizar la lógica de eliminación
-                this.#handleEliminarCuenta(event);
+            switch (submitButton.id) {
+                case 'actualizarUsuario':
+                    // Realizar la lógica de actualización.
+                    this.#handleActualizarCuenta(event);
+                    break;
+                case 'cerrarSesion':
+                    // Realizar la lógica de cerrar sesión.
+                    this.#cerrarSesion(event);
+                    break;
+                case 'eliminarUsuario':
+                    // Realizar la lógica de eliminación.
+                    this.#handleEliminarCuenta(event);
+                    break;
+                default:
+                    alert('Ocurrió un error.');
+                    this.#cerrarSesion(event);
+                    break;
             }
+
         });
 
+        const misCompras = shadow.querySelector('#misCompras');
 
+        misCompras.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            this.#handleVerMisCompras(event);
+        });
+    }
+
+    async connectedCallback() {
+        const shadow = this.attachShadow({ mode: "open" });
+        await this.#getDataUser();
+        this.#render(shadow, this.usuario);
+        this.#agregarEstilos(shadow);
+        this.#handleEvents(shadow);
     }
 
     #render(shadow, usuario) {
@@ -64,6 +89,8 @@ export class PerfilUsuarioComponent extends HTMLElement {
                                     <div class="bienvenida">
                                         <img src="/App Web/images/icono-boleteria2.png" class="icono">
                                         <h2>Bienvenido a tu Perfil, ${usuario.nombre}</h2>
+                                        <button type="button" id="misCompras" class="btn-comprar">Ver mis compras</button>
+
                                     </div>
                                         <form id="miFormulario">
                                             <div class="contenido">
@@ -74,7 +101,9 @@ export class PerfilUsuarioComponent extends HTMLElement {
                                                 <input type="email" name="" id="correo" placeholder="Correo Email" value="${usuario.correo}" required>
                                                 <input type="password" name="" id="contraseña" placeholder="Contraseña" value="${usuario.contraseña}" required>
                                                 <input type="password" name="" id="contraseñaConfirmar" placeholder="Confirmar Contraseña" value="${usuario.contraseña}" required>
+                                                
                                                 <button type="submit" id="actualizarUsuario" class="btn-comprar">Actualizar Cuenta</button>
+                                                <button type="submit" id="cerrarSesion" class="btn-comprar">Cerrar Sesión</button>
                                                 <button type="submit" id="eliminarUsuario" class="btn-eliminar">Eliminar Cuenta</button>
 
                                             </div>
@@ -91,6 +120,23 @@ export class PerfilUsuarioComponent extends HTMLElement {
     <!-- END PAGE SOURCE -->
 </body>
         `
+    }
+
+    #handleVerMisCompras(event) {
+        // Redireccionamos a la página de mis compras.
+        window.location.href = "mis-compras.html";
+    }
+
+    #cerrarSesion(event) {
+        const confirmacion = confirm('¿Estás seguro de cerrar la sesión?');
+
+        if (!confirmacion) return;
+
+        // Eliminamos la cookie con el token.
+        this.#cookiesService.eliminarCookie('cookieSesion');
+
+        // Redireccionamos al inicio de sesión.
+        window.location.href = "iniciar-sesion.html";
     }
 
     async #handleActualizarCuenta(event) {
@@ -124,7 +170,7 @@ export class PerfilUsuarioComponent extends HTMLElement {
         location.reload();
     }
 
-    async #handleEliminarCuenta(evento) {
+    async #handleEliminarCuenta(event) {
         var confirmacion1 = confirm("¿Estás seguro de que quieres eliminar tu cuenta? Esta acción es irreversible");
 
         if (!confirmacion1) {

@@ -30,7 +30,12 @@ export class CarritoComponent extends HTMLElement {
 
         await this.#render(shadow);
         this.#agregarEstilos(shadow);
+        this.#handlerEvents(shadow);
+        
+        
+    }
 
+    #handlerEvents(shadow){
         // Obtener todos los elementos con la clase 'event-container'
         const cardsEventos = shadow.querySelectorAll('.event-container');
         const cardPagarCarrito = shadow.querySelector('#pagarCarrito');
@@ -51,20 +56,20 @@ export class CarritoComponent extends HTMLElement {
                     if (confirm('¿Estás seguro de eliminar el boleto del carrito?')) this.#handleDeleteBoletoDeCarrito(boletos);
                 }
 
-                const selectElement = card.querySelector('select');
-
-                if (selectElement) {
-                    selectElement.addEventListener('click', (event) => {
-                        event.stopPropagation(); // Detener la propagación del evento
-                    });
-                }
+                
 
             });
         });
-        if(this.boletosEnCarrito.length != 0){
+        const selectElement = cardPagarCarrito.querySelector('select');
+
+        if (selectElement) {
+            selectElement.addEventListener('click', (event) => {
+                event.stopPropagation(); // Detener la propagación del evento
+            });
+        }
+        if (this.boletosEnCarrito.length != 0) {
             cardPagarCarrito.addEventListener('click', () => this.#handlePagarCarrito(shadow));
         }
-        
     }
 
     async #obtenerBoletosEnCarritoCompra() {
@@ -139,7 +144,9 @@ export class CarritoComponent extends HTMLElement {
                         <select id="metodoPago">
                             <option selected value="0">Método de pago</option>
                             <option value="BBVA">BBVA</option>
-                            <option value="BANCOMER">Bancomer</option>
+                            <option value="BANCO AZTECA">Banco Azteca</option>
+                            <option value="BANORTE">Banorte</option>
+                            <option value="HSBC">HSBC</option>
                             <option value="SANTANDER">Santander</option>
                             <option value="PAYPAL">PayPal</option>
                         </select>
@@ -201,6 +208,7 @@ export class CarritoComponent extends HTMLElement {
             alert('¡Gracias por su compra! :)');
             // Redirigimos a mis compras...
 
+            window.location.href = "mis-compras.html";
             return;
         } 
 

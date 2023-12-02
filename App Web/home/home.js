@@ -1,7 +1,4 @@
-import { EventosService } from "../servicios/EventosService.js";
-
 export class HomeComponent extends HTMLElement {
-  #eventosServices = new EventosService();
 
   constructor() {
     super()

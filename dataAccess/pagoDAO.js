@@ -18,12 +18,7 @@ class PagoDAO {
 
     static async obtenerPagos() {
         try {
-            return await Pago.findAll({
-                include: {
-                    model: Usuario,
-                    as: 'idUsuario_usuario'
-                }
-            });
+            return await Pago.findAll();
         } catch (error) {
             throw error;
         }
@@ -35,10 +30,6 @@ class PagoDAO {
             return await Pago.findAll({
                 where: {
                     idUsuario: idUsuario
-                },
-                include: {
-                    model: Usuario,
-                    as: 'idUsuario_usuario'
                 }
             });
         } catch (error) {

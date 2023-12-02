@@ -13,6 +13,16 @@ class ComprasController {
             console.log(error);
         }
     }
+
+    static async obtenerTodosLosBoletosComprados(req, res, next) {
+        try {
+            const compras = await CompraDAO.obtenerTodosLosBoletosComprados();
+            res.status(200).json(compras);
+        } catch (error) {
+            res.status(404).json({ statusCode: 404, message: 'No se logró obtener las compras' });
+            console.log(error);
+        }
+    }
 }
 
 module.exports = ComprasController;

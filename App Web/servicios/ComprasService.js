@@ -1,10 +1,10 @@
-export class PagosService {
+export class ComprasService {
 
-    #urlPagos = 'http://localhost:3000/api/pagos';
+    #urlCompras = 'http://localhost:3000/api/compras';
 
-    async getPagos(token) {
+    async getCompras(token) {
         try {
-            let res = await fetch(this.#urlPagos, {
+            let res = await fetch(this.#urlCompras, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -34,38 +34,9 @@ export class PagosService {
         }
     }
 
-    async postPago(token, pago) {
-
+    async obtenerTodosLosBoletosComprados(token) {
         try {
-            const requestOptions = {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(pago),
-            };
-
-            // Enviar información del boleto
-            const res = await fetch(this.#urlPagos, requestOptions);
-            if (res.ok) {
-                // La información del boleto se envió correctamente
-                return await res.json();
-            } else {
-                // La información del boleto no se envió correctamente
-                const error = await res.json();
-                console.log(error);
-            }
-        } catch (error) {
-            // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
-            return error;
-        }
-    }
-
-    async getPagosPorIdUsuario(token, idUsuario) {
-        try {
-            let res = await fetch(`${this.#urlPagos}/usuario/${idUsuario}`, {
+            let res = await fetch(`${this.#urlCompras}/boletos`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,

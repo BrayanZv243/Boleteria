@@ -4,6 +4,8 @@ const models = initModels(sequelize);
 const Compras = models.compras;
 const Compras_has_boletos = models.compras_has_boletos;
 const Pago = models.pagos;
+const Boleto = models.boletos;
+const Evento = models.eventos;
 
 class CompraDAO {
     constructor() { }
@@ -43,6 +45,27 @@ class CompraDAO {
         }
     }
 
+    static async obtenerTodosLosBoletosComprados() {
+        try {
+            return await Compras_has_boletos.findAll({
+                include: [
+                    {
+                        model: Boleto, // Incluye el modelo Boleto
+                        as: 'idBoleto_boleto',
+                        include: [
+                            {
+                                model: Evento,
+                                as: 'idEvento_evento' // Incluye otros modelos asociados con Compras si es necesario
+                            }
+                        ]
+                    }
+                ]
+            });
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
 }
 
 module.exports = { CompraDAO };

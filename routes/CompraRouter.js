@@ -6,6 +6,8 @@ const { verificarToken, verificarRolAdmin } = require('../auth/auth');
 
 const admin = "ADMIN"
 
-router.get('/', verificarToken, verificarRolAdmin(admin), CompraController.obtenerCompras);
+router.get('/', verificarToken, CompraController.obtenerCompras);
+router.get('/boletos', verificarToken, CompraController.obtenerTodosLosBoletosComprados);
+
 
 module.exports = router;

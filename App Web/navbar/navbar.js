@@ -55,9 +55,7 @@ export class NavBarComponent extends HTMLElement {
             <div id="main">
                 <div id="header">
                     <div class="row-1">
-                        <div class="fleft">
-                            <a href="#">Explora el mundo de <span>Boletería </span> </a>
-                        </div>
+                        <div class="fleft"><a href="#">Explora el mundo de Boletería</span></a></div>
                     </div>
                     <div class="row-2">
                     
