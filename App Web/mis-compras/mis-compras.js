@@ -111,7 +111,7 @@ export class MisComprasComponent extends HTMLElement {
         const misComprasDetalles = `mis-compras-detalles.html?idCompra=${encodeURIComponent(idCompra)}`;
 
         // Abrir una nueva ventana o pestaña con la URL
-        window.open(misComprasDetalles, '_blank');
+        window.open(misComprasDetalles);
 
     }
 

@@ -1,6 +1,7 @@
 import { CarritoCompraService } from "../servicios/CarritoCompraService.js";
 import { EventosService } from "../servicios/EventosService.js";
 import { PagosService } from "../servicios/PagosService.js";
+import { BoletosService } from "../servicios/BoletosService.js";
 import { CookiesService } from "../servicios/CookiesService.js";
 
 export class CarritoComponent extends HTMLElement {
@@ -8,6 +9,7 @@ export class CarritoComponent extends HTMLElement {
     #carritoServices = new CarritoCompraService();
     #eventosServices = new EventosService();
     #pagosServices = new PagosService();
+    #boletosServices = new BoletosService();
     #cookiesServices = new CookiesService();
 
     constructor() {
@@ -106,6 +108,18 @@ export class CarritoComponent extends HTMLElement {
 
         let htmlCarritoBoletos = await Promise.all(this.boletosEnCarrito.map(async (boleto) => {
             const evento = await this.#obtenerEventoPorID(boleto.idBoleto_boleto.idEvento);
+            const boletosDeEvento = await this.#boletosServices.getBoletosPorIdEvento(this.token, evento.idEvento)
+
+            const { boletosDisponibles, boletosVendidos } = boletosDeEvento.reduce((result, boleto) => {
+                if (boleto.estado === 'DISPONIBLE') {
+                    result.boletosDisponibles.push(boleto);
+                } else if (boleto.estado === 'VENDIDO') {
+                    result.boletosVendidos.push(boleto);
+                }
+                return result;
+            }, { boletosDisponibles: [], boletosVendidos: [] });
+            
+            
             return `<br><br><br><br>
             <div class="event-container" data-idboleto="${boleto.idBoleto}">
                 <div class="image-event">
@@ -118,8 +132,8 @@ export class CarritoComponent extends HTMLElement {
                         <p>${evento.lugar}</p>
                     </div>
                     <div class="column-event">
-                        <p>BOLETOS DISPONIBLES: ${evento.numBoletosDisponibles}</p>
-                        <p>BOLETOS VENDIDOS: ${evento.numBoletosVendidos}</p>
+                        <p>BOLETOS DISPONIBLES: ${boletosDisponibles.length}</p>
+                        <p>BOLETOS VENDIDOS: ${boletosVendidos.length}</p>
                         <p>PRECIO: $${boleto.idBoleto_boleto.precio} MXN</p>
                     </div>
                 </div>
