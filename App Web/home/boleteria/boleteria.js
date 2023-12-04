@@ -144,13 +144,13 @@ export class BoleteriaComponent extends HTMLElement {
     const botones = `
                     <div class="admin">
                         <div class="btn-admin">
-                          <a href="registro-evento.html" target="_blank" class="link2">
+                          <a href="registro-evento.html" class="link2">
                             <span><span>Agregar Evento</span></span>
                           </a>
                       </div>'
 
                       <div class="btn-admin">
-                          <a href="asiento.html" target="_blank" class="link2">
+                          <a href="asiento.html" class="link2">
                             <span><span>Agregar Asientos</span></span>
                           </a>
                       </div>'
@@ -189,27 +189,33 @@ export class BoleteriaComponent extends HTMLElement {
 
     this.eventos.forEach((evento) => {
       const encodedEvento = encodeURIComponent(JSON.stringify(evento));
+
+      // Verifica si hay boletos disponibles
+      const boletosDisponibles = this.boletos.filter(boleto => boleto.idEvento === evento.idEvento && boleto.estado === 'DISPONIBLE');
+      
       try {
         HTMLEvento += `
             <div class="evento">
               <li>
                 <div class="evento-data">
                   <h4>${evento.nombre}</h4>
-                      ${this.isAdmin ? `<a href="registro-evento.html?evento=${encodedEvento}" target="_blank"><img class="img-icono" src="/App Web/images/editEvento.png"></a>` : ''}
+                      ${this.isAdmin ? `<a href="registro-evento.html?evento=${encodedEvento}"><img class="img-icono" src="/App Web/images/editEvento.png"></a>` : ''}
                       ${this.isAdmin ? `<a href="" data-idevento="${evento.idEvento}" class="eliminarEvento"><img class="img-icono" src="/App Web/images/trash-icon.png"></a>` : ''}
                 </div>
                 
                 <img class="img-evento" src="./images/eventos/${evento.nombreImagen}" alt="imagen-evento"/>
                   <p class="blanco">${evento.lugar} - ${this.#formatearFecha(evento.fecha)}</p>
-                  <p class="blanco">Precio: $${evento.boleto[0].precio} - Boletos Restantes: ${evento.numBoletosDisponibles}</p>
+                  <p class="blanco">Precio: $${evento.boleto[0].precio} MXN - Boletos Restantes: ${boletosDisponibles.length}</p>
 
-                <div class="wrapper"><a href='/App Web/seleccion.html?idEvento=${evento.idEvento}&nombre=${evento.nombre}&img=${evento.nombreImagen}' target="_blank" class="link2"><span><span>Añadir al carrito</span></span></a></div>
+                <div class="wrapper">
+                  ${boletosDisponibles.length > 0 ? `<a href='/App Web/seleccion.html?idEvento=${evento.idEvento}&nombre=${evento.nombre}&img=${evento.nombreImagen}' class="link2"><span><span>Añadir al carrito</span></span></a>` : ''}
+                </div>              
               </li>
             </div>
         
         `
       } catch (error) {
-
+        console.log(error);
       }
 
     });

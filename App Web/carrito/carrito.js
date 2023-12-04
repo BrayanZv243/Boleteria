@@ -212,8 +212,7 @@ export class CarritoComponent extends HTMLElement {
             return;
         } 
 
-        console.log(res);
-        alert('Ocurrió un error inesperado.');
+        alert('Uno de tus boletos en tu carrito ya ha sido vendido. Te lo ganaron miapa :(')
     }
 
     #formatLocalDate(date) {

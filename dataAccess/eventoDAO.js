@@ -9,14 +9,12 @@ class EventoDAO {
 
     static async crearEvento(evento) {
         try {
-            const { nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles, nombreImagen } = evento;
+            const { nombre, lugar, tipo, fecha, nombreImagen } = evento;
             return await Evento.create({
                 nombre,
                 lugar,
                 tipo,
                 fecha,
-                numBoletosVendidos,
-                numBoletosDisponibles,
                 nombreImagen
             });
         } catch (error) {
@@ -35,14 +33,12 @@ class EventoDAO {
 
     static async actualizarEvento(idEvento, evento) {
         try {
-            const { nombre, lugar, tipo, fecha, numBoletosVendidos, numBoletosDisponibles, nombreImagen } = evento;
+            const { nombre, lugar, tipo, fecha, nombreImagen } = evento;
             await Evento.update({
                 nombre,
                 lugar,
                 tipo,
                 fecha,
-                numBoletosVendidos,
-                numBoletosDisponibles,
                 nombreImagen
             }, {
                 where: { idEvento },

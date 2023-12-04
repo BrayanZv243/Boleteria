@@ -55,6 +55,7 @@ export class PagosService {
                 // La información del boleto no se envió correctamente
                 const error = await res.json();
                 console.log(error);
+                return error;
             }
         } catch (error) {
             // Manejar errores de red u otros errores

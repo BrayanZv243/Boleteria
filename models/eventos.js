@@ -23,14 +23,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE,
       allowNull: false
     },
-    numBoletosVendidos: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    numBoletosDisponibles: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
     nombreImagen: {
       type: DataTypes.STRING(500),
       allowNull: false

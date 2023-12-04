@@ -173,10 +173,8 @@ export class RegistroEventoComponent extends HTMLElement {
             lugar,
             tipo,
             fecha,
-            numBoletosDisponibles,
             nombreImagen
         }
-
 
         if (!this.isActualizando) {
             const idEvento = await this.#registrarEvento(data, formData);
@@ -195,7 +193,7 @@ export class RegistroEventoComponent extends HTMLElement {
             const nombreImagenEliminar = this.#obtenerEventoPorURI().nombreImagen;
 
             const evento = await this.#actualizarEvento(this.evento.idEvento, data, formData, nombreImagenEliminar);
-            const res = await this.#actualizarBoletos(this.evento.idEvento, this.evento.boleto[0].idBoleto, precioBoleto, numBoletosDisponibles)
+            const res = await this.#actualizarBoletos(this.evento.idEvento, this.evento.boleto[0].idBoleto, precioBoleto)
             if (!res) {
                 console.log(res)
                 console.log(JSON.stringify(res));
