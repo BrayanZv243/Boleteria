@@ -521,3 +521,40 @@
 {"isOperational":true,"level":"error","status":"fail","statusCode":404}
 {"isOperational":true,"level":"error","status":"fail","statusCode":404}
 {"isOperational":true,"level":"error","status":"fail","statusCode":500}
+{"isOperational":true,"level":"error","status":"fail","statusCode":404}
+{"isOperational":true,"level":"error","status":"fail","statusCode":500}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"ENOENT","errno":-4058,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\Boleteria\\App Web\\images\\eventos\\smash.jpg\\kayn.png","status":"error","statusCode":500,"storageErrors":[],"syscall":"open"}
+{"code":"ENOENT","errno":-4058,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\Boleteria\\App Web\\images\\eventos\\smash.jpgkayn.png\\kayn.png","status":"error","statusCode":500,"storageErrors":[],"syscall":"open"}
+{"level":"error","message":"La imagen con ese nombre ya existe."}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"ENOENT","errno":-4058,"level":"error","path":"C:\\App Web\\images\\eventos\\smash.jpg","status":"error","statusCode":500,"storageErrors":[],"syscall":"open"}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"code":"ENOENT","errno":-4058,"level":"error","path":"C:\\Users\\USER\\Documents\\Trabajos de la escuela\\Tópico I - Aplicaciones Web\\Boleteria\\App Web\\images\\eventos\\smash.jpg\\kayn.png","status":"error","statusCode":500,"storageErrors":[],"syscall":"open"}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"level":"error","status":"error","statusCode":500,"storageErrors":[]}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}
+{"isOperational":true,"level":"error","status":"fail","statusCode":400}

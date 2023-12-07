@@ -1,11 +1,11 @@
-const { AppError } = require('../utils/appError');
 const path = require('path');
 const fs = require('fs');
+const filePath = '../App Web/images/eventos';
 
 class ImagesController {
     static async guardarImg(req, res, next) {
         try {
-            res.status(200).json({ message: 'Imagen cargada con éxito' });
+            res.status(200).json({ nombre: req.file, message: 'Imagen cargada con éxito' });
         } catch (error) {
             console.log(error);
         }
@@ -14,7 +14,7 @@ class ImagesController {
     static async obtenerImgPorNombre(req, res, next) {
         try {
             const filename = req.params.filename;
-            const imagePath = path.join(__dirname, '../App Web/images/eventos', filename); // Ruta completa al archivo de imagen
+            const imagePath = path.join(__dirname, filePath, filename); // Ruta completa al archivo de imagen
             res.sendFile(imagePath);
         } catch (error) {
             console.log(error);
@@ -24,7 +24,7 @@ class ImagesController {
 
     static async obtenerImgs(req, res, next) {
         try {
-            const directoryPath = path.join(__dirname, '../App Web/images/eventos'); // Ruta al directorio de imágenes
+            const directoryPath = path.join(__dirname, filePath); // Ruta al directorio de imágenes
 
             fs.readdir(directoryPath, (err, files) => {
                 if (err) {
@@ -48,7 +48,7 @@ class ImagesController {
 
     static async actualizarImg(req, res, next) {
         const { filename } = req.params;
-        const imagePath = path.join(__dirname, '../App Web/images/eventos', filename);
+        const imagePath = path.join(__dirname, filePath, filename);
 
         try {
             if (!fs.existsSync(imagePath)) {
@@ -56,18 +56,16 @@ class ImagesController {
             }
 
             const newImage = req.file;
-            console.log('Imagen a agregar: ', newImage);
-            console.log('Imagen a eliminar: ', filename);
+            
             if (newImage) {
                 if (newImage.originalname !== filename) {
                     // Elimina el archivo original si existe
-                    console.log("filename: ", filename)
                     if (fs.existsSync(imagePath)) {
                         await fs.promises.unlink(imagePath);
                     }
 
                     // Usa la misma ruta para la nueva imagen
-                    const newImagePath = path.join(__dirname, '../App Web/images/eventos', newImage.originalname);
+                    const newImagePath = path.join(__dirname, filePath, newImage.originalname);
 
                     await fs.promises.rename(newImage.path, newImagePath);
                     return res.status(200).json({ message: 'Imagen actualizada con éxito' });
@@ -88,7 +86,7 @@ class ImagesController {
     static async eliminarImg(req, res, next) {
         try {
             const { filename } = req.params;
-            const imagePath = path.join(__dirname, '../App Web/images/eventos', filename);
+            const imagePath = path.join(__dirname, filePath, filename);
 
             // Verifica si la imagen con el nombre especificado existe en el directorio
             if (!fs.existsSync(imagePath)) {

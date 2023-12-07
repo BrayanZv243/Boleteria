@@ -151,7 +151,13 @@ export class RegistroEventoComponent extends HTMLElement {
         const img = imagenInput.files[0];
 
         if (!img) {
-            alert('Seleccione un archivo')
+            alert('Seleccione un archivo');
+            return;
+        }
+
+        if (parseFloat(precioBoleto) < 0) {
+            alert('Precio de boleto inválido.');
+            return;
         }
 
         const nombreImagen = img.name;
@@ -180,9 +186,8 @@ export class RegistroEventoComponent extends HTMLElement {
             const idEvento = await this.#registrarEvento(data, formData);
             if (!idEvento) return;
             const res = await this.#registrarBoletos(idEvento, precioBoleto, numBoletosDisponibles)
-            if (!res) {
+            if (!res && !res.idEvento) {
                 console.log(res)
-                console.log(JSON.stringify(res));
                 alert('Ocurrió un error inesperado.');
                 return;
             }
@@ -194,14 +199,12 @@ export class RegistroEventoComponent extends HTMLElement {
 
             const evento = await this.#actualizarEvento(this.evento.idEvento, data, formData, nombreImagenEliminar);
             const res = await this.#actualizarBoletos(this.evento.idEvento, this.evento.boleto[0].idBoleto, precioBoleto)
-            if (!res) {
-                console.log(res)
-                console.log(JSON.stringify(res));
-                alert('Ocurrió un error inesperado.');
-                return;
+
+            if (res.status == 200) {
+                alert('Se actualizó el evento correctamente');
+                window.location.href = 'index.html';
             }
 
-            window.location.href = 'index.html';
         }
 
     }
@@ -221,10 +224,11 @@ export class RegistroEventoComponent extends HTMLElement {
         const json = JSON.stringify(res);
         const evento = JSON.parse(json);
 
-        if (evento && evento.status == 'fail') {
-            alert(evento.message);
+        if (res && res.status) {
+            alert(res.message);
             return;
         }
+
         if (res && res.statusCode == 403) {
             window.location.href = "/App Web/iniciar-sesion.html"
             return;
@@ -238,12 +242,8 @@ export class RegistroEventoComponent extends HTMLElement {
         const json = JSON.stringify(res);
         const evento = JSON.parse(json);
 
-        if (evento && evento.status == 'fail') {
-            alert(evento.message);
-            return;
-        }
-        if (res && res.statusCode == 403) {
-            window.location.href = "/App Web/iniciar-sesion.html"
+        if (res && res.status != 200) {
+            alert(res.message);
             return;
         }
 
