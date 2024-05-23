@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const { sequelize } = require("./models");
 const { Usuario } = require("./entitys/usuario");
 const { UsuarioDAO } = require("./dataAccess/usuarioDAO");
@@ -28,6 +29,56 @@ async function realizarTransacciones() {
             );
             const nuevoBoleto = new Boleto(1, 1, 200.0, "Ocupado");
             const nuevoBoleto2 = new Boleto(1, 1, 200.0, "Ocupado");
+=======
+const { sequelize } = require('./models');
+const { Usuario } = require('./entitys/usuario');
+const {UsuarioDAO} = require('./dataAccess/usuarioDAO');
+const {EventoDAO} = require('./dataAccess/eventoDAO');
+const { Evento } = require('./entitys/evento');
+const {Boleto} = require ('./entitys/boleto');
+const {AsientoDAO} = require ('./dataAccess/asientoDAO');
+const {PagoDAO} = require ('./dataAccess/pagoDAO');
+const {BoletoDAO} = require ('./dataAccess/boletoDAO');
+const {CompraDAO} = require ('./dataAccess/compraDAO');
+const {Asiento} = require ('./entitys/asiento');
+const {Compras} = require("./entitys/compras");
+const {Pago} = require("./entitys/pago");
+const {CarritoCompraDAO} = require ('./dataAccess/carritoCompraDAO');
+const {CarritoCompra} = require ('./entitys/carritoCompra');
+async function realizarTransacciones() {
+
+    // Transacciones para Usuario terminadas
+    // Hagan las transacciones que faltan :)
+    try {
+        await sequelize.sync()
+
+        try {
+
+
+            const nuevoAsiento = new Asiento(
+                "VIP",
+                "B33"
+                );
+
+
+            await AsientoDAO.crearAsiento(
+                nuevoAsiento.tipo,
+                nuevoAsiento.filaYNumero,
+
+            );
+            const nuevoBoleto = new Boleto(
+                1,
+                1,
+                200.0,
+                "Ocupado"
+            );
+            const nuevoBoleto2 = new Boleto(
+                1,
+                1,
+                200.0,
+                "Ocupado"
+            );
+>>>>>>> 96a33e777f461d23705a92babb66d2399584c38c
             const fechaActual = new Date();
 
             const pago1 = new Pago(
@@ -44,6 +95,7 @@ async function realizarTransacciones() {
                 pago1.fecha
             );
 
+<<<<<<< HEAD
             const boleto1 = await BoletoDAO.crearBoleto(
                 nuevoBoleto.idEvento,
                 nuevoBoleto.idAsiento,
@@ -51,6 +103,17 @@ async function realizarTransacciones() {
                 nuevoBoleto.estado
             );
             const boleto2 = await BoletoDAO.crearBoleto(
+=======
+
+             const boleto1 = await BoletoDAO.crearBoleto(
+
+                nuevoBoleto.idEvento,
+                 nuevoBoleto.idAsiento,
+                nuevoBoleto.precio,
+                nuevoBoleto.estado
+                 );
+           const boleto2 =  await BoletoDAO.crearBoleto(
+>>>>>>> 96a33e777f461d23705a92babb66d2399584c38c
                 nuevoBoleto.idEvento,
                 nuevoBoleto.idAsiento,
                 nuevoBoleto.precio,
@@ -59,15 +122,32 @@ async function realizarTransacciones() {
             const grupo_boletos = [];
             grupo_boletos.push(boleto1);
             grupo_boletos.push(boleto2);
+<<<<<<< HEAD
             const nuevacCompra = new Compras(1, 1, 400, grupo_boletos);
+=======
+            const nuevacCompra = new Compras(
+                 1 ,
+                1,
+                400,
+                grupo_boletos,
+            );
+>>>>>>> 96a33e777f461d23705a92babb66d2399584c38c
             await CompraDAO.crearCompra(
                 nuevacCompra.idPago,
                 nuevacCompra.idEvento,
                 nuevacCompra.total,
+<<<<<<< HEAD
                 nuevacCompra.boletos
             );
 
             console.log("--------CREAMOS TRES USUARIOS--------");
+=======
+                nuevacCompra.boletos,
+            );
+
+
+                console.log('--------CREAMOS TRES USUARIOS--------')
+>>>>>>> 96a33e777f461d23705a92babb66d2399584c38c
             const nuevoUsuario = new Usuario(
                 "John",
                 "Doe",
@@ -102,11 +182,21 @@ async function realizarTransacciones() {
                 "Peso",
                 "Obregon",
                 "Corridos",
+<<<<<<< HEAD
                 "Jul 12 2011",
                 1000,
                 555
             );
 
+=======
+                'Jul 12 2011',
+                1000,
+                555,
+
+            );
+
+
+>>>>>>> 96a33e777f461d23705a92babb66d2399584c38c
             await UsuarioDAO.crearUsuario(
                 nuevoUsuario.nombre,
                 nuevoUsuario.apellido,
@@ -135,6 +225,7 @@ async function realizarTransacciones() {
                 usuario2.contraseña
             );
 
+<<<<<<< HEAD
             console.log("Usuarios creados con éxito");
 
             console.log("--------CONSULTAMOS TODOS LOS USUARIOS--------");
@@ -147,6 +238,21 @@ async function realizarTransacciones() {
             console.log("Usuario Encontrado: ", usuarioEncontrado);
 
             console.log("--------ACTUALIZAMOS UN USUARIO POR ID 25--------");
+=======
+
+            console.log('Usuarios creados con éxito')
+
+            console.log('--------CONSULTAMOS TODOS LOS USUARIOS--------')
+            const users = await UsuarioDAO.obtenerUsuarios();
+            console.log('USUARIOS: ', users)
+
+            console.log('--------CONSULTAMOS UN USUARIO POR ID 25--------')
+
+            const usuarioEncontrado = await UsuarioDAO.obtenerUsuarioPorId(1);
+            console.log('Usuario Encontrado: ', usuarioEncontrado)
+
+            console.log('--------ACTUALIZAMOS UN USUARIO POR ID 25--------')
+>>>>>>> 96a33e777f461d23705a92babb66d2399584c38c
 
             const usuarioActualizado = await UsuarioDAO.actualizarUsuario(
                 25,
@@ -158,7 +264,11 @@ async function realizarTransacciones() {
                 "bob.johnson@example.com",
                 "contraseña456"
             );
+<<<<<<< HEAD
             console.log("Usuario Actualizado: ", usuarioActualizado);
+=======
+            console.log('Usuario Actualizado: ', usuarioActualizado)
+>>>>>>> 96a33e777f461d23705a92babb66d2399584c38c
 
             //console.log('--------ELIMINAMOS EL USUARIO CON ID 1--------') // Solo sirve una vez, ya que elimina el usuario
             //const usuarioEliminado = await UsuarioDAO.eliminarUsuario(1);
@@ -178,6 +288,7 @@ async function realizarTransacciones() {
 
             const eventoActualizado = await EventoDAO.actualizarEvento(
                 1,
+<<<<<<< HEAD
                 "Post",
                 "Mexico",
                 "POP",
@@ -189,10 +300,21 @@ async function realizarTransacciones() {
                 "Evento actualizadooooooooooooooooooo",
                 eventoActualizado
             );
+=======
+                    'Post',
+                'Mexico',
+                'POP',
+                'Jul 12 2011',
+                50,
+                4000
+            );
+            console.log('Evento actualizadooooooooooooooooooo', eventoActualizado)
+>>>>>>> 96a33e777f461d23705a92babb66d2399584c38c
             //const EventoEliminado = await EventoDAO.eliminarEvento(2);
             //const eventosss = await EventoDAO.obtenerTodosEventos();
             //console.log('EVENTOOOOOOOOOOOOOO: ', eventosss)
             const eventToSersh = await EventoDAO.obtenerEventoPorId(1);
+<<<<<<< HEAD
             console.log("Evento a buscarrrrrrrrrrrrrr", eventToSersh);
 
             const carrito_compra1 = new CarritoCompra(147, 44.0);
@@ -207,6 +329,29 @@ async function realizarTransacciones() {
     } catch (error) {
         console.error("Error en las transacciones: " + error);
         console.log(error);
+=======
+            console.log('Evento a buscarrrrrrrrrrrrrr', eventToSersh);
+
+
+            const carrito_compra1 = new CarritoCompra(
+                147,
+                44.0,
+
+            );
+
+
+            await CarritoCompraDAO.agregarBoletoACarritoCompra(9,grupo_boletos)
+
+
+
+        } catch (error) {
+            throw error;
+        }
+
+    } catch (error) {
+        console.error('Error en las transacciones: ' + error)
+        console.log(error)
+>>>>>>> 96a33e777f461d23705a92babb66d2399584c38c
     } finally {
         // Cerramos la conexión a la base de datos cuando todo haya terminado.
         await sequelize.close();
@@ -214,4 +359,8 @@ async function realizarTransacciones() {
 }
 
 // Ejecutamos las transacciones
+<<<<<<< HEAD
 realizarTransacciones();
+=======
+realizarTransacciones();
+>>>>>>> 96a33e777f461d23705a92babb66d2399584c38c
