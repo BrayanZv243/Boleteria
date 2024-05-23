@@ -1,19 +1,19 @@
-export class ComprasService {
+import { urlAPILocalHost, urlAPIProduction } from "./EndPointsService.js";
 
-    #urlCompras = 'http://localhost:3000/api/compras';
+export class ComprasService {
+    #urlCompras = urlAPIProduction + "/api/compras";
 
     async getCompras(token) {
         try {
             let res = await fetch(this.#urlCompras, {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
-            })
-                .catch(err => {
-                    return null;
-                });
+            }).catch((err) => {
+                return null;
+            });
 
             if (res && res.ok) {
                 // La solicitud fue exitosa (código de respuesta 200-299)
@@ -29,7 +29,7 @@ export class ComprasService {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return null;
         }
     }
@@ -37,16 +37,15 @@ export class ComprasService {
     async obtenerTodosLosBoletosComprados(token) {
         try {
             let res = await fetch(`${this.#urlCompras}/boletos`, {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
-            })
-                .catch(err => {
-                    console.log(err);
-                    return null;
-                });
+            }).catch((err) => {
+                console.log(err);
+                return null;
+            });
 
             if (res && res.ok) {
                 // La solicitud fue exitosa (código de respuesta 200-299)
@@ -62,9 +61,8 @@ export class ComprasService {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return null;
         }
     }
-
 }

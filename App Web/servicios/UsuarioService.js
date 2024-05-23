@@ -1,19 +1,19 @@
-export class UsuariosService {
+import { urlAPILocalHost, urlAPIProduction } from "./EndPointsService.js";
 
-    #urlUsuarios = 'http://localhost:3000/api/usuarios';
+export class UsuariosService {
+    #urlUsuarios = urlAPIProduction + "/api/usuarios";
 
     async getUsuarios(token) {
         try {
             let res = await fetch(this.#urlUsuarios, {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
-            })
-                .catch(err => {
-                    return null;
-                });
+            }).catch((err) => {
+                return null;
+            });
 
             if (res && res.ok) {
                 // La solicitud fue exitosa (código de respuesta 200-299)
@@ -29,24 +29,22 @@ export class UsuariosService {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return null;
         }
     }
 
-
     async getUsuarioPorID(token, idUsuario) {
         try {
             let res = await fetch(`${this.#urlUsuarios}/${idUsuario}`, {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
-            })
-                .catch(err => {
-                    return err;
-                });
+            }).catch((err) => {
+                return err;
+            });
 
             if (res && res.ok) {
                 // La solicitud fue exitosa (código de respuesta 200-299)
@@ -62,7 +60,7 @@ export class UsuariosService {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return error;
         }
     }
@@ -70,10 +68,10 @@ export class UsuariosService {
     async putUsuario(token, idUsuario, datosActualizados) {
         try {
             const res = await fetch(`${this.#urlUsuarios}/${idUsuario}`, {
-                method: 'PUT',
+                method: "PUT",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify(datosActualizados),
             });
@@ -84,12 +82,12 @@ export class UsuariosService {
             } else {
                 // La solicitud no fue exitosa
                 const errorData = await res.json();
-                console.error('Error en la solicitud:', errorData);
+                console.error("Error en la solicitud:", errorData);
                 return errorData;
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return error;
         }
     }
@@ -97,10 +95,10 @@ export class UsuariosService {
     async deleteUsuario(token, idUsuario) {
         try {
             const res = await fetch(`${this.#urlUsuarios}/${idUsuario}`, {
-                method: 'DELETE',
+                method: "DELETE",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
             });
 
@@ -111,14 +109,13 @@ export class UsuariosService {
             } else {
                 // La solicitud no fue exitosa
                 const errorData = await res.json();
-                console.error('Error en la solicitud:', errorData);
+                console.error("Error en la solicitud:", errorData);
                 return errorData;
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return error;
         }
     }
-
 }

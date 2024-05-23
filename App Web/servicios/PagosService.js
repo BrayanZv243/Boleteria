@@ -1,19 +1,19 @@
-export class PagosService {
+import { urlAPILocalHost, urlAPIProduction } from "./EndPointsService.js";
 
-    #urlPagos = 'http://localhost:3000/api/pagos';
+export class PagosService {
+    #urlPagos = urlAPIProduction + "/api/pagos";
 
     async getPagos(token) {
         try {
             let res = await fetch(this.#urlPagos, {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
-            })
-                .catch(err => {
-                    return null;
-                });
+            }).catch((err) => {
+                return null;
+            });
 
             if (res && res.ok) {
                 // La solicitud fue exitosa (código de respuesta 200-299)
@@ -29,19 +29,18 @@ export class PagosService {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return null;
         }
     }
 
     async postPago(token, pago) {
-
         try {
             const requestOptions = {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify(pago),
             };
@@ -59,7 +58,7 @@ export class PagosService {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return error;
         }
     }
@@ -67,16 +66,15 @@ export class PagosService {
     async getPagosPorIdUsuario(token, idUsuario) {
         try {
             let res = await fetch(`${this.#urlPagos}/usuario/${idUsuario}`, {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
-            })
-                .catch(err => {
-                    console.log(err);
-                    return null;
-                });
+            }).catch((err) => {
+                console.log(err);
+                return null;
+            });
 
             if (res && res.ok) {
                 // La solicitud fue exitosa (código de respuesta 200-299)
@@ -92,9 +90,8 @@ export class PagosService {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return null;
         }
     }
-
 }

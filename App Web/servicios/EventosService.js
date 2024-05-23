@@ -1,20 +1,20 @@
-export class EventosService {
+import { urlAPILocalHost, urlAPIProduction } from "./EndPointsService.js";
 
-    #urlEventos = 'http://localhost:3000/api/eventos';
-    #urlEventosIMG = 'http://localhost:3000/api/images/';
+export class EventosService {
+    #urlEventos = urlAPIProduction + "/api/eventos";
+    #urlEventosIMG = urlAPIProduction + "/api/images/";
 
     async getEventos(token) {
         try {
             let res = await fetch(this.#urlEventos, {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
-            })
-                .catch(err => {
-                    return null;
-                });
+            }).catch((err) => {
+                return null;
+            });
 
             if (res && res.ok) {
                 // La solicitud fue exitosa (código de respuesta 200-299)
@@ -30,7 +30,7 @@ export class EventosService {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return null;
         }
     }
@@ -38,15 +38,14 @@ export class EventosService {
     async getEventoPorID(token, idEvento) {
         try {
             let res = await fetch(`${this.#urlEventos}/${idEvento}`, {
-                method: 'GET',
+                method: "GET",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
-            })
-                .catch(err => {
-                    return null;
-                });
+            }).catch((err) => {
+                return null;
+            });
 
             if (res && res.ok) {
                 // La solicitud fue exitosa (código de respuesta 200-299)
@@ -62,19 +61,18 @@ export class EventosService {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return null;
         }
     }
-
 
     async postEvento(eventoData, formData, token) {
         try {
             // Enviar información de la imagen
             const resImagen = await fetch(this.#urlEventosIMG, {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
                 body: formData,
             });
@@ -87,14 +85,14 @@ export class EventosService {
 
             // La imagen se envió correctamente
             // Obtener el nombre de la imagen del formData
-            const nombreImagen = formData.get('image');
+            const nombreImagen = formData.get("image");
 
             // Enviar información del evento
             const requestOptions = {
-                method: 'POST',
+                method: "POST",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify(eventoData),
             };
@@ -102,18 +100,24 @@ export class EventosService {
             const resEvento = await fetch(this.#urlEventos, requestOptions);
             const eventoReturn = await resEvento.json();
 
-            if (eventoReturn.status === 'fail') {
+            if (eventoReturn.status === "fail") {
                 // Si el evento no se guardó correctamente, elimina la imagen
-                const resDeleteImagen = await fetch(`${this.#urlEventosIMG}/${nombreImagen.name}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                });
+                const resDeleteImagen = await fetch(
+                    `${this.#urlEventosIMG}/${nombreImagen.name}`,
+                    {
+                        method: "DELETE",
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
 
                 // Manejar la respuesta del intento de eliminación, aunque puede no ser crucial para el flujo principal
                 const deleteImagenResult = await resDeleteImagen.json();
-                console.log('Resultado de eliminación de imagen:', deleteImagenResult);
+                console.log(
+                    "Resultado de eliminación de imagen:",
+                    deleteImagenResult
+                );
 
                 return eventoReturn;
             }
@@ -128,54 +132,63 @@ export class EventosService {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return error;
         }
     }
 
-
-
-
-    async putEvento(idEvento, eventoData, formData, token, nombreImagenEliminar) {
+    async putEvento(
+        idEvento,
+        eventoData,
+        formData,
+        token,
+        nombreImagenEliminar
+    ) {
         try {
             const requestOptionsImagen = {
-                method: 'PUT',
+                method: "PUT",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
                 body: formData,
             };
 
             // Actualizar la imagen primero
-            const resImagen = await fetch(`${this.#urlEventosIMG}/${nombreImagenEliminar}`, requestOptionsImagen);
-            
+            const resImagen = await fetch(
+                `${this.#urlEventosIMG}/${nombreImagenEliminar}`,
+                requestOptionsImagen
+            );
+
             if (!resImagen.ok) {
                 // Si la actualización de la imagen falla, devolver el error
                 const errorDataImagen = await resImagen.json();
-                
+
                 return errorDataImagen;
             }
 
             // La imagen se actualizó correctamente, ahora actualizar la información del evento
             const requestOptionsEvento = {
-                method: 'PUT',
+                method: "PUT",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify(eventoData),
             };
 
-            const resEvento = await fetch(`${this.#urlEventos}/${idEvento}`, requestOptionsEvento);
+            const resEvento = await fetch(
+                `${this.#urlEventos}/${idEvento}`,
+                requestOptionsEvento
+            );
             const eventoReturn = await resEvento.json();
 
-            if (eventoReturn.status === 'fail') {
+            if (eventoReturn.status === "fail") {
                 return eventoReturn;
             }
 
             if (resEvento.ok) {
                 // La información del evento se actualizó correctamente
-                
+
                 return resEvento;
             } else {
                 // La información del evento no se actualizó correctamente
@@ -183,11 +196,10 @@ export class EventosService {
             }
         } catch (error) {
             // Manejar errores de red u otros errores
-            console.log('Error en la solicitud:', error);
+            console.log("Error en la solicitud:", error);
             return error;
         }
     }
-
 
     async deleteEvento(evento, token) {
         try {
@@ -196,15 +208,15 @@ export class EventosService {
 
             // Elimina la imagen asociada al evento
             const resEliminarImagen = await fetch(urlImagen, {
-                method: 'DELETE',
+                method: "DELETE",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
 
             if (!resEliminarImagen.ok) {
                 const errorImagen = await resEliminarImagen.json();
-                console.error('Error al eliminar la imagen:', errorImagen);
+                console.error("Error al eliminar la imagen:", errorImagen);
                 // Puedes decidir si esto debe ser un error crítico o simplemente un registro.
             }
 
@@ -212,10 +224,10 @@ export class EventosService {
             const urlEvento = `${this.#urlEventos}/${evento.idEvento}`;
             // Envía la solicitud para eliminar el evento
             const resEliminarEvento = await fetch(urlEvento, {
-                method: 'DELETE',
+                method: "DELETE",
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
             });
 
@@ -230,11 +242,8 @@ export class EventosService {
             }
         } catch (error) {
             // Maneja errores de red u otros errores
-            console.error('Error en la solicitud:', error);
+            console.error("Error en la solicitud:", error);
             return error;
         }
     }
-
-
-
 }
