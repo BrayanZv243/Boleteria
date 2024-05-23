@@ -1,0 +1,998 @@
+{
+	"info": {
+		"_postman_id": "a94a1985-1d11-4b25-b089-1f10913b47c1",
+		"name": "Boletería Collection",
+		"description": "Colección en postman para realizar las peticiones.\n\nRecuerden dar en Save al momento de modificar una petición para que se guarde para todos.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25798213",
+		"_collection_link": "https://crimson-meadow-557144.postman.co/workspace/Proyecto-Boleter%C3%ADa~7a254376-1bcc-40a9-ac45-ed192e68c54c/collection/25798213-a94a1985-1d11-4b25-b089-1f10913b47c1?action=share&source=collection_link&creator=25798213"
+	},
+	"item": [
+		{
+			"name": "Boleteria - Requests",
+			"item": [
+				{
+					"name": "Usuarios",
+					"item": [
+						{
+							"name": "GET Usuarios",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc1LCJyb2wiOiJOT1JNQUwiLCJpYXQiOjE2OTg0NTUzMzIsImV4cCI6MTY5ODQ1ODkzMn0.KAJAqTRVmkl6jxyqPTu-Ha5oUGW56iYssGStFZF43kM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/usuarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Usuario By ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc1LCJpYXQiOjE2OTg0NDk2NzEsImV4cCI6MTY5ODQ1MzI3MX0.W3T4W-j4BXqf7efUwrYLSj328J0TpaU7tDnL1plnyzg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/usuarios/75",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"usuarios",
+										"75"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Usuarios",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\":\"Brayan\",\r\n    \"apellido\":\"Zavala\",\r\n    \"tipoUsuario\":\"NORMAL\",\r\n    \"edad\":20,\r\n    \"telefono\":\"6441596164\",\r\n    \"correo\":\"zavala_243@hotmail.com\",\r\n    \"contraseña\":\"123456789\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/usuarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Admin Usuarios",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\":\"Brayan\",\r\n    \"apellido\":\"Zavala\",\r\n    \"tipoUsuario\":\"ADMIN\",\r\n    \"edad\":20,\r\n    \"telefono\":\"6441596164\",\r\n    \"correo\":\"brayan@hotmail.com\",\r\n    \"contraseña\":\"123456789\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/usuarios/admin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"usuarios",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Usuarios",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\":\"Brayan\",\r\n    \"apellido\":\"Zavala\",\r\n    \"tipoUsuario\":\"NORMAL\",\r\n    \"edad\":20,\r\n    \"telefono\":\"6441596164\",\r\n    \"correo\":\"zavala_243@hotmail.com\",\r\n    \"contraseña\":\"NUEVACONTRASEÑA\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/usuarios/70",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"usuarios",
+										"70"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Usuarios",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/usuarios/74",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"usuarios",
+										"74"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Generate TOKEN",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"correo\":\"brayan@hotmail.com\",\r\n    \"contraseña\":\"123456789\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Asientos",
+					"item": [
+						{
+							"name": "GET Asientos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/asientos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"asientos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Asiento by ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"\r",
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Validate idAsiento is a non-negative integer\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.idAsiento).to.be.a('number').and.to.be.at.least(0, \"idAsiento should be a non-negative integer\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Validate the 'tipo' field is a non-empty string\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData.tipo).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"The 'filaYNumero' field is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData.filaYNumero).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Response time is less than 200ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/asientos/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"asientos",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Asientos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"tipo\":\"NORMAL\",\r\n    \"filaYNumero\":\"H25\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/asientos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"asientos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Asientos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"tipo\":\"VIP\",\r\n    \"filaYNumero\":\"H25\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/asientos/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"asientos",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Asientos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/asientos/13",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"asientos",
+										"13"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Boletos",
+					"item": [
+						{
+							"name": "GET Boletos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/boletos/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"boletos",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Boleto by ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/boletos/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"boletos",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Boletos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idEvento\":12,\r\n    \"idAsiento\":7,\r\n    \"precio\":15500,\r\n    \"estado\":\"DISPONIBLE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/boletos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"boletos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Boletos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idEvento\":7,\r\n    \"idAsiento\":5,\r\n    \"precio\":150,\r\n    \"estado\":\"DISPONIBLE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/boletos/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"boletos",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Boletos",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/boletos/6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"boletos",
+										"6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Eventos",
+					"item": [
+						{
+							"name": "GET Eventos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/eventos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"eventos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Eventos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\":\"Peso Pluma\",\r\n    \"lugar\": \"Arena ITSON\",\r\n    \"tipo\":\"Concierto\",\r\n    \"fecha\":\"2023-11-25\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/eventos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"eventos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Eventos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\":\"Peso Pluma\",\r\n    \"lugar\": \"Arena ITSON\",\r\n    \"tipo\":\"Concierto\",\r\n    \"fecha\":\"2023-11-26\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/eventos/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"eventos",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Eventos",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc2LCJyb2wiOiJBRE1JTiIsImlhdCI6MTY5ODQ1MzAyMywiZXhwIjoxNjk4NDU2NjIzfQ.FiuxnzqY1__2U1LaPwkT38RaDM8kkkiBDK-fHI8ER1Q",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/eventos/9",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"eventos",
+										"9"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Carrito-Compras",
+					"item": [
+						{
+							"name": "GET Carritos-Compra",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/carrito-compras",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"carrito-compras"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Carrito-Compras By UserID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc1LCJyb2wiOiJOT1JNQUwiLCJpYXQiOjE2OTg0NTUzMzIsImV4cCI6MTY5ODQ1ODkzMn0.KAJAqTRVmkl6jxyqPTu-Ha5oUGW56iYssGStFZF43kM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/carrito-compras/usuario/75",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"carrito-compras",
+										"usuario",
+										"75"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Carrito-Compra",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc1LCJyb2wiOiJOT1JNQUwiLCJpYXQiOjE2OTg0NTUzMzIsImV4cCI6MTY5ODQ1ODkzMn0.KAJAqTRVmkl6jxyqPTu-Ha5oUGW56iYssGStFZF43kM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"boletos\":[\r\n        {\"idBoleto\":4}\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/carrito-compras/7/boletos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"carrito-compras",
+										"7",
+										"boletos"
+									]
+								},
+								"description": "El número representa el id del carrito compra y boletos representa que se van a agregar boletos al carrito compra, para eso sirve el PUT en este caso"
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Carrito-Compra",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzdWFyaW8iOjc1LCJyb2wiOiJOT1JNQUwiLCJpYXQiOjE2OTg0NTUzMzIsImV4cCI6MTY5ODQ1ODkzMn0.KAJAqTRVmkl6jxyqPTu-Ha5oUGW56iYssGStFZF43kM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"boletos\":[\r\n        {\"idBoleto\":4}\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/carrito-compras/7/boletos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"carrito-compras",
+										"7",
+										"boletos"
+									]
+								},
+								"description": "El número representa el id del carrito compra y boletos representa que se van a eliminar boletos al carrito compra, para eso sirve el DELETE en este caso"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Compras",
+					"item": [
+						{
+							"name": "GET Compras",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/compras",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"compras"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Pagos",
+					"item": [
+						{
+							"name": "GET Pagos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/pagos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"pagos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Pagos By UserID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/pagos/usuario/75",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"pagos",
+										"usuario",
+										"75"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Pagos",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idUsuario\":75,\r\n    \"metodo\":\"BBVA\",\r\n    \"fecha\":\"2023-10-26\",\r\n    \"boletos\":[\r\n        {\r\n            \"idBoleto\":8,\r\n            \"idEvento\":12,\r\n            \"idAsiento\":5,\r\n            \"precio\":25000,\r\n            \"estado\":\"DISPONIBLE\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/pagos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"pagos"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Carpeta que contiene las carpetas de las request a la boletería."
+		}
+	]
+}
